@@ -2,6 +2,7 @@
 Notes/settings/local.py
 /media/
 /static/
+node_modules
 __pycache__
 *.pyc
 *.pyo

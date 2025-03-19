@@ -1,0 +1,20 @@
+{
+    "name": "taskdesk",
+    "version": "1.0.0",
+    "description": "TaskDesk is a web-application designed for tasks and notes management.",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "view preview"
+    },
+    "dependencies": {
+        "@tailwindcss/vite": "^4.0.14",
+        "autoprefixer": "^10.4.21",
+        "postcss": "^8.5.3",
+        "sass": "^1.86.0",
+        "tailwindcss": "^4.0.14",
+        "vite": "^6.2.2"
+    },
+    "author": "Anton Konyshev <anton.konyshev@gmail.com>"
+}
