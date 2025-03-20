@@ -43,10 +43,7 @@
 
         {% include "_footer.html" %}
 
-        {# Global javascript #}
-        <script type="text/javascript" src="{% static 'js/TaskDesk.js' %}"></script>
-
-        {% vite_asset 'js/main.js' %}
+        <script type="module" src="{% vite_asset_url 'js/main.ts' %}" defer></script>
 
         {% block extra_js %}
         {# Override this in templates to add extra javascript #}

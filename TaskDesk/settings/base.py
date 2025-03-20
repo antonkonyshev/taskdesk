@@ -82,6 +82,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "TaskDesk.wsgi.application"
+ASGI_APPLICATION = "TaskDesk.asgi.application"
 
 
 # Database

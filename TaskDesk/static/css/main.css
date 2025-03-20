@@ -1,3 +1,8 @@
 @import "tailwindcss";
+@import "./icons";
 
 @source "../../../**/*.html";
+
+.navigation-button {
+    @apply flex flex-row items-center py-2 px-0 rounded text-gray-700 hover:text-green-700 dark:text-white dark:hover:text-green-200;
+}
