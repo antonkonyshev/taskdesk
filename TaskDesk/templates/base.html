@@ -27,7 +27,8 @@
             {% vite_hmr_client %}
         {% endif %}
 
-        {% vite_asset 'css/main.css' %}
+        {% vite_asset 'css/tailwind.css' %}
+        {% vite_asset 'css/main.sass' %}
 
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
@@ -43,7 +44,7 @@
 
         {% include "_footer.html" %}
 
-        <script type="module" src="{% vite_asset_url 'js/main.ts' %}" defer></script>
+        <script type="module" src="{% vite_asset_url 'js/navigationApp.ts' %}" defer></script>
 
         {% block extra_js %}
         {# Override this in templates to add extra javascript #}

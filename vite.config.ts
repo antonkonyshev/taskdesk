@@ -26,8 +26,9 @@ export default defineConfig({
         target: 'es2015',
         rollupOptions: {
             input: {
-                main: resolve('./TaskDesk/static/js/main.js'),
-                tailwind: resolve('./TaskDesk/static/css/main.css')
+                navigationApp: resolve('./TaskDesk/static/js/navigationApp.ts'),
+                tailwind: resolve('./TaskDesk/static/css/tailwind.css'),
+                main: resolve('./TaskDesk/static/css/main.sass')
             },
             output: {
                 chunkFileNames: undefined
