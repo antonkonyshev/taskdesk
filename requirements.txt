@@ -6,3 +6,6 @@ psycopg>=3.2,<4.0
 psycopg-pool>=3.2,<4.0
 django-vite>=3.1.0,<4.0
 django-widget-tweaks>=1.5,<2.0
+hiredis>=3.1,<4.0
+redis>=5.2,<6.0
+django_utils @ git+https://github.com/antonkonyshev/django-utils@master

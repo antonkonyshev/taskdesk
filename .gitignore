@@ -1,5 +1,5 @@
 *.sqlite3
-Notes/settings/local.py
+local.py
 /media/
 /static/
 node_modules

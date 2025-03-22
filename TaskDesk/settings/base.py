@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "tdauth",
     "home",
     "search",
+    "django_utils",
     "widget_tweaks",
     "wagtail_modeladmin",
     "wagtail.contrib.forms",
@@ -155,6 +156,13 @@ STORAGES = {
     "staticfiles": {
         "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
     },
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+    }
 }
 
 # Django sets a maximum of 1000 fields per form by default, but particularly complex page models

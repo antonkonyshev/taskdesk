@@ -1,7 +1,7 @@
-{% load i18n widget_tweaks %}
+{% load i18n cache widget_tweaks %}
 
 <div class="w-full py-10">
-    <form method="POST" action="{% url 'tdauth_login' %}">
+    <form method="POST" action="{% cache 604800 tdauthloginpageurl %}{% url 'tdauth_login' %}{% endcache %}">
         {% csrf_token %}
 
         <div class="w-full px-5 flex flex-col gap-5 items-center text-lg">

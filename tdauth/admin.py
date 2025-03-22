@@ -3,7 +3,7 @@
     :platform: Unix, Windows
     :synopsis: User account app admin preferences
 
-.. moduleauthor:: Anton Konyshev <anton.konyshev@gmail.com>
+.. moduleauthor:: Anton Konyshev
 
 """
 

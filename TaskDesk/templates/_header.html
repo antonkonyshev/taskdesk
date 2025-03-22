@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n cache %}
 <header>
     <nav class="bg-white border-b border-b-gray-300 px-4 sm:px-6 py-2.5 dark:bg-gray-700" id="navigation-app">
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
@@ -14,7 +14,7 @@
                     <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-menu"></span>
                 </button>
                 {% else %}
-                <a href="{% url 'tdauth_login' %}" class="navigation-button">
+                <a href="{% cache 604800 tdauthloginpageurl %}{% url 'tdauth_login' %}{% endcache %}" class="navigation-button">
                     <span class="inline-block size-6 mr-2 bg-no-repeat bg-center bg-contain svg-signin"></span>
                     <span>{% trans "Sign In" %}</span>
                 </a>
@@ -41,7 +41,7 @@
                     </li>
 
                     <li class="sm:ml-auto" role="menuitem">
-                        <a href="{% url 'tdauth_logout' %}" class="navigation-button">
+                        <a href="{% cache 604800 tdauthlogoutpageurl %}{% url 'tdauth_logout' %}{% endcache %}" class="navigation-button">
                             <span class="inline-block size-6 mr-2 bg-no-repeat bg-center bg-contain svg-signout"></span>
                             <span>{% trans "Sign Out" %}</span>
                         </a>
