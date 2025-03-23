@@ -4,12 +4,14 @@ import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
-    root: resolve('./TaskDesk/static'),
+    root: resolve('./TaskDesk/static/'),
     base: '/static/',
     plugins: [tailwindcss(), vue()],
     server: {
         host: '0.0.0.0',
         open: false,
+        allowedHosts: true,
+        cors: true,
         watch: {
             usePolling: true,
             disableGlobbing: false
@@ -17,6 +19,9 @@ export default defineConfig({
     },
     resolve: {
         extensions: ['.js', '.ts', '.json', '.css', '.sass', '.scss'],
+        alias: {
+            tasks: resolve("./tasks/static/tasks"),
+        },
     },
     assetsInclude: ['**/static/**/*.svg'],
     build: {
@@ -26,9 +31,10 @@ export default defineConfig({
         target: 'es2015',
         rollupOptions: {
             input: {
-                navigationApp: resolve('./TaskDesk/static/js/navigationApp.ts'),
                 tailwind: resolve('./TaskDesk/static/css/tailwind.css'),
-                main: resolve('./TaskDesk/static/css/main.sass')
+                main: resolve('./TaskDesk/static/css/main.sass'),
+                navigationApp: resolve('./TaskDesk/static/js/NavigationApp.ts'),
+                tasksApp: resolve('./TaskDesk/static/js/TasksApp.ts'),
             },
             output: {
                 chunkFileNames: undefined
