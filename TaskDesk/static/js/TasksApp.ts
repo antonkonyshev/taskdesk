@@ -9,13 +9,21 @@ if (document.getElementById("tasks-app")) {
             messages: {
                 en: {
                     message: {
-                        blocking_tasks: "Blocking tasks"
+                        blocking_tasks: "Blocking tasks",
+                        project: "Project",
+                        not_specified: "Not specified",
+                        due_date: "Due date",
+                        creation_date: "Creation date",
                     }
                 },
 
                 ru: {
                     message: {
-                        blocking_tasks: "Блокирует задачи"
+                        blocking_tasks: "Блокирует задачи",
+                        project: "Проект",
+                        not_specified: "Не указан",
+                        due_date: "Срок выполнения",
+                        creation_date: "Дата создания",
                     }
                 }
             }
