@@ -18,7 +18,7 @@ export default defineConfig({
         }
     },
     resolve: {
-        extensions: ['.js', '.ts', '.json', '.css', '.sass', '.scss'],
+        extensions: ['.js', '.ts', '.vue', '.json', '.css', '.sass', '.scss'],
         alias: {
             tasks: resolve("./tasks/static/tasks"),
         },
