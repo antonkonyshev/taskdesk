@@ -2,6 +2,7 @@
 local.py
 /media/
 /static/
+/taskstorage/
 node_modules
 __pycache__
 *.pyc

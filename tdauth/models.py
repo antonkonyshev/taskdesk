@@ -8,9 +8,13 @@
 
 """
 
+import os
+import os.path as op
+
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 
@@ -36,7 +40,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("Email"), unique=True)
     name = models.CharField(_("First name"), max_length=128, blank=True)
     task_db_path = models.FilePathField(_("TaskWarrior database path"),
-        allow_files=False, allow_folders=True, blank=True)
+        path = getattr(settings, 'TASKWARRIOR_STORAGE_PATH', 'taskstorage'),
+        allow_files=False, allow_folders=True, blank=True, null=True, recursive=True)
 
     is_staff = models.BooleanField(_("Staff status"), default=False,
         help_text=_("Designates whether the user can log into this admin site."))
@@ -60,3 +65,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f"User #{self.email}"
+
+    def save(self, *args, **kwargs):
+        if not self.task_db_path and self.email:
+            self.task_db_path = op.join(
+                getattr(settings, 'TASKWARRIOR_STORAGE_PATH', 'taskstorage'),
+                self.email.replace('@', '_'))
+        result = super().save(*args, **kwargs)
+        if self.id and not op.exists(self.task_db_path):
+            os.makedirs(self.task_db_path)
+        return result

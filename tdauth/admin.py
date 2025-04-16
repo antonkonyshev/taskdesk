@@ -16,5 +16,6 @@ class UserAdmin(ModelAdmin):
     model = User
     menu_label = _("Users")
     menu_icon = "fa-person"
+    form_fields_exclude = ('password', 'last_login', 'created',)
 
     list_display = ('email', 'name', 'is_active', 'is_staff', 'created')
