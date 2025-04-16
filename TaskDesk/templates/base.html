@@ -1,4 +1,4 @@
-{% load static wagtailcore_tags wagtailuserbar django_vite %}
+{% load static cache wagtailcore_tags wagtailuserbar django_vite %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,10 +33,14 @@
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
+
+        <script type="text/javascript">
+            window.API_BASE_URL = "/api/v1";
+        </script>
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
-        {% wagtailuserbar %}
+        {# wagtailuserbar  -- annoying #}
 
         {% include "_header.html" %}
 

@@ -5,6 +5,7 @@
             "static/*": ["./TaskDesk/static/*"],
             "tasks/*": ["./tasks/static/tasks/*"]
         },
+        "lib": ["dom", "es2015"],
         "esModuleInterop": true
     }
 }
