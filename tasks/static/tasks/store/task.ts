@@ -1,68 +1,91 @@
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { defineStore } from 'pinia'
-import { useRefHistory } from '@vueuse/core'
+import { useRefHistory, useWebSocket } from '@vueuse/core'
 import { Task } from '../types/task'
 
-
 export const useTaskStore = defineStore('task', () => {
-    const tasks = ref<Array<Task>>([])
     const task = ref(null)
-
-    function select(target: Task) {
-        task.value = target
-    }
 
     const history = useRefHistory(task, {
         capacity: 64
     })
 
-    function addDependencies(target): Task {
-        if (typeof target.depends === "undefined") {
-            target.depends = new Set<Task>()
+    let socket = null
+
+    function select(target: Task) {
+        if (task.value && target.uuid == task.value.uuid) {
+            return
         }
-        if (typeof target.blocks === "undefined") {
-            target.blocks = new Set<Task>()
+        task.value = target
+    }
+
+    function update(event: Event) {
+        const target = event.target as HTMLInputElement
+        const newValue = target.value.trim()
+        if (
+            task.value && task.value.uuid && target.name in task.value &&
+            task.value[target.name as keyof typeof task.value] != newValue &&
+            (target.name != "description" || newValue)
+        ) {
+            const data = { uuid: task.value.uuid }
+            data[target.name] = newValue
+            socket.send(JSON.stringify(data))
+            task.value[target.name as keyof typeof task.value] = newValue
         }
-        const dependencies = new Set<Task>()
-        for (let idx = 0; idx < target.depends.length; idx++) {
-            const dep = tasks.value.find(elem => elem.uuid == target.depends[idx])
-            if (dep) {
-                dep.blocks.add(target)
-                dependencies.add(dep)
+    }
+
+    let editingTimeout: number = 0
+
+    function editing(event: Event) {
+        if (!socket && task.value && task.value.uuid) {
+            // @ts-ignore
+            socket = useWebSocket(window.API_BASE_URL + "/task/" + task.value.uuid + "/", {
+                autoReconnect: { retries: 3, delay: 3000, onFailed() {
+                    // TODO: Show a error notification
+                }},
+            })
+        }
+
+        if (editingTimeout) {
+            clearTimeout(editingTimeout)
+            editingTimeout = 0
+        }
+        editingTimeout = setTimeout(update, 3000, event)
+    }
+
+    function edited(event: Event) {
+        if (editingTimeout) {
+            clearTimeout(editingTimeout)
+            editingTimeout = 0
+        }
+        update(event)
+    }
+
+    function markDone() {
+        if (task.value && task.value.uuid) {
+            socket.send(JSON.stringify({ uuid: task.value.uuid, done: true}))
+            // TODO: remove on the client
+        }
+    }
+
+    function remove() {
+        if (task.value && task.value.uuid) {
+            socket.send(JSON.stringify({ uuid: task.value.uuid, remove: true }))
+            // TODO: remove on the client
+        }
+    }
+
+    watch(task, (newTask, oldTask) => {
+        if (newTask && oldTask && oldTask.uuid == newTask.uuid) {
+            return
+        }
+        if (socket) {
+            if (socket.status != "CLOSED") {
+                socket.close()
             }
+            socket = null
         }
-        target.depends = dependencies
-        return target as Task
-    }
+    })
 
-    function removeDependencies(target: Task) {
-        target.depends.forEach(it => it.blocks.delete(target))
-        target.blocks.forEach(it => it.depends.delete(target))
-        target.depends.clear()
-        target.blocks.clear()
-    }
-
-    async function fetchTasks(): Promise<void> {
-        // @ts-ignore
-        const rsp = await fetch(window.API_BASE_URL + "/task")
-        if (rsp.ok) {
-            (await rsp.json()).forEach((target) => {
-                const idx = tasks.value.findIndex((elem) => elem.uuid == target.uuid)
-                target = addDependencies(target)
-                if (idx >= 0) {
-                    removeDependencies(tasks.value[idx]);
-                    tasks.value[idx] = target
-                } else {
-                    tasks.value.push(target)
-                }
-                if (target.depends && target.depends.length) {
-                }
-            });
-            if (tasks.value.length && !task.value) {
-                select(tasks.value[0])
-            }
-        }
-    }
-
-    return { task, tasks, history, select, fetchTasks }
+    return { task, history, select, update, editing, edited, markDone, remove }
 })

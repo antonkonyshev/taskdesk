@@ -17,3 +17,7 @@ class TaskStorage(TaskWarrior):
             await aos.makedirs(self.path)
         super().__init__(self.path)
         return self
+
+    def active(self):
+        return self.tasks.filter(status__not="completed")\
+            .filter(status__not="deleted")

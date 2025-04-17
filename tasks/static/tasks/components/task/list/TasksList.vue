@@ -2,16 +2,18 @@
 import { useI18n } from 'vue-i18n'
 import moment from 'moment/min/moment-with-locales'
 import { useTaskStore } from '../../../store/task'
+import { useTasksStore } from '../../../store/tasks'
 import StateLabels from '../StateLabels.vue'
 
 const { t } = useI18n()
-const store = useTaskStore()
+const taskStore = useTaskStore()
+const tasksStore = useTasksStore()
 </script>
 
 <template>
     <div class="flex-1 overflow-y-scroll scroll-smooth max-h-screen">
-        <div v-for="task in store.tasks" :key="task.uuid" @click="store.select(task)"
-            :class="{ 'bg-gray-100': (task.uuid === store.task.uuid) }"
+        <div v-for="task in tasksStore.tasks" :key="task.uuid" @click="taskStore.select(task)"
+            :class="{ 'bg-gray-100': (taskStore.task && task.uuid === taskStore.task.uuid) }"
             class="border-b-gray-400 border-b hover:bg-gray-300 cursor-pointer duration-200 dark:bg-gray-700 dark:text-white dark:hover:text-gray-700 p-3">
 
             <h2 class="font-semibold flex flex-row justify-between items-center gap-2">

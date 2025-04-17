@@ -18,15 +18,12 @@ const store = useTaskStore()
 
         <span class="flex-1"></span>
 
-        <button type="button" class="action-button hover:bg-gray-300">
-            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-pencil"></span>
-        </button>
-
-        <button type="button" class="action-button hover:bg-red-700 hover:!border-red-700 group">
+        <button type="button" @click="store.remove" class="action-button hover:bg-red-700 hover:!border-red-700 group">
             <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-trash group-hover:invert-100"></span>
         </button>
 
-        <button type="button" class="action-button hover:bg-green-700 hover:!border-green-700 group">
+        <button type="button" @click="store.markDone"
+            class="action-button hover:bg-green-700 hover:!border-green-700 group">
             <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-check group-hover:invert-100"></span>
         </button>
     </aside>
