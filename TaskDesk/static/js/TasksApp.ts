@@ -1,4 +1,5 @@
 import { createApp } from "vue"
+import { createPinia } from "pinia"
 import { createI18n } from "vue-i18n"
 import TasksApp from "tasks/TasksApp.vue"
 
@@ -15,6 +16,7 @@ if (document.getElementById("tasks-app")) {
                         not_specified: "Not specified",
                         due_date: "Due date",
                         creation_date: "Creation date",
+                        created: "Created",
                         this_task_blocks_the_following_tasks: "This task blocks the following tasks",
                         this_task_depends_on_the_following_tasks: "This task depends on the following tasks",
                         delayed_task: "Delayed task",
@@ -31,6 +33,7 @@ if (document.getElementById("tasks-app")) {
                         not_specified: "Не указан",
                         due_date: "Срок выполнения",
                         creation_date: "Дата создания",
+                        created: "Создана",
                         this_task_blocks_the_following_tasks: "Эта задача блокирует другие задачи",
                         this_task_depends_on_the_following_tasks: "Эта задача зависит от других задач",
                         delayed_task: "Отложенная задача",
@@ -40,5 +43,5 @@ if (document.getElementById("tasks-app")) {
                 }
             }
         })
-    ).mount("#tasks-app")
+    ).use(createPinia()).mount("#tasks-app")
 }

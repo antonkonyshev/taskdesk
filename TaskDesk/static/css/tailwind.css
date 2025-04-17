@@ -7,6 +7,10 @@
     @apply flex flex-row items-center py-2 px-0 rounded text-gray-700 hover:text-green-700 dark:text-white dark:hover:text-green-200;
 }
 
+.action-button {
+    @apply border-gray-300 border-1 flex justify-center items-center p-2 rounded-xl cursor-pointer duration-200
+}
+
 .input-field {
     @apply py-2 px-3 bg-gray-50 focus:bg-gray-100 outline-0 block;
 }
