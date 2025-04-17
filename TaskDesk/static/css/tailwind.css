@@ -11,6 +11,10 @@
     @apply border-gray-300 border-1 flex justify-center items-center p-2 rounded-xl cursor-pointer duration-200
 }
 
+.task-label {
+    @apply text-nowrap px-2 py-0.5 rounded-xl text-center
+}
+
 .input-field {
     @apply py-2 px-3 bg-gray-50 focus:bg-gray-100 outline-0 block;
 }
