@@ -11,6 +11,7 @@ from django.core.cache import cache
     }},
     DEFAULT_CACHE_DURATION=30,
     # DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3'}},
+    TASKWARRIOR_STORAGE_PATH = "test_taskstorage"
 )
 class BaseTestCase(TestCase):
     def setUp(self):

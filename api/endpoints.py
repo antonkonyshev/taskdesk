@@ -8,6 +8,7 @@ from fastapi import (
     WebSocketException, status
 )
 
+from tasklib import Task
 from tasks.storage import TaskStorage
 from api.schemas import TaskData, TaskQueryParams
 from django.contrib.sessions.models import Session
@@ -65,17 +66,8 @@ async def task_updating(
             try:
                 data = await socket.receive_json()
                 if data.get('uuid', None) == task_uuid:
-                    task = storage.tasks.filter(uuid=data.get('uuid', None))[0]
-                    modified = False
-                    for field, value in data.items():
-                        if field == 'uuid':
-                            continue
-                        if task[field] != value:
-                            task[field] = value
-                            modified = True
-                    if modified:
-                        task.save()
-            except IndexError:
+                    storage.patch_task(**data)
+            except Task.DoesNotExist:
                 raise WebSocketException(code = status.WS_1011_INTERNAL_ERROR)
             except JSONDecodeError:
                 # TODO: add logging
@@ -118,7 +110,7 @@ async def task_delete(
         raise HTTPException(status_code = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_router.post("/task/{task_uuid}/", status_code=status.HTTP_200_OK)
-async def task_patch(
+async def task_complete(
     task_uuid: str, storage: TaskStorage = Depends(TaskStorageLoader())
 ):
     """

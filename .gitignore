@@ -3,6 +3,7 @@ local.py
 /media/
 /static/
 /taskstorage/
+/test_taskstorage/
 node_modules
 __pycache__
 *.pyc
