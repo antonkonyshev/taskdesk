@@ -5,6 +5,7 @@ import { useTaskStore } from './task'
 
 export const useTasksStore = defineStore('tasks', () => {
     const tasks = ref<Array<Task>>([])
+    const taskStore = useTaskStore()
 
     function addDependencies(target): Task {
         if (typeof target.depends === "undefined") {
@@ -32,6 +33,15 @@ export const useTasksStore = defineStore('tasks', () => {
         target.blocks.clear()
     }
 
+    function removeTask(target: Task) {
+        removeDependencies(target)
+        const idx = tasks.value.findIndex((elem) => elem.uuid == target.uuid)
+        tasks.value.splice(idx, 1)
+        if (tasks.value.length) {
+            taskStore.select(tasks.value[0])
+        }
+    }
+
     async function fetchTasks(): Promise<void> {
         // @ts-ignore
         const rsp = await fetch(window.API_BASE_URL + "/task/")
@@ -48,12 +58,11 @@ export const useTasksStore = defineStore('tasks', () => {
                 if (target.depends && target.depends.length) {
                 }
             });
-            const taskStore = useTaskStore()
             if (tasks.value.length && (!taskStore.task || !taskStore.task.value)) {
                 taskStore.select(tasks.value[0])
             }
         }
     }
 
-    return { tasks, fetchTasks }
+    return { tasks, fetchTasks, removeTask }
 })

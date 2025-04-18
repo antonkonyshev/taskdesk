@@ -17,7 +17,7 @@ const store = useTaskStore()
         <Actions />
 
         <h2 class="font-semibold text-2xl flex flex-row gap-2 items-center pt-4 pb-3">
-            <input class="flex-1 outline-none focus-visible:!outline-none" name="description" @focusout="store.edited"
+            <input class="flex-1 outline-none focus-visible:!outline-none" name="description" @focusout="store.editing"
                 @focusin="store.editing" @input="store.editing" :value="store.task.description" />
 
             <StateLabels :task="store.task" class="gap-2" label-class="text-lg" common-label-class="bg-gray-200"
@@ -28,7 +28,7 @@ const store = useTaskStore()
             <span v-text="t('message.project') + ':'"></span>
 
             <input class="flex-1 outline-none focus-visible:!outline-none" name="project"
-                :placeholder="t('message.not_specified').toLowerCase()" @focusout="store.edited" @focusin="store.editing"
+                :placeholder="t('message.not_specified').toLowerCase()" @focusout="store.editing" @focusin="store.editing"
                 @input="store.editing" :value="store.task.project" />
 
             <span v-if="store.task.tags" v-for="tag in store.task.tags" v-text="tag"

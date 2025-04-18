@@ -2,9 +2,11 @@ import { ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { useRefHistory, useWebSocket } from '@vueuse/core'
 import { Task } from '../types/task'
+import { useTasksStore } from './tasks'
 
 export const useTaskStore = defineStore('task', () => {
     const task = ref(null)
+    const tasksStore = useTasksStore()
 
     const history = useRefHistory(task, {
         capacity: 64
@@ -19,7 +21,28 @@ export const useTaskStore = defineStore('task', () => {
         task.value = target
     }
 
-    function update(event: Event) {
+    function prepareSocket() {
+        if (!socket && task.value && task.value.uuid) {
+            // @ts-ignore
+            socket = useWebSocket(window.API_BASE_URL + "/task/" + task.value.uuid + "/", {
+                autoReconnect: { retries: 3, delay: 3000, onFailed() {
+                    // TODO: Show a error notification
+                }},
+            })
+        }
+    }
+
+    function closeSocket() {
+        if (socket) {
+            if (socket.status != "CLOSED") {
+                socket.close()
+            }
+            socket = null
+        }
+    }
+
+    function submit(event: Event) {
+        prepareSocket()
         const target = event.target as HTMLInputElement
         const newValue = target.value.trim()
         if (
@@ -37,41 +60,34 @@ export const useTaskStore = defineStore('task', () => {
     let editingTimeout: number = 0
 
     function editing(event: Event) {
-        if (!socket && task.value && task.value.uuid) {
-            // @ts-ignore
-            socket = useWebSocket(window.API_BASE_URL + "/task/" + task.value.uuid + "/", {
-                autoReconnect: { retries: 3, delay: 3000, onFailed() {
-                    // TODO: Show a error notification
-                }},
-            })
-        }
-
         if (editingTimeout) {
             clearTimeout(editingTimeout)
             editingTimeout = 0
         }
-        editingTimeout = setTimeout(update, 3000, event)
-    }
-
-    function edited(event: Event) {
-        if (editingTimeout) {
-            clearTimeout(editingTimeout)
-            editingTimeout = 0
-        }
-        update(event)
-    }
-
-    function markDone() {
-        if (task.value && task.value.uuid) {
-            socket.send(JSON.stringify({ uuid: task.value.uuid, done: true}))
-            // TODO: remove on the client
+        if (event.target == document.activeElement) {
+            editingTimeout = setTimeout(submit, 3000, event)
+        } else {
+            submit(event)
         }
     }
 
-    function remove() {
+    async function update(method: string) {
         if (task.value && task.value.uuid) {
-            socket.send(JSON.stringify({ uuid: task.value.uuid, remove: true }))
-            // TODO: remove on the client
+            const options = { method: method }
+            if (method == "post") {
+                options['body'] = JSON.stringify({
+                    uuid: task.value.uuid, done: true
+                })
+                options['headers'] = { "Content-Type": "application/json" }
+            }
+            const rsp = await fetch(
+                // @ts-ignore
+                window.API_BASE_URL + "/task/" + task.value.uuid + "/",
+                options
+            )
+            if (rsp.ok) {
+                tasksStore.removeTask(task.value)
+            }
         }
     }
 
@@ -79,13 +95,8 @@ export const useTaskStore = defineStore('task', () => {
         if (newTask && oldTask && oldTask.uuid == newTask.uuid) {
             return
         }
-        if (socket) {
-            if (socket.status != "CLOSED") {
-                socket.close()
-            }
-            socket = null
-        }
+        closeSocket()
     })
 
-    return { task, history, select, update, editing, edited, markDone, remove }
+    return { task, history, select, editing, update }
 })
