@@ -22,6 +22,8 @@ if (document.getElementById("tasks-app")) {
                         delayed_task: "Delayed task",
                         will_become_active: "Will become active",
                         annotations: "Annotations",
+                        add_annotation: "Add annotation",
+                        enter_annotation_description: "Enter annotation description...",
                     }
                 },
 
@@ -39,6 +41,8 @@ if (document.getElementById("tasks-app")) {
                         delayed_task: "Отложенная задача",
                         will_become_active: "Станет активной",
                         annotations: "Аннотации",
+                        add_annotation: "Добавить аннтонацию",
+                        enter_annotation_description: "Введите аннотацию...",
                     }
                 }
             }

@@ -1,7 +1,7 @@
 import { ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { useRefHistory, useWebSocket } from '@vueuse/core'
-import { Task } from '../types/task'
+import { Task, Annotation } from '../types/task'
 import { useTasksStore } from './tasks'
 
 export const useTaskStore = defineStore('task', () => {
@@ -42,7 +42,6 @@ export const useTaskStore = defineStore('task', () => {
     }
 
     function submit(event: Event) {
-        prepareSocket()
         const target = event.target as HTMLInputElement
         const newValue = target.value.trim()
         if (
@@ -50,6 +49,7 @@ export const useTaskStore = defineStore('task', () => {
             task.value[target.name as keyof typeof task.value] != newValue &&
             (target.name != "description" || newValue)
         ) {
+            prepareSocket()
             const data = { uuid: task.value.uuid }
             data[target.name] = newValue
             socket.send(JSON.stringify(data))
@@ -91,6 +91,30 @@ export const useTaskStore = defineStore('task', () => {
         }
     }
 
+    function annotate(event: Event) {
+        const target = event.target as HTMLInputElement
+        if (target.name == "annotate") {
+            const annotation = target.value.trim()
+            if (task.value && task.value.uuid && annotation) {
+                prepareSocket()
+                socket.send(JSON.stringify(
+                    { uuid: task.value.uuid, annotate: annotation }))
+                task.value.annotations.unshift(
+                    { entry: new Date(), description: annotation } as Annotation
+                )
+            }
+        }
+    }
+
+    function denotate(description: string) {
+        if (description && task.value && task.value.uuid) {
+            prepareSocket()
+            socket.send(JSON.stringify(
+                { uuid: task.value.uuid, denotate: description }))
+            task.value.annotations = task.value.annotations.filter((elem: Annotation) => elem.description.indexOf(description) < 0)
+        }
+    }
+
     watch(task, (newTask, oldTask) => {
         if (newTask && oldTask && oldTask.uuid == newTask.uuid) {
             return
@@ -98,5 +122,5 @@ export const useTaskStore = defineStore('task', () => {
         closeSocket()
     })
 
-    return { task, history, select, editing, update }
+    return { task, history, select, editing, update, annotate, denotate }
 })

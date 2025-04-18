@@ -74,3 +74,30 @@ class TaskStorageTestCase(BaseTestCase):
         self.assertEqual(tasks[0]['description'], "modified testing task")
         self.assertEqual(tasks[0]['entry'].date(), timezone.now().date())
         self.assertEqual(tasks[0]['modified'].date(), timezone.now().date())
+
+    def test_annotate_task(self):
+        task = self.storage.create_task(description = "testing task")
+        task.save()
+        self.assertEqual(len(task['annotations']), 0)
+        self.storage.patch_task(
+            uuid = task['uuid'], annotate = "Testing annotation")
+        task.refresh()
+        self.assertEqual(len(task['annotations']), 1)
+        self.assertEqual(
+            task['annotations'][0]['description'], "Testing annotation")
+        self.assertEqual(
+            task['annotations'][0]['entry'].date(), timezone.now().date())
+
+    def test_denotate_task(self):
+        task = self.storage.create_task(description = "testing task")
+        task.save()
+        self.storage.patch_task(
+            uuid = task['uuid'], annotate = "Testing annotation")
+        task.refresh()
+        self.assertEqual(len(task['annotations']), 1)
+        self.storage.patch_task(uuid = task['uuid'], denotate = "opaopaopa")
+        task.refresh()
+        self.assertEqual(len(task['annotations']), 1)
+        self.storage.patch_task(uuid = task['uuid'], denotate = "Testing")
+        task.refresh()
+        self.assertEqual(len(task['annotations']), 0)

@@ -33,7 +33,14 @@ class TaskStorage(TaskWarrior):
         for field, value in kwargs.items():
             if field == 'uuid':
                 continue
-            if task[field] != value:
+            elif field == 'denotate':
+                try:
+                    self.denotate_task(task, kwargs.get('denotate', None))
+                except Exception as err:
+                    pass  # Annotation not found
+            elif field == 'annotate':
+                self.annotate_task(task, kwargs.get('annotate', None))
+            elif task[field] != value:
                 task[field] = value
                 modified = True
         if modified:
