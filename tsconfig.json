@@ -3,6 +3,7 @@
         "baseUrl": ".",
         "paths": {
             "static/*": ["./TaskDesk/static/*"],
+            "TaskDesk/*": ["./TaskDesk/static/*"],
             "tasks/*": ["./tasks/static/tasks/*"]
         },
         "lib": ["dom", "es2015"],

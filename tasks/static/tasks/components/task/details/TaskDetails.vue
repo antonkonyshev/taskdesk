@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useTaskStore } from '../../../store/task'
-import Actions from '../Actions.vue'
-import StateLabels from '../StateLabels.vue'
-import Dependencies from './Dependencies.vue'
-import BlockedTasks from './BlockedTasks.vue'
-import Annotations from './Annotations.vue'
-import DatesDetails from './DatesDetails.vue'
+import { useTaskStore } from 'tasks/store/task'
+import Actions from 'tasks/components/task/Actions.vue'
+import StateLabels from 'tasks/components/task/StateLabels.vue'
+import Dependencies from 'tasks/components/task/details/Dependencies.vue'
+import BlockedTasks from 'tasks/components/task/details/BlockedTasks.vue'
+import Annotations from 'tasks/components/task/details/Annotations.vue'
+import DatesDetails from 'tasks/components/task/details/DatesDetails.vue'
 
 const { t } = useI18n()
 const store = useTaskStore()

@@ -21,6 +21,7 @@ export default defineConfig({
         extensions: ['.js', '.ts', '.vue', '.json', '.css', '.sass', '.scss'],
         alias: {
             tasks: resolve("./tasks/static/tasks"),
+            TaskDesk: resolve("./TaskDesk/static"),
         },
     },
     assetsInclude: ['**/static/**/*.svg'],

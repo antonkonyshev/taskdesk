@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useTaskStore } from '../../../store/task'
+import { useTaskStore } from 'tasks/store/task'
 
 const { t } = useI18n()
 const store = useTaskStore()

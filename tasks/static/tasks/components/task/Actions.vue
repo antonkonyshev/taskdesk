@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTaskStore } from '../../store/task'
+import { useTaskStore } from 'tasks/store/task'
 
 const store = useTaskStore()
 </script>

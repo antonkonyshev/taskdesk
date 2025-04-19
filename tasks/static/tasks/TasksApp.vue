@@ -7,12 +7,12 @@
 </template>
 
 <script setup lang="ts">
-import { useTaskStore } from './store/task'
-import { useTasksStore } from './store/tasks'
-import TasksList from './components/task/list/TasksList.vue'
-import TaskDetails from './components/task/details/TaskDetails.vue'
+import { useTaskStore } from 'tasks/store/task'
+import { useTasksStore } from 'tasks/store/tasks'
+import TasksList from 'tasks/components/task/list/TasksList.vue'
+import TaskDetails from 'tasks/components/task/details/TaskDetails.vue'
 
 const taskStore = useTaskStore()
 const tasksStore = useTasksStore()
-tasksStore.fetchTasks()
+tasksStore.loadTasks()
 </script>

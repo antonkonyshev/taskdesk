@@ -1,7 +1,8 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { Task } from '../types/task'
-import { useTaskStore } from './task'
+import { fetchTasks } from 'tasks/services/tasks.service'
+import { Task } from 'tasks/types/task'
+import { useTaskStore } from 'tasks/store/task'
 
 export const useTasksStore = defineStore('tasks', () => {
     const tasks = ref<Array<Task>>([])
@@ -26,15 +27,22 @@ export const useTasksStore = defineStore('tasks', () => {
         return target as Task
     }
 
-    function removeDependencies(target: Task) {
-        target.depends.forEach(it => it.blocks.delete(target))
-        target.blocks.forEach(it => it.depends.delete(target))
-        target.depends.clear()
-        target.blocks.clear()
+    function removeDependencies(target: Task): Promise<any> {
+        return new Promise((resolve, reject) => {
+            try {
+                target.depends.forEach(it => it.blocks.delete(target))
+                target.blocks.forEach(it => it.depends.delete(target))
+                target.depends.clear()
+                target.blocks.clear()
+                resolve(true)
+            } catch(err) {
+                reject(err)
+            }
+        })
     }
 
-    function removeTask(target: Task) {
-        removeDependencies(target)
+    async function removeTask(target: Task) {
+        await removeDependencies(target)
         const idx = tasks.value.findIndex((elem) => elem.uuid == target.uuid)
         tasks.value.splice(idx, 1)
         if (tasks.value.length) {
@@ -42,27 +50,21 @@ export const useTasksStore = defineStore('tasks', () => {
         }
     }
 
-    async function fetchTasks(): Promise<void> {
-        // @ts-ignore
-        const rsp = await fetch(window.API_BASE_URL + "/task/")
-        if (rsp.ok) {
-            (await rsp.json()).forEach((target) => {
-                const idx = tasks.value.findIndex((elem) => elem.uuid == target.uuid)
-                target = addDependencies(target)
-                if (idx >= 0) {
-                    removeDependencies(tasks.value[idx]);
-                    tasks.value[idx] = target
-                } else {
-                    tasks.value.push(target)
-                }
-                if (target.depends && target.depends.length) {
-                }
-            });
-            if (tasks.value.length && (!taskStore.task || !taskStore.task.value)) {
-                taskStore.select(tasks.value[0])
+    async function loadTasks() {
+        (await fetchTasks()).forEach(async (target) => {
+            const idx = tasks.value.findIndex((elem) => elem.uuid == target.uuid)
+            target = addDependencies(target)
+            if (idx >= 0) {
+                await removeDependencies(tasks.value[idx]);
+                tasks.value[idx] = target
+            } else {
+                tasks.value.push(target)
             }
+        })
+        if (tasks.value.length && (!taskStore.task || !taskStore.task.value)) {
+            taskStore.select(tasks.value[0])
         }
     }
 
-    return { tasks, fetchTasks, removeTask }
+    return { tasks, loadTasks, removeTask }
 })

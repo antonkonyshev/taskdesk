@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Task } from '../../types/task'
+import { Task } from 'tasks/types/task'
 
 const { task, labelClass, criticalLabelClass, commonLabelClass } = defineProps<{
     task: Task,
