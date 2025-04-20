@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { fetchTasks } from 'tasks/services/tasks.service'
+import { closeTaskSocket, fetchTasks } from 'tasks/services/tasks.service'
 import { Task } from 'tasks/types/task'
 import { useTaskStore } from 'tasks/store/task'
 
@@ -44,6 +44,9 @@ export const useTasksStore = defineStore('tasks', () => {
             for (const field in target) {
                 const key = field as keyof Task
                 (tasks.value[idx][key] as any) = target[key]
+            }
+            if (taskStore.task && taskStore.task.uuid == tasks.value[idx].uuid) {
+                await closeTaskSocket()
             }
         }
     }
