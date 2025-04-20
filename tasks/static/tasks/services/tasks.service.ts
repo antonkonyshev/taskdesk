@@ -1,6 +1,11 @@
 import { useWebSocket } from "@vueuse/core"
+import { useTasksStore } from "tasks/store/tasks"
 
 let socket = null
+
+const receiveMessage = async (ws: WebSocket, event: MessageEvent) => {
+    await useTasksStore().refreshTask(JSON.parse(event.data))
+}
 
 export const prepareTaskSocket = (uuid: string): Promise<any> => {
     return new Promise((resolve, reject) => {
@@ -9,7 +14,8 @@ export const prepareTaskSocket = (uuid: string): Promise<any> => {
                 // @ts-ignore
                 socket = useWebSocket(window.API_BASE_URL +
                     "/task/" + uuid + "/", {
-                        autoReconnect: { retries: 3, delay: 3000, onFailed: reject }
+                        autoReconnect: { retries: 3, delay: 3000, onFailed: reject },
+                        onMessage: receiveMessage,
                     })
             }
             resolve(socket)

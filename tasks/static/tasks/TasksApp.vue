@@ -3,6 +3,10 @@
         <TasksList v-if="tasksStore.tasks.length" />
 
         <TaskDetails v-if="taskStore.task" />
+
+        <button type="button" @click="tasksStore.createTask()" class="fixed bottom-4 right-4 flex items-center size-12 rounded-full bg-green-300 hover:bg-green-700 group duration-200 cursor-pointer">
+            <span class="inline-block size-7 bg-no-repeat bg-center bg-contain svg-plus w-full group-hover:invert-100 duration-200"></span>
+        </button>
     </div>
 </template>
 

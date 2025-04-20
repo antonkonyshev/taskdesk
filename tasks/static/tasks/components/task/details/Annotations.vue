@@ -10,7 +10,7 @@ const showAnnotationInput = ref(false)
 </script>
 
 <template>
-    <p v-if="store.task.annotations.length">
+    <p>
         <span v-text="t('message.annotations')" class="font-semibold"></span>
 
         <span v-for="annotation in store.task.annotations" class="flex flex-row pt-1 gap-2">

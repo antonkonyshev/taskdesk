@@ -65,7 +65,11 @@ async def task_updating(
         while True:
             try:
                 data = await socket.receive_json()
-                if data.get('uuid', None) == task_uuid:
+                if data.get('uuid', None) == 'new':
+                    task = storage.create_task(**data)
+                    await socket.send_text(
+                        TaskData.from_task(task).model_dump_json())
+                elif data.get('uuid', None) == task_uuid:
                     storage.patch_task(**data)
             except Task.DoesNotExist:
                 raise WebSocketException(code = status.WS_1011_INTERNAL_ERROR)

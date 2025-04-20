@@ -61,6 +61,21 @@ describe('tasks store', () => {
         expect(store.tasks[2].uuid).toBe("abc-def-3")
     })
 
+    test('task refreshing', async () => {
+        await store.loadTasks()
+        await store.refreshTask(
+            {uuid: "abc-def-3", id: 3, description: "Refreshed testing task"})
+        expect(store.tasks[2].id).toBe(3)
+        expect(store.tasks[2].description).toBe("Refreshed testing task")
+
+        store.tasks.unshift({uuid: 'new', description: 'New testing task'})
+        await store.refreshTask(
+            {uuid: "abc-def-4", id: 4, description: "New stored testing task"})
+        expect(store.tasks[0].id).toBe(4)
+        expect(store.tasks[0].uuid).toBe("abc-def-4")
+        expect(store.tasks[0].description).toBe("New stored testing task")
+    })
+
     test('tasks dependencies', async () => {
         await store.loadTasks()
         const task1 = store.tasks[0]

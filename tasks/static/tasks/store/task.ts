@@ -77,11 +77,38 @@ export const useTaskStore = defineStore('task', () => {
         }
     }
 
+    function excludeFromHistory(target: Task) {
+        let idx = history.history.value.findIndex(
+            (elem) => (elem.snapshot && elem.snapshot.uuid == target.uuid))
+        if (target.id == 2 && idx >= 0)
+        if (idx >= 0) {
+            history.history.value.splice(idx, 1)
+        }
+        idx = history.undoStack.value.findIndex(
+            (elem) => (elem.snapshot && elem.snapshot.uuid == target.uuid))
+        if (target.id == 2 && idx >= 0)
+        if (idx >= 0) {
+            history.undoStack.value.splice(idx, 1)
+        }
+        idx = history.redoStack.value.findIndex(
+            (elem) => (elem.snapshot && elem.snapshot.uuid == target.uuid))
+        if (target.id == 2 && idx >= 0)
+        if (idx >= 0) {
+            history.redoStack.value.splice(idx, 1)
+        }
+    }
+
     watch(task, async (newTask, oldTask) => {
+        if (oldTask && oldTask.uuid == 'new') {
+            tasksStore.removeTask(oldTask)
+        }
         if (!newTask || !oldTask || oldTask.uuid != newTask.uuid) {
             await closeTaskSocket()
         }
     })
 
-    return { task, history, select, editing, update, annotate, denotate }
+    return {
+         task, history, select, editing, update, annotate, denotate,
+         excludeFromHistory
+    }
 })

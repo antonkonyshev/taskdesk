@@ -19,6 +19,7 @@ export default createI18n({
                 annotations: "Annotations",
                 add_annotation: "Add annotation",
                 enter_annotation_description: "Enter annotation description...",
+                enter_task_description: "Enter task description...",
             }
         },
 
@@ -38,6 +39,7 @@ export default createI18n({
                 annotations: "Аннотации",
                 add_annotation: "Добавить аннтонацию",
                 enter_annotation_description: "Введите аннотацию...",
+                enter_task_description: "Введите описание задачи...",
             }
         }
     }

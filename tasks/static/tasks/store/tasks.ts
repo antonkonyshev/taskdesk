@@ -44,7 +44,10 @@ export const useTasksStore = defineStore('tasks', () => {
     async function removeTask(target: Task) {
         await removeDependencies(target)
         const idx = tasks.value.findIndex((elem) => elem.uuid == target.uuid)
-        tasks.value.splice(idx, 1)
+        if (idx >= 0) {
+            tasks.value.splice(idx, 1)
+        }
+        taskStore.excludeFromHistory(target)
         if (tasks.value.length) {
             taskStore.select(tasks.value[0])
         }
@@ -66,5 +69,31 @@ export const useTasksStore = defineStore('tasks', () => {
         }
     }
 
-    return { tasks, loadTasks, removeTask }
+    async function refreshTask(target) {
+        let idx = tasks.value.findIndex((elem) => elem.uuid == target.uuid)
+        if (idx < 0) {
+            idx = tasks.value.findIndex((elem) => elem.uuid == 'new')
+        }
+        if (idx < 0) {
+            tasks.value.unshift(addDependencies(target))
+        } else {
+            target = addDependencies(target)
+            for (const field in target) {
+                const key = field as keyof Task
+                (tasks.value[idx][key] as any) = target[key]
+            }
+        }
+    }
+
+    function createTask() {
+        const task = {
+            id: 0, uuid: 'new', description: '', urgency: 100, project: '',
+            tags: [], entry: null, depends: new Set(), blocks: new Set(),
+            status: 'new', annotations: []
+        }
+        tasks.value.unshift(task)
+        taskStore.select(task)
+    }
+
+    return { tasks, loadTasks, removeTask, createTask, refreshTask }
 })

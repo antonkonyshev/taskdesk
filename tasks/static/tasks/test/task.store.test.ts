@@ -69,9 +69,8 @@ describe('task store', () => {
     })
 
 
-    test('tasks navigation history', () => {
+    test('tasks navigation history', async () => {
         store.history.commit()
-
         expect(store.task.id).toBe(1)
         expect(store.task.description).toBe("First testing task")
         expect(store.task.uuid).toBe("abc-def-1")
@@ -107,6 +106,12 @@ describe('task store', () => {
         expect(store.task.id).toBe(0)
         expect(store.task.description).toBe("Third testing task")
         expect(store.task.uuid).toBe("abc-def-3")
+
+        store.excludeFromHistory(atask)
+        store.history.undo()
+        expect(store.task.id).toBe(1)
+        expect(store.task.description).toBe("First testing task")
+        expect(store.task.uuid).toBe("abc-def-1")
     })
 
     test('task annotations', async () => {

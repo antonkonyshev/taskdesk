@@ -35,6 +35,7 @@ describe('tasks components rendering', () => {
             project: "test",
             depends: new Set(),
             blocks: new Set(),
+            annotations: []
         } as Task
         aatask = {
             id: 0,
@@ -75,6 +76,12 @@ describe('tasks components rendering', () => {
         expect(wrapper.text()).toContain("First annotation")
         expect(wrapper.text()).toContain("Second annotation")
         expect(wrapper.text()).toContain("a few seconds ago")
+        expect(wrapper.text()).toContain("Add annotation")
+    })
+
+    test('empty annotation component', () => {
+        store.select(atask)
+        const wrapper = mount(Annotations)
         expect(wrapper.text()).toContain("Add annotation")
     })
 

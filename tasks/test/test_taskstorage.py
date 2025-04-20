@@ -24,6 +24,7 @@ class TaskStorageTestCase(BaseTestCase):
     def test_task_creation(self):
         task = self.storage.create_task(description = "testing task")
         task.save()
+        self.assertTrue(task['uuid'])
         tasks = self.storage.tasks.pending()
         self.assertEqual(len(tasks), 1)
         self.assertEqual(tasks[0]['description'], "testing task")

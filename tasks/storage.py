@@ -23,17 +23,18 @@ class TaskStorage(TaskWarrior):
             .filter(status__not="deleted")
 
     def create_task(self, *args, **kwargs):
-        return Task(self, *args, **kwargs)
+        kwargs.pop('uuid', None)
+        task = Task(self, *args, **kwargs)
+        task.save()
+        return task
 
     def patch_task(self, **kwargs):
         if not kwargs.get('uuid', None):
             raise Task.DoesNotExist
-        task = self.tasks.get(uuid=kwargs.get('uuid', None))
+        task = self.tasks.get(uuid=kwargs.pop('uuid', None))
         modified = False
         for field, value in kwargs.items():
-            if field == 'uuid':
-                continue
-            elif field == 'denotate':
+            if field == 'denotate':
                 try:
                     self.denotate_task(task, kwargs.get('denotate', None))
                 except Exception as err:
