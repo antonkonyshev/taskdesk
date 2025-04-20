@@ -13,8 +13,10 @@ describe('task store', () => {
     let task = null
     let atask = null
     let aatask = null
+    let store = null
 
     beforeEach(() => {
+        vi.useFakeTimers({ shouldAdvanceTime: true })
         vi.mock('tasks/services/tasks.service.ts')
         vi.mocked(prepareTaskSocket).mockResolvedValue({})
         vi.mocked(closeTaskSocket).mockResolvedValue()
@@ -50,16 +52,17 @@ describe('task store', () => {
             blocks: new Set(),
             annotations: [],
         } as Task
+        store = useTaskStore()
+        store.select(task)
     })
 
     afterEach(() => {
         vi.resetAllMocks()
+        vi.runOnlyPendingTimers()
+        vi.useRealTimers()
     })
 
     test('task selection', () => {
-        const store = useTaskStore()
-        expect(store.task).toBe(null)
-        store.select(task)
         expect(store.task.id).toBe(1)
         expect(store.task.description).toBe("First testing task")
         expect(store.task.uuid).toBe("abc-def-1")
@@ -67,8 +70,6 @@ describe('task store', () => {
 
 
     test('tasks navigation history', () => {
-        const store = useTaskStore()
-        store.select(task)
         store.history.commit()
 
         expect(store.task.id).toBe(1)
@@ -109,8 +110,6 @@ describe('task store', () => {
     })
 
     test('task annotations', async () => {
-        const store = useTaskStore()
-        store.select(task)
         await store.annotate(vi.mocked({ target: {name: 'annotate', value: 'Testing annotation', addEventListener: () => {}, removeEventListener: () => {}, dispatchEvent: () => { return true }} as EventTarget} as Event))
         expect(annotateTask).toHaveBeenCalledOnce()
         expect(store.task.annotations.length).toBe(1)
@@ -124,8 +123,6 @@ describe('task store', () => {
     })
 
     test('task denotations', async () => {
-        const store = useTaskStore()
-        store.select(task)
         await store.annotate(vi.mocked({ target: {name: 'annotate', value: 'Testing annotation', addEventListener: () => {}, removeEventListener: () => {}, dispatchEvent: () => { return true }} as EventTarget} as Event))
         await store.annotate(vi.mocked({ target: {name: 'annotate', value: 'Another annotation', addEventListener: () => {}, removeEventListener: () => {}, dispatchEvent: () => { return true }} as EventTarget} as Event))
         expect(store.task.annotations.length).toBe(2)
@@ -145,29 +142,59 @@ describe('task store', () => {
     })
 
     test('task description patching', async () => {
-        const store = useTaskStore()
-        store.select(task)
         await store.editing(vi.mocked({ target: {name: 'description', value: 'Modified description', addEventListener: () => {}, removeEventListener: () => {}, dispatchEvent: () => { return true }} as EventTarget} as Event))
         expect(updateTask).toHaveBeenCalledExactlyOnceWith({uuid: task.uuid, description: 'Modified description'})
     })
 
     test('task project patching', async () => {
-        const store = useTaskStore()
-        store.select(task)
         await store.editing(vi.mocked({ target: {name: 'project', value: 'testproj', addEventListener: () => {}, removeEventListener: () => {}, dispatchEvent: () => { return true }} as EventTarget} as Event))
         expect(updateTask).toHaveBeenCalledExactlyOnceWith({uuid: task.uuid, project: 'testproj'})
     })
 
+    test('task editing and saving on timeout', async () => {
+        const target = document.createElement('input')
+        document.body.appendChild(target)
+        target.name = 'description'
+        target.value = 'Modified description'
+        const event = vi.mocked({ target: target as EventTarget} as Event)
+        target.focus()
+        await store.editing(event)
+        expect(updateTask).toBeCalledTimes(0)
+        vi.advanceTimersByTime(2000)
+        await store.editing(event)
+        expect(updateTask).toBeCalledTimes(0)
+        vi.advanceTimersByTime(1000)
+        expect(updateTask).toBeCalledTimes(0)
+        vi.advanceTimersByTime(2000)
+        expect(updateTask).toHaveBeenCalledOnce()
+    })
+
+    test('task editing and saving on unfocus', async () => {
+        const target = document.createElement('input')
+        const anotherTarget = document.createElement('input')
+        document.body.appendChild(target)
+        document.body.appendChild(anotherTarget)
+        target.name = 'description'
+        target.value = 'Modified description'
+        anotherTarget.name = 'project'
+        anotherTarget.value = 'testproj'
+        const event = vi.mocked({ target: target as EventTarget} as Event)
+        target.focus()
+        await store.editing(event)
+        expect(updateTask).toBeCalledTimes(0)
+        vi.advanceTimersByTime(1000)
+        expect(updateTask).toBeCalledTimes(0)
+        anotherTarget.focus()
+        await store.editing(event)
+        expect(updateTask).toHaveBeenCalledOnce()
+    })
+
     test('task completions', async () => {
-        const store = useTaskStore()
-        store.select(task)
         await store.update("post")
         expect(markTask).toHaveBeenCalledExactlyOnceWith(task.uuid, 'post')
     })
 
     test('task removing', async () => {
-        const store = useTaskStore()
-        store.select(task)
         await store.update("delete")
         expect(markTask).toHaveBeenCalledExactlyOnceWith(task.uuid, 'delete')
     })
