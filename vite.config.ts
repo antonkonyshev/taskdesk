@@ -20,8 +20,8 @@ export default defineConfig({
     resolve: {
         extensions: ['.js', '.ts', '.vue', '.json', '.css', '.sass', '.scss'],
         alias: {
-            tasks: resolve("./tasks/static/tasks"),
             TaskDesk: resolve("./TaskDesk/static"),
+            tasks: resolve("./tasks/static/tasks"),
         },
     },
     assetsInclude: ['**/static/**/*.svg'],

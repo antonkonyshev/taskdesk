@@ -33,8 +33,7 @@ describe('tasks components rendering', () => {
             uuid: "abc-def-2",
             urgency: 2.0,
             project: "test",
-            depends: new Set(),
-            blocks: new Set(),
+            depends: [],
             annotations: []
         } as Task
         aatask = {
@@ -43,8 +42,7 @@ describe('tasks components rendering', () => {
             uuid: "abc-def-3",
             urgency: 1.0,
             project: "test",
-            depends: new Set(),
-            blocks: new Set(),
+            depends: [],
         } as Task
         task = {
             id: 1,
@@ -56,13 +54,14 @@ describe('tasks components rendering', () => {
             due: new Date(),
             wait: new Date(),
             tags: ["next"],
-            depends: new Set([atask]),
-            blocks: new Set([aatask]),
+            depends: [],
             annotations: [
                 { entry: new Date(), description: "First annotation" } as Annotation,
                 { entry: new Date(), description: "Second annotation" } as Annotation,
             ],
         } as Task
+        const tasksStore = useTasksStore()
+        tasksStore.tasks = [task, atask, aatask]
         store = useTaskStore()
         store.select(task)
     })
@@ -86,11 +85,13 @@ describe('tasks components rendering', () => {
     })
 
     test('blocked tasks component', () => {
+        aatask.depends = [store.task.uuid]
         const wrapper = mount(BlockedTasks)
         expect(wrapper.text()).toContain("Third testing task")
     })
 
     test('blocking tasks component', () => {
+        task.depends = [atask.uuid]
         const wrapper = mount(Dependencies)
         expect(wrapper.text()).toContain("Second testing task")
     })
@@ -118,6 +119,8 @@ describe('tasks components rendering', () => {
     })
 
     test('task state labels component', () => {
+        store.task.depends = [aatask.uuid]
+        atask.depends = [task.uuid]
         const wrapper = mount(StateLabels, { propsData: {
             task: store.task,
             criticalLabelClass: 'critical-label-class',
@@ -133,8 +136,6 @@ describe('tasks components rendering', () => {
     })
 
     test('tasks list component', () => {
-        const tasksStore = useTasksStore()
-        tasksStore.tasks = [task, atask, aatask]
         const wrapper = mount(TasksList)
         expect(wrapper.text()).toContain("First testing task")
         expect(wrapper.text()).toContain("Second testing task")

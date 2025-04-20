@@ -13,8 +13,8 @@ export default defineConfig({
     plugins: [vue()],
     resolve: {
         alias: {
-            tasks: resolve("./tasks/static/tasks"),
             TaskDesk: resolve("./TaskDesk/static"),
+            tasks: resolve("./tasks/static/tasks"),
         },
     },
 })

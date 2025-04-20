@@ -8,6 +8,7 @@ import {
     markTask
 } from 'tasks/services/tasks.service'
 import i18n from 'TaskDesk/js/i18n'
+import { useTasksStore } from 'tasks/store/tasks'
 
 describe('task store', () => {
     let task = null
@@ -28,8 +29,7 @@ describe('task store', () => {
             uuid: "abc-def-1",
             urgency: 3.0,
             project: "test",
-            depends: new Set(),
-            blocks: new Set(),
+            depends: [],
             annotations: [],
         } as Task
         atask = {
@@ -38,8 +38,7 @@ describe('task store', () => {
             uuid: "abc-def-2",
             urgency: 2.0,
             project: "test",
-            depends: new Set(),
-            blocks: new Set(),
+            depends: [],
             annotations: [],
         } as Task
         aatask = {
@@ -48,10 +47,11 @@ describe('task store', () => {
             uuid: "abc-def-3",
             urgency: 1.0,
             project: "test",
-            depends: new Set(),
-            blocks: new Set(),
+            depends: [],
             annotations: [],
         } as Task
+        const tasksStore = useTasksStore()
+        tasksStore.tasks = [task, atask, aatask]
         store = useTaskStore()
         store.select(task)
     })
@@ -202,5 +202,22 @@ describe('task store', () => {
     test('task removing', async () => {
         await store.update("delete")
         expect(markTask).toHaveBeenCalledExactlyOnceWith(task.uuid, 'delete')
+    })
+
+    test('task depends', async () => {
+        task.depends = [atask.uuid, aatask.uuid, 'something else']
+        expect(store.depends).toStrictEqual(new Set([atask, aatask]))
+
+        store.select(atask)
+        expect(store.depends).toStrictEqual(new Set([]))
+    })
+
+    test('task blocks', async () => {
+        atask.depends = [task.uuid, 'something else']
+        aatask.depends = [task.uuid, 'another one']
+        expect(store.blocks).toStrictEqual(new Set([atask, aatask]))
+
+        store.select(atask)
+        expect(store.blocks).toStrictEqual(new Set([]))
     })
 })

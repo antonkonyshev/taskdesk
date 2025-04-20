@@ -83,22 +83,16 @@ describe('tasks store', () => {
         const task3 = store.tasks[2]
 
         expect(task1.id).toBe(1)
-        expect(task1.depends.size).toBe(0)
-        expect(task1.blocks.size).toBe(2)
-        expect(task1.blocks).toContain(task2)
-        expect(task1.blocks).toContain(task3)
+        expect(store.isTaskDepending(task1)).toBe(false)
+        expect(store.isTaskBlocking(task1)).toBe(true)
 
         expect(task2.id).toBe(2)
-        expect(task2.depends.size).toBe(1)
-        expect(task2.depends).toContain(task1)
-        expect(task2.blocks.size).toBe(1)
-        expect(task2.blocks).toContain(task3)
+        expect(store.isTaskDepending(task2)).toBe(true)
+        expect(store.isTaskBlocking(task2)).toBe(true)
 
         expect(task3.id).toBe(0)
-        expect(task3.depends.size).toBe(2)
-        expect(task3.depends).toContain(task1)
-        expect(task3.depends).toContain(task2)
-        expect(task3.blocks.size).toBe(0)
+        expect(store.isTaskDepending(task3)).toBe(true)
+        expect(store.isTaskBlocking(task3)).toBe(false)
     })
 
     test('tasks removing', async () => {
@@ -108,20 +102,22 @@ describe('tasks store', () => {
         const task3 = store.tasks[2]
 
         await store.removeTask(task2)
+        expect(store.tasks.length).toBe(2)
 
         expect(task1.id).toBe(1)
-        expect(task1.depends.size).toBe(0)
-        expect(task1.blocks.size).toBe(1)
-        expect(task1.blocks).toContain(task3)
-
-        expect(task2.id).toBe(2)
-        expect(task2.depends.size).toBe(0)
-        expect(task2.blocks.size).toBe(0)
+        expect(store.isTaskDepending(task1)).toBe(false)
+        expect(store.isTaskBlocking(task1)).toBe(true)
 
         expect(task3.id).toBe(0)
-        expect(task3.depends.size).toBe(1)
-        expect(task3.depends).toContain(task1)
-        expect(task3.blocks.size).toBe(0)
+        expect(store.isTaskDepending(task3)).toBe(true)
+        expect(store.isTaskBlocking(task3)).toBe(false)
+
+        await store.removeTask(task1)
+        expect(store.tasks.length).toBe(1)
+
+        expect(task3.id).toBe(0)
+        expect(store.isTaskDepending(task3)).toBe(false)
+        expect(store.isTaskBlocking(task3)).toBe(false)
     })
 
     test('default task selection', async () => {

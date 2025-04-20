@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useRefHistory } from '@vueuse/core'
 import { Task, Annotation } from 'tasks/types/task'
@@ -18,6 +18,32 @@ export const useTaskStore = defineStore('task', () => {
     function select(target: Task) {
         task.value = target
     }
+
+    const depends = computed(() => {
+        const relations = new Set([])
+        for (const uuid of task.value.depends) {
+            const relation = tasksStore.tasks.find(elem => elem.uuid == uuid)
+            if (relation) {
+                relations.add(relation)
+            }
+        }
+        return relations
+    })
+
+    const blocks = computed(() => {
+        const relations = new Set([])
+        if (task.value && task.value.blocks !== false) {
+            for (const target of tasksStore.tasks) {
+                if (
+                    target.depends && target.depends.length &&
+                    target.depends.indexOf(task.value.uuid) >= 0
+                ) {
+                    relations.add(target)
+                }
+            }
+        }
+        return relations
+    })
 
     async function submit(event: Event) {
         const target = event.target as HTMLInputElement
@@ -78,23 +104,13 @@ export const useTaskStore = defineStore('task', () => {
     }
 
     function excludeFromHistory(target: Task) {
-        let idx = history.history.value.findIndex(
-            (elem) => (elem.snapshot && elem.snapshot.uuid == target.uuid))
-        if (target.id == 2 && idx >= 0)
-        if (idx >= 0) {
-            history.history.value.splice(idx, 1)
-        }
-        idx = history.undoStack.value.findIndex(
-            (elem) => (elem.snapshot && elem.snapshot.uuid == target.uuid))
-        if (target.id == 2 && idx >= 0)
-        if (idx >= 0) {
-            history.undoStack.value.splice(idx, 1)
-        }
-        idx = history.redoStack.value.findIndex(
-            (elem) => (elem.snapshot && elem.snapshot.uuid == target.uuid))
-        if (target.id == 2 && idx >= 0)
-        if (idx >= 0) {
-            history.redoStack.value.splice(idx, 1)
+        for (const stack of ['history', 'undoStack', 'redoStack']) {
+            let idx = history[stack].value.findIndex(
+                (elem) => (elem.snapshot && elem.snapshot.uuid == target.uuid))
+            if (target.id == 2 && idx >= 0)
+            if (idx >= 0) {
+                history[stack].value.splice(idx, 1)
+            }
         }
     }
 
@@ -108,7 +124,7 @@ export const useTaskStore = defineStore('task', () => {
     })
 
     return {
-         task, history, select, editing, update, annotate, denotate,
-         excludeFromHistory
+         task, history, depends, blocks, select, editing, update,
+         annotate, denotate, excludeFromHistory,
     }
 })

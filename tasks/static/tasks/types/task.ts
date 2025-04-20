@@ -14,8 +14,9 @@ export interface Task {
     modifier?: Date
     due?: Date
     wait?: Date
-    depends?: Set<Task>
-    blocks?: Set<Task>
+    depends?: Array<string>
+    depending?: boolean
+    blocking?: boolean
     status?: string
     annotations?: Array<Annotation>
 }

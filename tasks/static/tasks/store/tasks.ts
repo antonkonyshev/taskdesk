@@ -8,41 +8,7 @@ export const useTasksStore = defineStore('tasks', () => {
     const tasks = ref<Array<Task>>([])
     const taskStore = useTaskStore()
 
-    function addDependencies(target): Task {
-        if (typeof target.depends === "undefined") {
-            target.depends = new Set<Task>()
-        }
-        if (typeof target.blocks === "undefined") {
-            target.blocks = new Set<Task>()
-        }
-        const dependencies = new Set<Task>()
-        for (let idx = 0; idx < target.depends.length; idx++) {
-            const dep = tasks.value.find(elem => elem.uuid == target.depends[idx])
-            if (dep) {
-                dep.blocks.add(target)
-                dependencies.add(dep)
-            }
-        }
-        target.depends = dependencies
-        return target as Task
-    }
-
-    function removeDependencies(target: Task): Promise<any> {
-        return new Promise((resolve, reject) => {
-            try {
-                target.depends.forEach(it => it.blocks.delete(target))
-                target.blocks.forEach(it => it.depends.delete(target))
-                target.depends.clear()
-                target.blocks.clear()
-                resolve(true)
-            } catch(err) {
-                reject(err)
-            }
-        })
-    }
-
     async function removeTask(target: Task) {
-        await removeDependencies(target)
         const idx = tasks.value.findIndex((elem) => elem.uuid == target.uuid)
         if (idx >= 0) {
             tasks.value.splice(idx, 1)
@@ -54,11 +20,9 @@ export const useTasksStore = defineStore('tasks', () => {
     }
 
     async function loadTasks() {
-        (await fetchTasks()).forEach(async (target) => {
+        (await fetchTasks()).forEach(async (target: Task) => {
             const idx = tasks.value.findIndex((elem) => elem.uuid == target.uuid)
-            target = addDependencies(target)
             if (idx >= 0) {
-                await removeDependencies(tasks.value[idx]);
                 tasks.value[idx] = target
             } else {
                 tasks.value.push(target)
@@ -75,9 +39,8 @@ export const useTasksStore = defineStore('tasks', () => {
             idx = tasks.value.findIndex((elem) => elem.uuid == 'new')
         }
         if (idx < 0) {
-            tasks.value.unshift(addDependencies(target))
+            tasks.value.unshift(target)
         } else {
-            target = addDependencies(target)
             for (const field in target) {
                 const key = field as keyof Task
                 (tasks.value[idx][key] as any) = target[key]
@@ -88,12 +51,37 @@ export const useTasksStore = defineStore('tasks', () => {
     function createTask() {
         const task = {
             id: 0, uuid: 'new', description: '', urgency: 100, project: '',
-            tags: [], entry: null, depends: new Set(), blocks: new Set(),
+            tags: [], entry: null, depends: [], blocks: false,
             status: 'new', annotations: []
-        }
+        } as Task
         tasks.value.unshift(task)
         taskStore.select(task)
     }
 
-    return { tasks, loadTasks, removeTask, createTask, refreshTask }
+    function isTaskBlocking(target: Task): boolean {
+        for (const it of tasks.value) {
+            if (it.depends.indexOf(target.uuid) >= 0) {
+                target.blocking = true
+                return true
+            }
+        }
+        target.blocking = false
+        return false
+    }
+
+    function isTaskDepending(target: Task): boolean {
+        for (const uuid of target.depends) {
+            if (tasks.value.findIndex(elem => elem.uuid == uuid) >= 0) {
+                target.depending = true
+                return true
+            }
+        }
+        target.depending = false
+        return false
+    }
+
+    return {
+        tasks, loadTasks, removeTask, createTask, refreshTask, isTaskBlocking,
+        isTaskDepending,
+    }
 })
