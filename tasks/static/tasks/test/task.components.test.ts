@@ -14,6 +14,7 @@ import TaskDetails from 'tasks/components/task/details/TaskDetails.vue'
 import Actions from 'tasks/components/task/Actions.vue'
 import StateLabels from 'tasks/components/task/StateLabels.vue'
 import TasksList from 'tasks/components/task/list/TasksList.vue'
+import AddButton from 'tasks/components/task/AddButton.vue'
 
 describe('tasks components rendering', () => {
     let task = null
@@ -140,5 +141,15 @@ describe('tasks components rendering', () => {
         expect(wrapper.text()).toContain("First testing task")
         expect(wrapper.text()).toContain("Second testing task")
         expect(wrapper.text()).toContain("Third testing task")
+    })
+
+    test('task creation button component', () => {
+        const wrapper = mount(AddButton)
+        expect(wrapper.html()).toContain("button")
+        wrapper.find({ ref: "add-btn" }).trigger('click')
+        expect(store.task.uuid).toBe('new')
+        expect(store.task.description).toBe('')
+        const tasksStore = useTasksStore()
+        expect(tasksStore.tasks.length).toBe(4)
     })
 })
