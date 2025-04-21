@@ -16,9 +16,7 @@ const store = useTaskStore()
             <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-arrow-right"></span>
         </button>
 
-        <span class="flex-1"></span>
-
-        <button v-if="store.task.uuid != 'new'" type="button" @click="store.update('delete')" class="action-button hover:bg-red-700 hover:!border-red-700 group">
+        <button v-if="store.task.uuid != 'new'" type="button" @click="store.update('delete')" class="action-button hover:bg-red-700 hover:!border-red-700 group ml-auto">
             <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-trash group-hover:invert-100"></span>
         </button>
 

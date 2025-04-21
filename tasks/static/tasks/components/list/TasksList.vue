@@ -26,8 +26,7 @@ const tasksStore = useTasksStore()
 
             <ul v-if="task.tags" class="flex flex-row flex-wrap gap-2 py-1">
                 <li v-for="tag in task.tags" v-text="tag" class="bg-gray-200 text-xs task-label"></li>
-                <li v-if="!task.due && task.project" class="flex-1"></li>
-                <li v-if="!task.due && task.project" v-text="task.project" class="bg-gray-200 text-xs task-label"></li>
+                <li v-if="!task.due && task.project" v-text="task.project" class="bg-gray-200 text-xs task-label ml-auto"></li>
             </ul>
 
             <p class="flex flex-row gap-1 items-center" v-if="task.due">
