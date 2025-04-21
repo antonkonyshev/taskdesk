@@ -18,7 +18,7 @@ const tasksStore = useTasksStore()
 
             <h2 class="font-semibold flex flex-row justify-between items-center gap-2">
                 <span v-text="task.description" class="text-lg flex-1"
-                    :class="{ 'text-gray-600': task.depends.size || task.wait }"></span>
+                    :class="{ 'text-gray-600': task.depending === true || tasksStore.isTaskDepending(task) || task.wait }"></span>
 
                 <StateLabels :task="task" class="gap-1" label-class="text-xs" common-label-class="bg-gray-200"
                     critical-label-class="bg-red-700 text-white" />

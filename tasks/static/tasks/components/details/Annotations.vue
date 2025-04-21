@@ -13,12 +13,12 @@ const showAnnotationInput = ref(false)
     <p>
         <span v-text="t('message.annotations')" class="font-semibold"></span>
 
-        <span v-for="annotation in store.task.annotations" class="flex flex-row pt-1 gap-2">
+        <span v-for="annotation in store.task.annotations" class="flex flex-row pt-1 gap-2 items-center">
             <span v-text="annotation.description" class="flex-1"></span>
 
             <span v-text="moment(annotation.entry).fromNow()"></span>
 
-            <button type="button" @click="store.denotate(annotation.description)" class="group !py-0 cursor-pointer action-button !px-1 !rounded-md hover:bg-red-700 hover:!border-red-700 duration-200">
+            <button type="button" @click="store.denotate(annotation.description)" class="group cursor-pointer action-button !px-1 !py-0.5 mt-0.5 !rounded-md hover:bg-red-700 hover:!border-red-700 duration-200">
                 <span class="inline-block size-4 bg-no-repeat bg-center bg-contain svg-trash group-hover:invert-100"></span>
             </button>
         </span>

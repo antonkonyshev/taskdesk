@@ -13,7 +13,7 @@ const store = useTaskStore()
 </script>
 
 <template>
-    <div class="flex-1 lg:flex-2 px-4 py-3.5 border-l border-gray-400 hidden sm:block min-h-screen">
+    <div class="flex-1 lg:flex-2 px-4 py-3.5 border-l border-gray-400 min-h-screen">
         <Actions />
 
         <h2 class="font-semibold text-2xl flex flex-row gap-2 items-center pt-4 pb-3">

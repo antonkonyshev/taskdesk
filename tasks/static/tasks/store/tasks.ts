@@ -28,9 +28,6 @@ export const useTasksStore = defineStore('tasks', () => {
                 tasks.value.push(target)
             }
         })
-        if (tasks.value.length && (!taskStore.task || !taskStore.task.value)) {
-            taskStore.select(tasks.value[0])
-        }
     }
 
     async function refreshTask(target) {
