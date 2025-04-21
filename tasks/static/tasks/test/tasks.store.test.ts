@@ -124,6 +124,6 @@ describe('tasks store', () => {
         const tStore = useTaskStore()
         expect(tStore.task).toBe(null)
         await store.loadTasks()
-        expect(tStore.task.uuid).toBe("abc-def-1")
+        expect(tStore.task).toBe(null)
     })
 })

@@ -128,9 +128,9 @@ describe('tasks components rendering', () => {
             labelClass: 'all-label-class',
             commonLabelClass: 'common-label-class',
         }})
-        expect(wrapper.text()).toContain('Blocked task')
-        expect(wrapper.text()).toContain('Delayed task')
-        expect(wrapper.text()).toContain('Blocking task')
+        expect(wrapper.text()).toContain('Blocked')
+        expect(wrapper.text()).toContain('Delayed')
+        expect(wrapper.text()).toContain('Blocking')
         expect(wrapper.html()).toContain('critical-label-class')
         expect(wrapper.html()).toContain('all-label-class')
         expect(wrapper.html()).toContain('common-label-class')

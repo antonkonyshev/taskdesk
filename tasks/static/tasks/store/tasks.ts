@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { useWindowSize } from '@vueuse/core'
 import { closeTaskSocket, fetchTasks } from 'tasks/services/tasks.service'
 import { Task } from 'tasks/types/task'
 import { useTaskStore } from 'tasks/store/task'
@@ -7,17 +8,7 @@ import { useTaskStore } from 'tasks/store/task'
 export const useTasksStore = defineStore('tasks', () => {
     const tasks = ref<Array<Task>>([])
     const taskStore = useTaskStore()
-
-    async function removeTask(target: Task) {
-        const idx = tasks.value.findIndex((elem) => elem.uuid == target.uuid)
-        if (idx >= 0) {
-            tasks.value.splice(idx, 1)
-        }
-        taskStore.excludeFromHistory(target)
-        if (tasks.value.length) {
-            taskStore.select(tasks.value[0])
-        }
-    }
+    const { width } = useWindowSize()
 
     async function loadTasks() {
         (await fetchTasks()).forEach(async (target: Task) => {
@@ -28,6 +19,16 @@ export const useTasksStore = defineStore('tasks', () => {
                 tasks.value.push(target)
             }
         })
+    }
+
+    function createTask() {
+        const task = {
+            id: 0, uuid: 'new', description: '', urgency: 100, project: '',
+            tags: [], entry: null, depends: [], blocks: false,
+            status: 'new', annotations: []
+        } as Task
+        tasks.value.unshift(task)
+        taskStore.select(task)
     }
 
     async function refreshTask(target) {
@@ -48,14 +49,34 @@ export const useTasksStore = defineStore('tasks', () => {
         }
     }
 
-    function createTask() {
-        const task = {
-            id: 0, uuid: 'new', description: '', urgency: 100, project: '',
-            tags: [], entry: null, depends: [], blocks: false,
-            status: 'new', annotations: []
-        } as Task
-        tasks.value.unshift(task)
-        taskStore.select(task)
+    function removeTaskRelations(target: Task) {
+        for (const related of tasks.value) {
+            if (related.depending && related.depends.length) {
+                const idx = related.depends.indexOf(target.uuid)
+                if (idx >= 0) {
+                    related.depending = null
+                    related.depends.splice(idx, 1)
+                }
+            }
+        }
+        for (const uuid of target.depends) {
+            const related = tasks.value.find(elem => elem.uuid == uuid)
+            if (related) {
+                related.blocking = null
+            }
+        }
+    }
+
+    async function removeTask(target: Task) {
+        const idx = tasks.value.findIndex((elem) => elem.uuid == target.uuid)
+        if (idx >= 0) {
+            tasks.value.splice(idx, 1)
+        }
+        taskStore.excludeFromHistory(target)
+        if (tasks.value.length && width.value >= 800) {
+            taskStore.select(tasks.value[0])
+        }
+        removeTaskRelations(target)
     }
 
     function isTaskBlocking(target: Task): boolean {

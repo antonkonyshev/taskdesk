@@ -6,7 +6,9 @@ export default createI18n({
         en: {
             message: {
                 blocking_tasks: "Blocking tasks",
+                blocking: "Blocking",
                 blocked_task: "Blocked task",
+                blocked: "Blocked",
                 project: "Project",
                 not_specified: "Not specified",
                 due_date: "Due date",
@@ -15,6 +17,7 @@ export default createI18n({
                 this_task_blocks_the_following_tasks: "This task blocks the following tasks",
                 this_task_depends_on_the_following_tasks: "This task depends on the following tasks",
                 delayed_task: "Delayed task",
+                delayed: "Delayed",
                 will_become_active: "Will become active",
                 annotations: "Annotations",
                 add_annotation: "Add annotation",
@@ -26,7 +29,9 @@ export default createI18n({
         ru: {
             message: {
                 blocking_tasks: "Блокирует задачи",
+                blocking: "Блокирует",
                 blocked_task: "Заблокированная задача",
+                blocked: "Заблокированная",
                 project: "Проект",
                 not_specified: "Не указан",
                 due_date: "Срок выполнения",
@@ -35,6 +40,7 @@ export default createI18n({
                 this_task_blocks_the_following_tasks: "Эта задача блокирует другие задачи",
                 this_task_depends_on_the_following_tasks: "Эта задача зависит от других задач",
                 delayed_task: "Отложенная задача",
+                delayed: "Отложенная",
                 will_become_active: "Станет активной",
                 annotations: "Аннотации",
                 add_annotation: "Добавить аннтонацию",
