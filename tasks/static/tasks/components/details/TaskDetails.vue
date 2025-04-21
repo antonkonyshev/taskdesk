@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useTaskStore } from 'tasks/store/task'
-import Actions from 'tasks/components/task/Actions.vue'
-import StateLabels from 'tasks/components/task/StateLabels.vue'
-import Dependencies from 'tasks/components/task/details/Dependencies.vue'
-import BlockedTasks from 'tasks/components/task/details/BlockedTasks.vue'
-import Annotations from 'tasks/components/task/details/Annotations.vue'
-import DatesDetails from 'tasks/components/task/details/DatesDetails.vue'
+import Actions from 'tasks/components/Actions.vue'
+import StateLabels from 'tasks/components/StateLabels.vue'
+import Dependencies from 'tasks/components/details/Dependencies.vue'
+import BlockedTasks from 'tasks/components/details/BlockedTasks.vue'
+import Annotations from 'tasks/components/details/Annotations.vue'
+import DatesDetails from 'tasks/components/details/DatesDetails.vue'
 
 const { t } = useI18n()
 const store = useTaskStore()
 </script>
 
 <template>
-    <div class="flex-1 lg:flex-2 px-4 py-3.5 border-l border-l-gray-400 hidden sm:block">
+    <div class="flex-1 lg:flex-2 px-4 py-3.5 border-l border-gray-400 hidden sm:block min-h-screen">
         <Actions />
 
         <h2 class="font-semibold text-2xl flex flex-row gap-2 items-center pt-4 pb-3">

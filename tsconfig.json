@@ -4,7 +4,8 @@
         "paths": {
             "static/*": ["./TaskDesk/static/*"],
             "TaskDesk/*": ["./TaskDesk/static/*"],
-            "tasks/*": ["./tasks/static/tasks/*"]
+            "tasks/*": ["./tasks/static/tasks/*"],
+            "notes/*": ["./notes/static/notes/*"]
         },
         "lib": ["dom", "es2015"],
         "esModuleInterop": true

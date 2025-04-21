@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n'
 import moment from 'moment/min/moment-with-locales'
 import { useTaskStore } from 'tasks/store/task'
 import { useTasksStore } from 'tasks/store/tasks'
-import StateLabels from 'tasks/components/task/StateLabels.vue'
+import StateLabels from 'tasks/components/StateLabels.vue'
 
 const { t } = useI18n()
 const taskStore = useTaskStore()

@@ -11,9 +11,9 @@
 <script setup lang="ts">
 import { useTaskStore } from 'tasks/store/task'
 import { useTasksStore } from 'tasks/store/tasks'
-import TasksList from 'tasks/components/task/list/TasksList.vue'
-import TaskDetails from 'tasks/components/task/details/TaskDetails.vue'
-import AddButton from './components/task/AddButton.vue'
+import TasksList from 'tasks/components/list/TasksList.vue'
+import TaskDetails from 'tasks/components/details/TaskDetails.vue'
+import AddButton from './components/AddButton.vue'
 
 const taskStore = useTaskStore()
 const tasksStore = useTasksStore()

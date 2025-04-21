@@ -22,6 +22,7 @@ export default defineConfig({
         alias: {
             TaskDesk: resolve("./TaskDesk/static"),
             tasks: resolve("./tasks/static/tasks"),
+            notes: resolve("./notes/static/notes"),
         },
     },
     assetsInclude: ['**/static/**/*.svg'],
