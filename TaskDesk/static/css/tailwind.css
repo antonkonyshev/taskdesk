@@ -6,15 +6,19 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 .navigation-button {
-    @apply flex flex-row items-center py-2 px-0 rounded text-gray-700 hover:text-green-700 dark:text-white dark:hover:text-green-200;
+    @apply flex flex-row items-center py-2 rounded hover:bg-green-50 dark:text-white dark:hover:bg-green-950 duration-200;
+}
+
+.navigation-icon {
+    @apply inline-block size-6 mr-2 bg-no-repeat bg-contain bg-center dark:invert-100 duration-200;
 }
 
 .action-button {
-    @apply border-gray-300 border-1 flex justify-center items-center p-2 rounded-xl cursor-pointer duration-200
+    @apply border-gray-300 border-1 flex justify-center items-center p-2 rounded-xl cursor-pointer duration-200;
 }
 
 .task-label {
-    @apply text-nowrap px-2 py-0.5 rounded-xl text-center
+    @apply text-nowrap px-2 py-0.5 rounded-xl text-center;
 }
 
 .input-field {
