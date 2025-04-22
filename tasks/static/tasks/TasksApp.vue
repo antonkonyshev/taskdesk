@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-row">
-        <TasksList v-if="(!taskStore.task || width >= 800) && tasksStore.tasks.length" />
+        <TasksList v-if="(!taskStore.task || width >= mdWidth) && tasksStore.tasks.length" />
 
         <TaskDetails v-if="taskStore.task" />
 
@@ -20,9 +20,10 @@ import AddButton from './components/AddButton.vue'
 const taskStore = useTaskStore()
 const tasksStore = useTasksStore()
 const { width } = useWindowSize()
+const mdWidth = 768;
 
 function onViewportResize() {
-    if (width.value >= 800 && !taskStore.task && tasksStore.tasks.length) {
+    if (width.value >= mdWidth && !taskStore.task && tasksStore.tasks.length) {
         taskStore.select(tasksStore.tasks[0])
     }
 }

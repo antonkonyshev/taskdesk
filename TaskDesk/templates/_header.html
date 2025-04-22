@@ -1,6 +1,6 @@
 {% load i18n cache %}
 <header id="navigation-header" class="duration-200">
-    <nav class="bg-white border-b border-b-gray-300 px-4 sm:px-6 py-2.5 dark:bg-gray-700" id="navigation-app">
+    <nav class="bg-white shadow-sm border-b border-b-gray-300 px-4 sm:px-6 py-2.5 dark:bg-gray-700" id="navigation-app">
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
             <a href="/" class="flex items-center">
                 <img src="https://upload.wikimedia.org/wikipedia/ru/5/59/Taskwarrior_logo.png" class="mr-3 h-6 sm:h-9" alt="TaskDesk" />
@@ -24,7 +24,7 @@
             {% if request.user.is_authenticated %}
             <div class="hidden w-full sm:w-auto sm:grow sm:ml-6 sm:order-1 sm:block"
                 :class="{'block!': showNavigationMenu}">
-                <ul class="flex flex-row justify-between sm:items-center w-full mt-4 font-medium sm:space-x-8 sm:mt-0"
+                <ul class="flex flex-row justify-between items-center gap-6 w-full mt-4 font-medium sm:mt-0"
                     role="menu">
                     <li role="menuitem">
                         <a href="#" class="navigation-button">
@@ -40,7 +40,7 @@
                         </a>
                     </li>
 
-                    <li class="sm:ml-auto" role="menuitem">
+                    <li class="ml-auto flex items-center" role="menuitem">
                         <label for="theme-variant-toggle" class="inline-flex items-center gap-3">
                             <input id="theme-variant-toggle" type="checkbox" class="peer sr-only" role="switch" v-model="darkTheme" />
                             <div class="relative h-6 w-11 rounded-full border border-outline bg-gray-200 duration-500 peer-checked:bg-green-700 group" aria-hidden="true">
