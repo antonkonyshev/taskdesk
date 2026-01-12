@@ -89,10 +89,18 @@ TEMPLATES = [
 WSGI_APPLICATION = "TaskDesk.wsgi.application"
 ASGI_APPLICATION = "TaskDesk.asgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-# DATABASES is declared in the local.py module
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_DB", "notes"),
+        "USER": os.getenv("POSTGRES_USER", "notes"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "notes"),
+        "HOST": os.getenv("POSTGRES_HOST", "localhost"),
+        "PORT": os.getenv("POSTGRES_PORT", "5432"),
+    }
+}
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
@@ -164,7 +172,7 @@ STORAGES = {
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379",
+        "LOCATION": os.getenv("REDIS_LOCATION", "redis://127.0.0.1:6379"),
     }
 }
 

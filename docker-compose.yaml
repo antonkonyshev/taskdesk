@@ -1,0 +1,65 @@
+services:
+  taskdesk:
+    build:
+      dockerfile: ./docker/backend.dev.dockerfile
+    env_file:
+      - ./docker/environment
+    entrypoint: "uvicorn TaskDesk.asgi:application --host 0.0.0.0 --reload --reload-include *.html"
+    networks:
+      - taskdesk_network
+    ports:
+      - "8000:8000"
+    volumes:
+      - ${BACKEND_ROOT_DIR:-.}:/opt/taskdesk
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build:
+      dockerfile: ./docker/frontend.dev.dockerfile
+    networks:
+      - taskdesk_network
+    ports:
+      - "5173:5173"
+    volumes:
+      - ${FRONTEND_ROOT_DIR:-.}:/opt/taskdesk
+
+  postgres:
+    image: postgres:18.1
+    networks:
+      - taskdesk_network
+    ports:
+      - "5432:5432"
+    env_file:
+      - ./docker/environment
+    volumes:
+      - ${POSTGRES_DATABASE_DIR:-../Workspace/postgres}:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "notes"]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    restart: always
+
+  redis:
+    image: redis:latest
+    networks:
+      - taskdesk_network
+    ports:
+      - "6379:6379"
+    volumes:
+      - ${REDIS_DATABASE_DIR:-../Workspace/redis}/data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 30s
+      retries: 50
+      start_period: 10s
+    restart: always
+
+networks:
+  taskdesk_network:
