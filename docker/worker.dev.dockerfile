@@ -2,9 +2,7 @@ FROM python:3.14.2-slim-trixie
 
 SHELL ["/bin/bash", "-xe", "-c"]
 WORKDIR /opt/taskdesk
-EXPOSE 8000
-ENV PYTHONUNBUFFERED=1 \
-    PORT=8000
+ENV PYTHONUNBUFFERED=1
 
 RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
     build-essential \
@@ -16,10 +14,10 @@ RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-r
     git vim taskwarrior \
  && rm -rf /var/lib/apt/lists/*
 COPY requirements.txt .
-RUN pip install uvicorn && pip install -r requirements.txt
+RUN pip install -r requirements.txt
 
 RUN groupadd -g 1000 taskdesk && \
     useradd -ms /bin/bash -u 1000 -g taskdesk taskdesk
 USER taskdesk:taskdesk
 
-ENTRYPOINT "uvicorn TaskDesk.asgi:application --reload --reload-include *.html"
+ENTRYPOINT "celery -A TaskDesk worker --loglevel=error"

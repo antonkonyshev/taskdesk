@@ -14,11 +14,13 @@ services:
     volumes:
       - ${BACKEND_ROOT_DIR:-.}:/opt/taskdesk
     depends_on:
-      postgres:
+      db:
+        condition: service_healthy
+      frontend:
         condition: service_healthy
       redis:
         condition: service_healthy
-      frontend:
+      mq:
         condition: service_healthy
 
   frontend:
@@ -37,7 +39,52 @@ services:
       retries: 5
       start_period: 10s
 
-  postgres:
+  worker:
+    build:
+      dockerfile: ./docker/worker.dev.dockerfile
+    env_file:
+      - ./docker/environment
+    entrypoint: "celery -A TaskDesk worker --loglevel=info"
+    networks:
+      - taskdesk_network
+    volumes:
+      - ${BACKEND_ROOT_DIR:-.}:/opt/taskdesk
+    healthcheck:
+      test: ["CMD", "celery -A TestDesk inspect ping | grep -q OK"]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    restart: always
+    depends_on:
+      mq:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+
+  mq:
+    image: rabbitmq:4.2.2-management
+    networks:
+      - taskdesk_network
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    env_file:
+      - ./docker/environment
+    volumes:
+      - ${RABBITMQ_VOLUME_DIR:-../Workspace/rabbitmq}:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    restart: always
+
+  db:
     image: postgres:18.1
     networks:
       - taskdesk_network

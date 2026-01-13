@@ -211,3 +211,13 @@ DJANGO_VITE = {
         "dev_mode": True
     }
 }
+
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL",
+    "amqp://{mq_user}:{mq_pwd}@{mq_host}:{mq_port}/{mq_vhost}".format(
+        mq_user = os.getenv("RABBITMQ_DEFAULT_USER", "taskdesk"),
+        mq_pwd = os.getenv("RABBITMQ_DEFAULT_PASS", "taskdesk"),
+        mq_host = os.getenv("RABBITMQ_DEFAULT_HOST", "mq"),
+        mq_port = os.getenv("RABBITMQ_DEFAULT_PORT", "5672"),
+        mq_vhost = os.getenv("RABBITMQ_DEFAULT_VHOST", "taskdesk"),
+    )
+)
