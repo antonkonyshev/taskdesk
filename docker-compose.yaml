@@ -5,6 +5,8 @@ services:
     env_file:
       - ./docker/environment
     entrypoint: "uvicorn TaskDesk.asgi:application --host 0.0.0.0 --reload --reload-include *.html"
+    stdin_open: true
+    tty: true
     networks:
       - taskdesk_network
     ports:
@@ -16,6 +18,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      frontend:
+        condition: service_healthy
 
   frontend:
     build:
@@ -26,6 +30,12 @@ services:
       - "5173:5173"
     volumes:
       - ${FRONTEND_ROOT_DIR:-.}:/opt/taskdesk
+    healthcheck:
+      test: ["CMD", "curl", "-s", "--fail", "http://localhost:5173"]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
 
   postgres:
     image: postgres:18.1

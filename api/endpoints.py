@@ -44,6 +44,7 @@ class TaskStorageLoader:
         try:
             return await TaskStorage(user.task_db_path).load()
         except Exception as err:
+            # TODO: add logging
             if self.wsproto:
                 raise WebSocketException(code = status.WS_1011_INTERNAL_ERROR)
             else:

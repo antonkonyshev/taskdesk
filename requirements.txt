@@ -11,3 +11,5 @@ redis>=5.2,<6.0
 django_utils @ git+https://github.com/antonkonyshev/django-utils@master
 fastapi[standard]>=0.115.12
 aiofiles==24.1.0
+ipdb
+ipython

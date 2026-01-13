@@ -13,7 +13,7 @@ RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-r
     libjpeg62-turbo-dev \
     zlib1g-dev \
     libwebp-dev \
-    git \
+    git vim taskwarrior \
  && rm -rf /var/lib/apt/lists/*
 COPY requirements.txt .
 RUN pip install uvicorn && pip install -r requirements.txt
