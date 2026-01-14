@@ -4,7 +4,7 @@
 
         <TaskDetails v-if="taskStore.task" />
 
-        <AddButton v-if="!taskStore.task || taskStore.task.uuid != 'new'" />
+        <AddButton v-if="!taskStore.task || taskStore.task.uuid != 'new'" :add-item="tasksStore.createTask" />
     </div>
 </template>
 
@@ -15,7 +15,7 @@ import { useTasksStore } from 'tasks/store/tasks'
 import { useWindowSize } from '@vueuse/core'
 import TasksList from 'tasks/components/list/TasksList.vue'
 import TaskDetails from 'tasks/components/details/TaskDetails.vue'
-import AddButton from './components/AddButton.vue'
+import AddButton from 'TaskDesk/js/common/components/AddButton.vue'
 
 const taskStore = useTaskStore()
 const tasksStore = useTasksStore()

@@ -27,7 +27,7 @@
             <div class="hidden w-full sm:w-auto sm:grow sm:ml-6 sm:order-1 sm:block" :class="{'block!': showNavigationMenu}">
                 <ul class="flex flex-row justify-between items-center gap-3 w-full mt-4 font-medium sm:mt-0" role="menu">
                     <li role="menuitem">
-                        <a href="#" class="navigation-button sm:px-4">
+                        <a href="{% cache 604800 taskswebappurl %}{% url 'tasks_webapp' %}{% endcache %}" class="navigation-button sm:px-4">
                             <span class="navigation-icon svg-case"></span>
                             <span>{% trans "Tasks" %}</span>
                         </a>
@@ -37,6 +37,13 @@
                         <a href="#" class="navigation-button sm:px-4">
                             <span class="navigation-icon svg-note"></span>
                             <span>{% trans "Notes" %}</span>
+                        </a>
+                    </li>
+
+                    <li role="menuitem">
+                        <a href="{% cache 604800 newswebappurl %}{% url 'news_webapp' %}{% endcache %}" class="navigation-button sm:px-4">
+                            <span class="navigation-icon svg-rss"></span>
+                            <span>{% trans "News" %}</span>
                         </a>
                     </li>
 

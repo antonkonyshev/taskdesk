@@ -2,7 +2,7 @@
 Registration and authentication related URL routing rules.
 """
 
-from django.urls import include, path
+from django.urls import path
 from django.contrib.auth import views as auth_views
 
 from tdauth.views import logout_view

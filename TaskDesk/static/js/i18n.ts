@@ -23,6 +23,12 @@ export default createI18n({
                 add_annotation: "Add annotation",
                 enter_annotation_description: "Enter annotation description...",
                 enter_task_description: "Enter task description...",
+                feed: "Feed",
+                feeds: "Feeds",
+                filter: "Filter",
+                filters: "Filters",
+                unread: "Unread",
+                reading: "Reading",
             }
         },
 
@@ -46,6 +52,12 @@ export default createI18n({
                 add_annotation: "Добавить аннтонацию",
                 enter_annotation_description: "Введите аннотацию...",
                 enter_task_description: "Введите описание задачи...",
+                feed: "Лента",
+                feeds: "Ленты",
+                filter: "Фильтр",
+                filters: "Фильтры",
+                unread: "Новые",
+                reading: "Чтение",
             }
         }
     }

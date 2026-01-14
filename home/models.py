@@ -12,4 +12,7 @@ class HomePage(Page):
         if not request.user.is_authenticated:
             return redirect(cache.cacheget(['tdauthloginpageurl'], cls=str,
                 default=lambda: reverse("tdauth_login")))
-        return super().serve(request, *args, **kwargs)
+        else:
+            return redirect(cache.cacheget(['tasks_webapp'], cls=str,
+                default=lambda: reverse('tasks_webapp')))
+        # return super().serve(request, *args, **kwargs)

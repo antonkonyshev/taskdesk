@@ -1,4 +1,4 @@
-import { useWebSocket } from "@vueuse/core"
+import { prepareWebSocket, closeWebSocket } from "TaskDesk/js/common/websockets"
 import { useTasksStore } from "tasks/store/tasks"
 
 let socket = null
@@ -8,37 +8,11 @@ const receiveMessage = async (ws: WebSocket, event: MessageEvent) => {
 }
 
 export const prepareTaskSocket = (uuid: string): Promise<any> => {
-    return new Promise((resolve, reject) => {
-        try {
-            if (!socket || socket.status == "CLOSED") {
-                // @ts-ignore
-                socket = useWebSocket(window.API_BASE_URL +
-                    "/task/" + uuid + "/", {
-                        autoReconnect: { retries: 3, delay: 3000, onFailed: reject },
-                        onMessage: receiveMessage,
-                    })
-            }
-            resolve(socket)
-        } catch(err) {
-            reject(err)
-        }
-    })
+    return prepareWebSocket(socket, "/task/" + uuid + "/", receiveMessage)
 }
 
 export const closeTaskSocket = (): Promise<void> => {
-    return new Promise((resolve, reject) => {
-        try {
-            if (socket) {
-                if (socket.status != "CLOSED") {
-                    socket.close()
-                }
-                socket = null
-                resolve()
-            }
-        } catch(err) {
-            reject(err)
-        }
-    })
+    return closeWebSocket(socket)
 }
 
 export const markTask = (uuid: string, method: 'post'|'delete'): Promise<void> => {
@@ -62,8 +36,7 @@ export const markTask = (uuid: string, method: 'post'|'delete'): Promise<void> =
 export const updateTask = (data): Promise<void> => {
     return new Promise(async (resolve, reject) => {
         try {
-            await prepareTaskSocket(data.uuid)
-            socket.send(JSON.stringify(data))
+            (await prepareTaskSocket(data.uuid)).send(JSON.stringify(data))
             resolve()
         } catch(err) {
             reject(err)
@@ -75,8 +48,7 @@ export const annotateTask = async (data): Promise<void> => {
     return new Promise(async (resolve, reject) => {
         try {
             if (data.uuid && data.annotate) {
-                await prepareTaskSocket(data.uuid)
-                socket.send(JSON.stringify(data))
+                (await prepareTaskSocket(data.uuid)).send(JSON.stringify(data))
             }
             resolve()
         } catch(err) {
@@ -89,8 +61,7 @@ export const denotateTask = async (data): Promise<void> => {
     return new Promise(async (resolve, reject) => {
         try {
             if (data.uuid && data.denotate) {
-                await prepareTaskSocket(data.uuid)
-                socket.send(JSON.stringify(data))
+                (await prepareTaskSocket(data.uuid)).send(JSON.stringify(data))
             }
             resolve()
         } catch(err) {

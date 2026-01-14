@@ -5,7 +5,8 @@
             "static/*": ["./TaskDesk/static/*"],
             "TaskDesk/*": ["./TaskDesk/static/*"],
             "tasks/*": ["./tasks/static/tasks/*"],
-            "notes/*": ["./notes/static/notes/*"]
+            "notes/*": ["./notes/static/notes/*"],
+            "news/*": ["./news/static/news/*"]
         },
         "lib": ["dom", "es2015"],
         "esModuleInterop": true

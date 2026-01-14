@@ -23,6 +23,7 @@ export default defineConfig({
             TaskDesk: resolve("./TaskDesk/static"),
             tasks: resolve("./tasks/static/tasks"),
             notes: resolve("./notes/static/notes"),
+            news: resolve("./news/static/news"),
         },
     },
     assetsInclude: ['**/static/**/*.svg'],
@@ -36,7 +37,8 @@ export default defineConfig({
                 tailwind: resolve('./TaskDesk/static/css/tailwind.css'),
                 main: resolve('./TaskDesk/static/css/main.sass'),
                 navigationApp: resolve('./TaskDesk/static/js/NavigationApp.ts'),
-                tasksApp: resolve('./TaskDesk/static/js/TasksApp.ts'),
+                tasksApp: resolve('./tasks/static/tasks/TasksApp.ts'),
+                newsApp: resolve('./news/static/news/NewsApp.ts'),
             },
             output: {
                 chunkFileNames: undefined

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load django_vite %}
+
+{% block content %}
+<div id="news-app" class="w-full"></div>
+{% endblock content %}
+
+{% block extra_js %}
+<script type="module" src="{% vite_asset_url 'js/NewsApp.ts' %}" defer></script>
+{% endblock %}
