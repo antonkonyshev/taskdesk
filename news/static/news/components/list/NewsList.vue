@@ -1,10 +1,20 @@
 <script setup lang="ts">
+import { watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import moment from 'moment/min/moment-with-locales'
 import { useNewsStore } from 'news/store/news'
+import { closeNewsSocket } from 'news/services/news.service'
 
 const { t } = useI18n()
 const store = useNewsStore()
+
+const route = useRoute()
+watch(() => route.path, (nextPath, prevPath) => {
+    if (nextPath != prevPath && ['/', '/news', '/news/', '/news/reading', '/news/reading/'].indexOf(prevPath) >= 0) {
+        closeNewsSocket()
+    }
+})
 </script>
 
 <template>

@@ -3,7 +3,7 @@ import { createPinia, setActivePinia } from "pinia"
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { useNewsStore } from 'news/store/news'
 import { News } from 'news/types/news'
-import { prepareNewsSocket, closeNewsSocket } from 'news/services/news.service'
+import { prepareWebSocket, closeWebSocket } from 'TaskDesk/js/common/websockets'
 import i18n from 'TaskDesk/js/i18n'
 
 describe('news store', () => {
@@ -11,9 +11,13 @@ describe('news store', () => {
     let anews = null
     let aanews = null
     let store = null
+    let socket = {send: async (data) => {}}
 
     beforeEach(() => {
-        vi.mock('news/service/news.service.ts')
+        vi.useFakeTimers({ shouldAdvanceTime: true })
+        vi.mock('TaskDesk/js/common/websockets')
+        vi.mocked(prepareWebSocket).mockResolvedValue(socket)
+        vi.mocked(closeWebSocket).mockResolvedValue()
         news = {
             id: 2,
             guid: "something",
@@ -42,11 +46,10 @@ describe('news store', () => {
             author: "John Doe",
             feed: 2,
         } as News
-        vi.mocked(prepareNewsSocket).mockResolvedValue({})
-        vi.mocked(closeNewsSocket).mockResolvedValue()
         setActivePinia(createPinia())
         store = useNewsStore()
         config.global.plugins = [i18n]
+        store.updateNews([aanews, anews, news])
     })
 
     afterEach(() => {
@@ -74,22 +77,33 @@ describe('news store', () => {
             published: new Date(new Date().getDate()),
         } as News
         await store.loadNews()
+        store.updateNews([aaanews, aanews, anews, news])
         expect(store.news.length).toBe(4)
         expect(store.news[0].id).toBe(4)
         expect(store.news[0].title).toBe('Fourth testing news')
+        expect(store.news[1].id).toBe(3)
+        expect(store.news[1].title).toBe('Third testing news')
+        expect(store.news[2].id).toBe(2)
+        expect(store.news[2].title).toBe('Second testing news')
+        expect(store.news[3].id).toBe(1)
+        expect(store.news[3].title).toBe('First testing news')
+    })
+
+    test('news hiding and bookmarking', async () => {
+        await store.loadNews()
+        expect(store.news.length).toBe(3)
+        expect(store.news[1].id).toBe(2)
+        await store.markNews(store.news[1], true)
+        expect(store.news.length).toBe(2)
         expect(store.news[0].id).toBe(3)
         expect(store.news[0].title).toBe('Third testing news')
-        expect(store.news[1].id).toBe(2)
-        expect(store.news[1].title).toBe('Second testing news')
-        expect(store.news[2].id).toBe(1)
-        expect(store.news[2].title).toBe('First testing news')
-    })
-
-    test('news hiding', async () => {
-        expect(false).toBeTruthy()
-    })
-
-    test('news bookmarking', async () => {
-        expect(false).toBeTruthy()
+        expect(store.news[1].id).toBe(1)
+        expect(store.news[1].title).toBe('First testing news')
+        await store.markNews(store.news[0])
+        expect(store.news.length).toBe(1)
+        expect(store.news[0].id).toBe(1)
+        expect(store.news[0].title).toBe('First testing news')
+        await store.markNews(store.news[0])
+        expect(store.news.length).toBe(0)
     })
 })
