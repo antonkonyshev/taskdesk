@@ -8,4 +8,5 @@ export interface News {
     updated?: Date
     author?: string
     enclosure?: string
+    feed?: number
 }

@@ -1,0 +1,107 @@
+import { config } from '@vue/test-utils'
+import { createPinia, setActivePinia } from "pinia"
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
+import { useFeedStore } from 'news/store/feed'
+import { fetchFeeds, updateFeed } from 'news/services/feed.service'
+import { Feed } from 'news/types/feed'
+import i18n from 'TaskDesk/js/i18n'
+
+describe('feeds store', () => {
+    let feed = null
+    let afeed = null
+    let aafeed = null
+    let store = null
+
+    beforeEach(() => {
+        vi.mock('news/services/feed.service.ts')
+        feed = {
+            id: 2,
+            url: "http://localhost:8000/rss2",
+            title: "Second testing feed",
+        } as Feed
+        afeed = {
+            id: 1,
+            url: "http://localhost:8000/rss1",
+            title: "First testing feed",
+        } as Feed
+        aafeed = {
+            id: 3,
+            url: "http://localhost:8000/rss3",
+            title: "Third testing feed",
+        } as Feed
+        config.global.plugins = [i18n]
+        vi.mocked(updateFeed).mockResolvedValue(null)
+        vi.mocked(fetchFeeds).mockResolvedValue([feed, afeed, aafeed])
+        setActivePinia(createPinia())
+        store = useFeedStore()
+    })
+
+    afterEach(() => {
+        vi.resetAllMocks()
+    })
+
+    test('feeds fetching', async () => {
+        expect(store.feeds.length).toBe(0)
+        await store.loadFeeds()
+        expect(store.feeds.length).toBe(3)
+        expect(store.feeds[0].id).toBe(3)
+        expect(store.feeds[0].title).toBe('Third testing feed')
+        expect(store.feeds[2].id).toBe(2)
+        expect(store.feeds[2].title).toBe('Second testing feed')
+        expect(store.feeds[1].id).toBe(1)
+        expect(store.feeds[1].title).toBe('First testing feed')
+    })
+
+    test('feed creation', async () => {
+        await store.loadFeeds()
+        vi.mocked(updateFeed).mockResolvedValue(4)
+        await store.addFeed({ title: "Fourth testing feed", url: "http://localhost:8000/rss4" })
+        expect(store.feeds.length).toBe(4)
+        expect(store.feeds[0].id).toBe(4)
+        expect(store.feeds[0].title).toBe('Fourth testing feed')
+        expect(store.feeds[1].id).toBe(3)
+        expect(store.feeds[1].title).toBe('Third testing feed')
+    })
+
+    test('feed creation with error', async () => {
+        await store.loadFeeds()
+        vi.mocked(updateFeed).mockRejectedValue(new Error('Internal server error'))
+        await store.addFeed({ title: "Fourth testing feed", url: "http://localhost:8000/rss4" })
+        expect(store.feeds.length).toBe(3)
+        expect(store.feeds[0].id).toBe(3)
+        expect(store.feeds[0].title).toBe('Third testing feed')
+        expect(store.feeds[1].id).toBe(1)
+        expect(store.feeds[1].title).toBe('First testing feed')
+    })
+
+    test('feed removing', async () => {
+        await store.loadFeeds()
+        await store.removeFeed(store.feeds[1])
+        expect(store.feeds.length).toBe(2)
+        expect(store.feeds[0].id).toBe(3)
+        expect(store.feeds[0].title).toBe('Third testing feed')
+        expect(store.feeds[1].id).toBe(2)
+        expect(store.feeds[1].title).toBe('Second testing feed')
+    })
+
+    test('feed removing with error', async () => {
+        await store.loadFeeds()
+        vi.mocked(updateFeed).mockRejectedValue(new Error("Internal server error"))
+        await store.removeFeed(store.feeds[1])
+        expect(store.feeds.length).toBe(3)
+        expect(store.feeds[0].id).toBe(3)
+        expect(store.feeds[0].title).toBe('Third testing feed')
+        expect(store.feeds[2].id).toBe(2)
+        expect(store.feeds[2].title).toBe('Second testing feed')
+        expect(store.feeds[1].id).toBe(1)
+        expect(store.feeds[1].title).toBe('First testing feed')
+    })
+
+    test('feed editing', async () => {
+        await store.loadFeeds()
+        const feed = store.feeds[1]
+        feed.title = 'Modified testing feed'
+        await store.editFeed(store.feeds[1])
+        expect(store.feeds[1].title).toBe('Modified testing feed')
+    })
+})

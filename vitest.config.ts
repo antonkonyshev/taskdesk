@@ -16,6 +16,7 @@ export default defineConfig({
             TaskDesk: resolve("./TaskDesk/static"),
             tasks: resolve("./tasks/static/tasks"),
             notes: resolve("./notes/static/notes"),
+            news: resolve("./news/static/news"),
         },
     },
 })

@@ -8,4 +8,10 @@ const receiveMessage = async (ws: WebSocket, event: MessageEvent) => {
     console.log(JSON.parse(event.data))
 }
 
-prepareWebSocket(socket, "/news/", receiveMessage)
+export const prepareNewsSocket = (): Promise<any> => {
+    return prepareWebSocket(socket, "/news/", receiveMessage)
+}
+
+export const closeNewsSocket = (): Promise<void> => {
+    return closeWebSocket(socket)
+}

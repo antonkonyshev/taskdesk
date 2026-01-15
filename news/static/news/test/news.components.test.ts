@@ -1,0 +1,83 @@
+import { config, mount } from '@vue/test-utils'
+import { createPinia, setActivePinia } from "pinia"
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
+import { useNewsStore } from 'news/store/news'
+import { News } from 'news/types/news'
+import { prepareNewsSocket, closeNewsSocket } from 'news/services/news.service'
+import i18n from 'TaskDesk/js/i18n'
+import { router } from 'news/navigation/routing'
+import NewsNavigation from 'news/components/navigation/NewsNavigation.vue'
+import NewsList from 'news/components/NewsList.vue'
+
+describe('news related components rendering', () => {
+    let news = null
+    let anews = null
+    let aanews = null
+    let store = null
+
+    beforeEach(() => {
+        vi.mock('news/services/news.service.ts')
+        vi.mocked(prepareNewsSocket).mockResolvedValue({})
+        vi.mocked(closeNewsSocket).mockResolvedValue()
+        setActivePinia(createPinia())
+        config.global.plugins = [i18n, router]
+        news = {
+            id: 2,
+            guid: "something",
+            title: "Second testing news",
+            description: "Second testing news description",
+            link: "http://localhost:8000/news/",
+            published: new Date(new Date().getDate() - 1000),
+            updated: null,
+        } as News
+        anews = {
+            id: 1,
+            guid: "somethingelse",
+            title: "First testing news",
+            published: new Date(new Date().getDate() - 2000),
+            updated: new Date(),
+            author: "John Doe",
+            enclosure: "http://localhost:8000/img/test.png",
+            feed: 1,
+        } as News
+        aanews = {
+            id: 3,
+            title: "Third testing news",
+            description: "Third testing news description",
+            link: "http://localhost:8000/news/reading",
+            published: new Date(),
+            author: "John Doe",
+            feed: 2,
+        } as News
+        let newsStore = useNewsStore()
+        newsStore.news = [news, anews, aanews]
+        store = useNewsStore()
+    })
+
+    afterEach(() => {
+        vi.resetAllMocks()
+    })
+
+    test('news navigation component', () => {
+        const wrapper = mount(NewsNavigation)
+        expect(wrapper.text()).toContain("Feeds")
+        expect(wrapper.html()).toContain("/news/feeds")
+        expect(wrapper.text()).toContain("Filters")
+        expect(wrapper.html()).toContain("/news/filters")
+        expect(wrapper.text()).toContain("Unread")
+        expect(wrapper.text()).toContain("Reading")
+        expect(wrapper.html()).toContain("/news/reading")
+    })
+
+    test('news list component', () => {
+        const wrapper = mount(NewsList)
+        expect(wrapper.text()).toContain("First testing news")
+        expect(wrapper.html()).toContain("http://localhost:8000/news/")
+        expect(wrapper.text()).toContain("Second testing news")
+        expect(wrapper.text()).toContain("Second testing news description")
+        expect(wrapper.html()).toContain("http://localhost:8000/img/test.png")
+        expect(wrapper.text()).toContain("Third testing news")
+        expect(wrapper.text()).toContain("Third testing news description")
+        expect(wrapper.html()).toContain("http://localhost:8000/news/reading")
+    })
+})

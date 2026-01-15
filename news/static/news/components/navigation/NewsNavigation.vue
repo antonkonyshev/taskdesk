@@ -5,28 +5,28 @@
                 <li role="menuitem">
                     <router-link :to="routes.feeds" class="navigation-button sm:px-4">
                         <span class="navigation-icon svg-rss"></span>
-                        <span v-text="t('feeds')"></span>
+                        <span v-text="t('message.feeds')"></span>
                     </router-link>
                 </li>
 
                 <li role="menuitem">
                     <router-link :to="routes.filters" class="navigation-button sm:px-4">
                         <span class="navigation-icon svg-funnel"></span>
-                        <span v-text="t('filters')"></span>
+                        <span v-text="t('message.filters')"></span>
                     </router-link>
                 </li>
 
                 <li role="menuitem">
                     <router-link :to="routes.news" class="navigation-button sm:px-4">
                         <span class="navigation-icon svg-inbox"></span>
-                        <span v-text="t('unread')"></span>
+                        <span v-text="t('message.unread')"></span>
                     </router-link>
                 </li>
 
                 <li role="menuitem">
                     <router-link :to="routes.reading" class="navigation-button sm:px-4">
                         <span class="navigation-icon svg-newspaper"></span>
-                        <span v-text="t('reading')"></span>
+                        <span v-text="t('message.reading')"></span>
                     </router-link>
                 </li>
             </ul>
