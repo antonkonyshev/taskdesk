@@ -7,7 +7,7 @@ import { prepareNewsSocket, closeNewsSocket } from 'news/services/news.service'
 import i18n from 'TaskDesk/js/i18n'
 import { router } from 'news/navigation/routing'
 import NewsNavigation from 'news/components/navigation/NewsNavigation.vue'
-import NewsList from 'news/components/NewsList.vue'
+import NewsList from 'news/components/list/NewsList.vue'
 
 describe('news related components rendering', () => {
     let news = null

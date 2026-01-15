@@ -2,10 +2,12 @@ import { config, mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from "pinia"
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { useFeedStore } from 'news/store/feed'
+import { updateFeed } from 'news/services/feed.service'
 import { Feed } from 'news/types/feed'
 import i18n from 'TaskDesk/js/i18n'
-import FeedList from 'news/components/FeedList.vue'
+import FeedList from 'news/components/list/FeedList.vue'
 import AddButton from 'TaskDesk/js/common/components/AddButton.vue'
+import FeedForm from 'news/components/form/FeedForm.vue'
 
 describe('feeds related components rendering', () => {
     let feed = null
@@ -49,21 +51,78 @@ describe('feeds related components rendering', () => {
         expect(wrapper.text()).toContain("http://localhost:8000/rss3")
     })
 
-    test('feed creation form', () => {
-        expect(false).toBeTruthy()
+    test('feed creation form', async () => {
+        let cancelled = false
+        let submitted = false
+        let feed = { title: '', url: '' }
+        const wrapper = mount(FeedForm, {
+            props: {
+                modelValue: feed,
+                onCancel: () => { cancelled = true },
+                onSubmit: () => { submitted = true },
+            },
+        })
+
+        expect(wrapper.html()).toContain("submit")
+        expect(wrapper.html()).toContain("id_title")
+        expect(wrapper.html()).toContain("id_url")
+        await wrapper.find({ ref: "cancel-btn" }).trigger('click')
+        expect(cancelled).toBeTruthy()
+        await wrapper.find("#id_title").setValue("Testing title")
+        await wrapper.find("#id_url").setValue("http://localhost:8000/rss")
+        await wrapper.find({ ref: "submit-btn" }).trigger('click')
+        expect(submitted).toBeTruthy()
+        expect(feed.title).toBe("Testing title")
+        expect(feed.url).toBe("http://localhost:8000/rss")
     })
 
-    test('feed creation button component', () => {
+    test('feed editing form', async () => {
+        let cancelled = false
+        let submitted = false
+        const id = store.feeds[0].id
+        const wrapper = mount(FeedForm, {
+            props: {
+                modelValue: store.feeds[0],
+                onCancel: () => { cancelled = true },
+                onSubmit: () => { submitted = true },
+            },
+        })
+
+        expect(wrapper.html()).toContain("submit")
+        expect(wrapper.html()).toContain("id_title")
+        expect(wrapper.html()).toContain("id_url")
+        await wrapper.find({ ref: "cancel-btn" }).trigger('click')
+        expect(cancelled).toBeTruthy()
+        await wrapper.find("#id_title").setValue("Testing title")
+        await wrapper.find("#id_url").setValue("http://localhost:8000/rss")
+        await wrapper.find({ ref: "submit-btn" }).trigger('click')
+        expect(submitted).toBeTruthy()
+        expect(store.feeds[0].title).toBe("Testing title")
+        expect(store.feeds[0].url).toBe("http://localhost:8000/rss")
+        expect(store.feeds[0].id).toBe(id)
+    })
+
+    test('feed creation button component', async () => {
         let createFeedCalled = false
         const wrapper = mount(AddButton, { propsData: {
             addItem: () => { createFeedCalled = true }
         }})
         expect(wrapper.html()).toContain("button")
-        wrapper.find({ ref: "add-btn" }).trigger('click')
+        await wrapper.find({ ref: "add-btn" }).trigger('click')
         expect(createFeedCalled).toBeTruthy()
     })
 
-    test("feed removing button component', () => {
-        expect(false).toBeTruthy()
+    test('feed removing button component', async () => {
+        vi.mock('news/services/feed.service.ts')
+        vi.mocked(updateFeed).mockResolvedValue(null)
+        const wrapper = mount(FeedList)
+        await wrapper.get({ ref: 'delete-btn' }).trigger('click')
+        expect(store.feeds.length).toBe(2)
+        expect(wrapper.text()).not.toContain("Second testing feed")
+        expect(wrapper.text()).not.toContain("http://localhost:8000/rss2")
+        expect(wrapper.text()).toContain("First testing feed")
+        expect(wrapper.text()).toContain("http://localhost:8000/rss1")
+        expect(wrapper.text()).toContain("Third testing feed")
+        expect(wrapper.text()).toContain("http://localhost:8000/rss3")
     })
 })

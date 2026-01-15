@@ -104,4 +104,17 @@ describe('feeds store', () => {
         await store.editFeed(store.feeds[1])
         expect(store.feeds[1].title).toBe('Modified testing feed')
     })
+
+    test('feed saving', async () => {
+        await store.loadFeeds()
+        vi.mocked(updateFeed).mockResolvedValue(4)
+        await store.saveFeed({ title: "Fourth testing feed", url: "http://localhost:8000/rss4" })
+        expect(store.feeds.length).toBe(4)
+
+        store.feeds[1].title = 'Modified third testing feed'
+        vi.mocked(updateFeed).mockResolvedValue(null)
+        await store.saveFeed(store.feeds[1])
+        expect(store.feeds.length).toBe(4)
+        expect(store.feeds[1].title).toBe('Modified third testing feed')
+    })
 })

@@ -49,5 +49,16 @@ export const useFilterStore = defineStore('filter', () => {
         } catch(err) {}
     }
 
-    return { filters, loadFilters, addFilter, removeFilter, editFilter }
+    async function saveFilter(filter: Filter) {
+        if (!filter) {
+            return
+        }
+        if (filter.id) {
+            await editFilter(filter)
+        } else {
+            await addFilter(filter)
+        }
+    }
+
+    return { filters, loadFilters, addFilter, removeFilter, editFilter, saveFilter }
 })

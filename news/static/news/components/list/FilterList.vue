@@ -1,36 +1,47 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import { useWindowSize } from '@vueuse/core'
 import AddButton from 'TaskDesk/js/common/components/AddButton.vue'
 import { useFilterStore } from 'news/store/filter'
 import { Filter } from 'news/types/filter'
+import FilterForm from 'news/components/form/FilterForm.vue'
 
+const mdWidth = 768;
+const { width } = useWindowSize()
 const store = useFilterStore()
+const selectedFilter = ref<Filter>(null)
 
-async function addFilter() {
-    const filter = { id: store.filters.length, entry: "test " + store.filters.length, part: 'full', feed: store.filters.length } as Filter
-    await store.addFilter(filter)
+async function createFilter() {
+    selectedFilter.value = { entry: "", part: "start" } as Filter
 }
 </script>
 
 <template>
-    <div class="flex-1 overflow-y-scroll scroll-smooth overflow-x-hidden max-h-[calc(100vh_+_0.75rem)] md:-ml-6 md:pl-6">
-        <div v-for="filter in store.filters" :key="filter.id"
-            class="flex flex-row items-center my-3 p-3 md:mx-4 shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white duration-200 cursor-pointer">
+    <div class="flex flex-row">
+        <div v-if="(!selectedFilter || width >= mdWidth) && store.filters.length"
+            class="flex-1 overflow-y-scroll scroll-smooth overflow-x-hidden max-h-[calc(100vh_+_0.75rem)] md:-ml-6 md:pl-6">
+            <div v-for="filter in store.filters" :key="filter.id"
+                :class="{ '!shadow-lg !scale-[102%]': (selectedFilter && filter.id === selectedFilter.id) }"
+                class="flex flex-row items-center my-3 p-3 md:mx-4 shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white duration-200 cursor-pointer">
 
-            <div class="flex-1">
-                <h2 class="font-semibold flex flex-row justify-between items-start gap-2">
-                    <span v-text="filter.entry" class="text-lg flex-1"></span>
-                </h2>
+                <div class="flex-1">
+                    <h2 class="font-semibold flex flex-row justify-between items-start gap-2">
+                        <span v-text="filter.entry" class="text-lg flex-1"></span>
+                    </h2>
 
-                <p v-if="filter.part" class="flex flex-row gap-1 items-center" v-text="filter.part"></p>
+                    <p v-if="filter.part" class="flex flex-row gap-1 items-center" v-text="filter.part"></p>
 
-                <p v-if="filter.feed" class="flex flex-row gap-1 items-center" v-text="filter.feed"></p>
+                    <p v-if="filter.feed" class="flex flex-row gap-1 items-center" v-text="filter.feed"></p>
+                </div>
+
+                <button type="button" @click="store.removeFilter(filter)" class="action-button hover:bg-red-700 hover:!border-red-700 group ml-auto" ref="delete-btn">
+                    <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-trash group-hover:invert-100"></span>
+                </button>
             </div>
-
-            <button type="button" @click="store.removeFilter(filter)" class="action-button hover:bg-red-700 hover:!border-red-700 group ml-auto">
-                <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-trash group-hover:invert-100"></span>
-            </button>
         </div>
 
-        <AddButton :add-item="addFilter" />
+        <FilterForm v-if="selectedFilter" v-model="selectedFilter" @cancel="selectedFilter = null" @submit="store.saveFilter(selectedFilter)" />
+
+        <AddButton v-if="!selectedFilter" :add-item="createFilter" />
     </div>
 </template>

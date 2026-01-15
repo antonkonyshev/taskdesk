@@ -105,4 +105,17 @@ describe('filters store', () => {
         await store.editFilter(store.filters[1])
         expect(store.filters[1].entry).toBe('testing')
     })
+
+    test('filter saving', async () => {
+        await store.loadFilters()
+        vi.mocked(updateFilter).mockResolvedValue(4)
+        await store.saveFilter({ entry: "fourth", part: "full" })
+        expect(store.filters.length).toBe(4)
+
+        store.filters[1].title = 'three'
+        vi.mocked(updateFilter).mockResolvedValue(null)
+        await store.saveFilter(store.filters[1])
+        expect(store.filters.length).toBe(4)
+        expect(store.filters[1].title).toBe('three')
+    })
 })

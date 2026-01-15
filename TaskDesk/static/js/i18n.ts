@@ -29,6 +29,18 @@ export default createI18n({
                 filters: "Filters",
                 unread: "Unread",
                 reading: "Reading",
+                name: "Title",
+                url: "URL",
+                save: "Save",
+                feed_title_placeholder: "BBC News",
+                feed_url_placeholder: "https://bbc.com/rss",
+                word: "Word",
+                part_of_word: "Part of a word",
+                word_start: "Beginning of a word",
+                word_end: "End of a word",
+                word_full: "Full word",
+                word_part: "Any part of a word",
+                filter_entry_placeholder: "Greenland",
             }
         },
 
@@ -58,6 +70,18 @@ export default createI18n({
                 filters: "Фильтры",
                 unread: "Новые",
                 reading: "Чтение",
+                name: "Название",
+                url: "URL",
+                save: "Сохранить",
+                feed_title_placeholder: "РБК Новости",
+                feed_url_placeholder: "https://rbc.ru/rss",
+                word: "Слово",
+                part_of_word: "Часть слова",
+                word_start: "Начало слова",
+                word_end: "Окончание слова",
+                word_full: "Слово целиком",
+                word_part: "Любая часть слова",
+                filter_entry_placeholder: "Гренланд",
             }
         }
     }

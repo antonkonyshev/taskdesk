@@ -49,5 +49,16 @@ export const useFeedStore = defineStore('feed', () => {
         } catch(err) {}
     }
 
-    return { feeds, loadFeeds, addFeed, editFeed, removeFeed }
+    async function saveFeed(feed: Feed) {
+        if (!feed) {
+            return
+        }
+        if (feed.id) {
+            await editFeed(feed)
+        } else {
+            await addFeed(feed)
+        }
+    }
+
+    return { feeds, loadFeeds, addFeed, removeFeed, editFeed, saveFeed }
 })
