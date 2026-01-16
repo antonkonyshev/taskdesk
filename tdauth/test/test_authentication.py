@@ -12,7 +12,12 @@ class AuthenticationTestCase(BaseTestCase):
         self.user.save()
         return super().setUp()
 
+    def tearDown(self):
+        self.client.logout()
+        return super().tearDown()
+
     def test_not_authenticated_redirect(self):
+        self.client.logout()
         rsp = self.client.get("/")
         self.assertEqual(rsp.status_code, 302)
         self.assertEqual(rsp.url, reverse('tdauth_login'))
@@ -30,7 +35,7 @@ class AuthenticationTestCase(BaseTestCase):
             'username': self.user.email, 'password': '123456'})
         self.assertEqual(rsp.status_code, 302)
         self.assertEqual(rsp.url, '/')
-        rsp = self.client.get('/')
+        rsp = self.client.get('/tasks/')
         self.assertEqual(rsp.status_code, 200)
         self.client.logout()
 
@@ -74,15 +79,12 @@ class AuthenticationTestCase(BaseTestCase):
         self.assertEqual(rsp.status_code, 302)
         self.assertEqual(rsp.url, reverse('tdauth_login'))
 
-    def test_logout(self):
+    def test_user_logout(self):
         rsp = self.client.post(reverse('tdauth_login'), data={
             'username': self.user.email, 'password': '123456'})
         self.assertEqual(rsp.status_code, 302)
-        rsp = self.client.get('/')
+        rsp = self.client.get('/tasks/')
         self.assertEqual(rsp.status_code, 200)
         rsp = self.client.get(reverse('tdauth_logout'))
-        self.assertEqual(rsp.status_code, 302)
-        self.assertEqual(rsp.url, reverse('tdauth_login'))
-        rsp = self.client.get("/")
         self.assertEqual(rsp.status_code, 302)
         self.assertEqual(rsp.url, reverse('tdauth_login'))

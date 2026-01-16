@@ -13,10 +13,10 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "TaskDesk.settings.dev")
 from django.core.asgi import get_asgi_application
 from django.conf import settings
 from fastapi import FastAPI
+from fastapi.exceptions import HTTPException
 from starlette.middleware.cors import CORSMiddleware
-from starlette.exceptions import HTTPException
 
-from .exception_handlers import internal_exception_handler
+from api.exception_handlers import http_api_exception_handler
 
 def create_application():
     django_app = get_asgi_application()
@@ -29,10 +29,10 @@ def create_application():
         allow_headers = ["*"],
     )
 
-    from api.endpoints import api_router
-    app.include_router(api_router, prefix="/api/v1")
+    app.add_exception_handler(HTTPException, http_api_exception_handler)
+    from api.router import TaskDeskAPIRouter
+    app.include_router(TaskDeskAPIRouter, prefix="/api/v1")
     app.mount("/", django_app)
-    app.add_exception_handler(HTTPException, internal_exception_handler)
 
     return app
 

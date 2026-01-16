@@ -24,7 +24,7 @@ class Feed(TaskDeskBaseModel):
         return f"{self.__class__.__name__} (id={self.id}) [{self.url[:16]}]"
 
     def before_save(self):
-        self.url = self.url.lower()
+        self.url = self.url.lower().strip()
 
     def save(self, *args, **kwargs):
         self.before_save()
@@ -45,6 +45,7 @@ class UserFeed(TaskDeskBaseModel):
         'news.Feed', on_delete=models.CASCADE, related_name='userfeeds',
         verbose_name=_('Feed'), null=False
     )
+    title = models.CharField(_("Title"), max_length=64, blank=True, default='')
 
     class Meta:
         verbose_name = _("User feed")
@@ -66,16 +67,17 @@ class News(TaskDeskBaseModel):
         verbose_name=_('Feed'), null=False
     )
 
-    guid = models.CharField(_("GUID"), max_length=32, blank=True)
+    guid = models.CharField(_("GUID"), max_length=32, blank=False, null=False)
     title = models.CharField(_("Title"), max_length=128, blank=False,
                              null=False)
-    description = models.TextField(_("Description"), blank=True)
+    description = models.TextField(_("Description"), blank=True, default='')
     link = models.URLField(_("Link"), max_length=256, blank=False, null=False)
-    author = models.CharField(_("Author"), max_length=32, blank=True)
+    author = models.CharField(_("Author"), max_length=32, blank=True,
+                              default='')
     enclosure_url = models.URLField(_("Enclosure URL"), max_length=256,
-                                    blank=True)
+                                    blank=True, default='')
     enclosure_type = models.CharField(_("Enclosure type"), max_length=32,
-                                      blank=True)
+                                      blank=True, default='')
 
     published = models.DateTimeField(_("Published"), blank=False, null=False,
                                      db_index=True)
@@ -135,7 +137,7 @@ class Filter(TaskDeskBaseModel):
     )
     feed = models.ForeignKey(
         'news.Feed', on_delete=models.CASCADE, related_name='newsfilters',
-        verbose_name=_('Feed'), null=True, blank=True
+        verbose_name=_('Feed'), null=True, blank=True,
     )
 
     entry = models.CharField(_("Entry"), max_length=32, blank=False, null=False)

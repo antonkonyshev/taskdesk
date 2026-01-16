@@ -2,35 +2,24 @@ import shutil
 from asgiref.sync import async_to_sync
 
 from fastapi import WebSocketDisconnect
-from fastapi.testclient import TestClient
 
-from TaskDesk.asgi import application
-from TaskDesk.basetestcase import BaseTestCase
-from tdauth.models import User
 from tasks.storage import TaskStorage
-from api.endpoints import tasks_list, task_delete, task_complete
-from api.schemas import TaskQueryParams, TaskData
+from api.endpoints.task import tasks_list, task_delete, task_complete
+from api.schema.task import TaskQueryParams, TaskData
 
-
-class APITestCase(BaseTestCase):
-    def setUp(self):
-        self.client = TestClient(application)
-        return super().setUp()
+from .api_testcase import APITestCase
 
 
 class TaskEndpointsTestCase(APITestCase):
     def setUp(self):
-        self.user = User.objects.create_user(
-            email="test@example.com", password="123456")
-        self.user.is_active = True
-        self.user.save()
+        result = super().setUp()
         shutil.rmtree(self.user.task_db_path, ignore_errors=True)
         self.storage = async_to_sync(TaskStorage(self.user.task_db_path).load)()
         self.task = self.storage.create_task(description = "testing task", priority="H")
         self.task.save()
         self.atask = self.storage.create_task(description = "another testing task")
         self.atask.save()
-        return super().setUp()
+        return result
 
     def test_not_authenticated(self):
         rsp = self.client.get("/api/v1/task/")

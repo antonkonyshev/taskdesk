@@ -1,48 +1,32 @@
 """
-API related controllers.
+Task management HTTP API related controllers.
 """
 
 from json import JSONDecodeError
-from fastapi import (
-    APIRouter, WebSocket, WebSocketDisconnect, Cookie, HTTPException, Depends,
-    WebSocketException, status
-)
+from fastapi import (WebSocket, WebSocketDisconnect, HTTPException, Depends,
+                     WebSocketException, status)
 
 from tasklib import Task
 from tasks.storage import TaskStorage
-from api.schemas import TaskData, TaskQueryParams
-from django.contrib.sessions.models import Session
-from django.utils import timezone
 from tdauth.models import User
+
+from api.schema.task import TaskData, TaskQueryParams
+from api.authentication import Authentication
+from api.router import TaskDeskAPIRouter
 
 
 class TaskStorageLoader:
     """
-    Authentication based on django sessions and taskwarrior database loading
-    for an authenticated user.
+    TaskWarrior database loading for an authenticated user.
     """
 
-    def __init__(self, wsproto = False):
+    def __init__(self, user: User = Depends(Authentication()), wsproto = False):
+        self.user = user
         self.wsproto = wsproto
-
-    async def authentificate(self, sessionid: str) -> User:
-        try:
-            session = await Session.objects.aget(session_key=sessionid)
-            if timezone.now() <= session.expire_date:
-                return await User.objects.aget(
-                    id = session.get_decoded().get("_auth_user_id"))
-        except Exception as err:
-            # TODO: add logging
-            pass
-        if self.wsproto:
-            raise WebSocketException(code = status.WS_1008_POLICY_VIOLATION)
-        else:
-            raise HTTPException(status_code = status.HTTP_401_UNAUTHORIZED)
     
-    async def __call__(self, sessionid: str = Cookie("sessionid")) -> TaskStorage:
-        user = await self.authentificate(sessionid)
+    async def __call__(self) -> TaskStorage:
         try:
-            return await TaskStorage(user.task_db_path).load()
+            return await TaskStorage(self.user.task_db_path).load()
         except Exception as err:
             # TODO: add logging
             if self.wsproto:
@@ -50,9 +34,8 @@ class TaskStorageLoader:
             else:
                 raise HTTPException(status_code = 500)
 
-api_router = APIRouter(redirect_slashes=True)
 
-@api_router.websocket("/task/{task_uuid}/")
+@TaskDeskAPIRouter.websocket("/task/{task_uuid}/")
 async def task_updating(
     socket: WebSocket,
     task_uuid: str,
@@ -80,7 +63,7 @@ async def task_updating(
     except WebSocketDisconnect:
         pass
 
-@api_router.get("/task/", response_model=list[TaskData])
+@TaskDeskAPIRouter.get("/task/", response_model=list[TaskData])
 async def tasks_list(
     storage: TaskStorage = Depends(TaskStorageLoader()),
     params: TaskQueryParams = Depends(),
@@ -97,7 +80,7 @@ async def tasks_list(
         reverse = params.descending)
     return tasks
 
-@api_router.delete("/task/{task_uuid}/", status_code=status.HTTP_204_NO_CONTENT)
+@TaskDeskAPIRouter.delete("/task/{task_uuid}/", status_code=status.HTTP_204_NO_CONTENT)
 async def task_delete(
     task_uuid: str, storage: TaskStorage = Depends(TaskStorageLoader())
 ):
@@ -114,7 +97,7 @@ async def task_delete(
         # TODO: logging
         raise HTTPException(status_code = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-@api_router.post("/task/{task_uuid}/", status_code=status.HTTP_200_OK)
+@TaskDeskAPIRouter.post("/task/{task_uuid}/", status_code=status.HTTP_200_OK)
 async def task_complete(
     task_uuid: str, storage: TaskStorage = Depends(TaskStorageLoader())
 ):

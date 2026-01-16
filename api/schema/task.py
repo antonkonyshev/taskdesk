@@ -1,5 +1,5 @@
 """
-API related serializers.
+Task management related serializers for HTTP API.
 """
 
 from typing import Optional
