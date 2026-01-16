@@ -1,0 +1,217 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-16 07:08+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+#: TaskDesk/models.py:11
+msgid "Created"
+msgstr "Создан(а)"
+
+#: TaskDesk/templates/_header.html:21
+#: tdauth/templates/tdauth/_auth_form.html:40
+msgid "Sign In"
+msgstr "Вход"
+
+#: TaskDesk/templates/_header.html:32
+msgid "Tasks"
+msgstr "Задачи"
+
+#: TaskDesk/templates/_header.html:39
+msgid "Notes"
+msgstr "Заметки"
+
+#: TaskDesk/templates/_header.html:46 news/models.py:84 news/models.py:85
+#: news/models.py:106
+msgid "News"
+msgstr "Новости"
+
+#: TaskDesk/templates/_header.html:57
+msgid "Sign Out"
+msgstr "Выход"
+
+#: api/apps.py:9
+msgid "Backend HTTP API related business logic"
+msgstr "Бизнес-логика, относящаяся к HTTP API"
+
+#: home/apps.py:9
+msgid "Wagtail based site pages"
+msgstr "Страницы сайта, основанные на Wagtail CMS"
+
+#: news/apps.py:9
+msgid "News feed"
+msgstr "Лента новостей"
+
+#: news/models.py:14
+msgid "URL"
+msgstr "URL"
+
+#: news/models.py:18 news/models.py:46 news/models.py:66 news/models.py:138
+msgid "Feed"
+msgstr "Лента новостей"
+
+#: news/models.py:19
+msgid "Feeds"
+msgstr "Ленты новостей"
+
+#: news/models.py:42 news/models.py:102 news/models.py:134 tdauth/models.py:61
+msgid "User"
+msgstr "Пользователь"
+
+#: news/models.py:50
+msgid "User feed"
+msgstr "Пользовательская лента новостей"
+
+#: news/models.py:51
+msgid "User feeds"
+msgstr "Пользовательские ленты новостей"
+
+#: news/models.py:69
+msgid "GUID"
+msgstr "GUID"
+
+#: news/models.py:70
+msgid "Title"
+msgstr "Заголовок"
+
+#: news/models.py:72
+msgid "Description"
+msgstr "Описание"
+
+#: news/models.py:73
+msgid "Link"
+msgstr "Ссылка"
+
+#: news/models.py:74
+msgid "Author"
+msgstr "Автор"
+
+#: news/models.py:75
+msgid "Enclosure URL"
+msgstr "URL вложения"
+
+#: news/models.py:77
+msgid "Enclosure type"
+msgstr "Тип вложения"
+
+#: news/models.py:80
+msgid "Published"
+msgstr "Опубликована"
+
+#: news/models.py:110
+msgid "Hidden"
+msgstr "Скрыта"
+
+#: news/models.py:111
+msgid "Bookmark"
+msgstr "Закладка"
+
+#: news/models.py:114
+msgid "Category"
+msgstr "Категория"
+
+#: news/models.py:119
+msgid "Mark"
+msgstr "Отметка"
+
+#: news/models.py:120
+msgid "Marks"
+msgstr "Отметки"
+
+#: news/models.py:141
+msgid "Entry"
+msgstr "Слово"
+
+#: news/models.py:144
+msgid "Beginning of a word"
+msgstr "Начало слова"
+
+#: news/models.py:145
+msgid "End of a word"
+msgstr "Окончание слова"
+
+#: news/models.py:146
+msgid "Whole word"
+msgstr "Слово целиком"
+
+#: news/models.py:147
+msgid "Any part of a word"
+msgstr "Любая часть слова"
+
+#: news/models.py:150
+msgid "Part of a word"
+msgstr "Часть слова"
+
+#: news/models.py:155
+msgid "News filter"
+msgstr "Фильтр новостей"
+
+#: news/models.py:156
+msgid "News filters"
+msgstr "Фильтры новостей"
+
+#: notes/apps.py:9
+msgid "Notes management"
+msgstr "Управление заметками"
+
+#: tasks/apps.py:9
+msgid "Tasks management"
+msgstr "Управление задачами"
+
+#: tdauth/admin.py:17 tdauth/models.py:62
+msgid "Users"
+msgstr "Пользователи"
+
+#: tdauth/apps.py:9
+msgid "User registration and authentication functionality"
+msgstr "Функционал регистрации и аутентификации пользователей"
+
+#: tdauth/models.py:24
+msgid "Email is a required field"
+msgstr "Адрес электронной почти - обязательное поле"
+
+#: tdauth/models.py:40
+msgid "Email"
+msgstr "Email"
+
+#: tdauth/models.py:41
+msgid "First name"
+msgstr "Имя"
+
+#: tdauth/models.py:42
+msgid "TaskWarrior database path"
+msgstr "Путь к базе данных TaskWarrior"
+
+#: tdauth/models.py:46
+msgid "Staff status"
+msgstr "Статус персонала"
+
+#: tdauth/models.py:47
+msgid "Designates whether the user can log into this admin site."
+msgstr "Определяет, может ли пользователь войти в панель управления сайтом."
+
+#: tdauth/models.py:48
+msgid "Active"
+msgstr "Активирован(а)"
+
+#: tdauth/models.py:49
+msgid ""
+"Designates whether this user should be treated as active. Unselect this "
+"instead of deleting accounts."
+msgstr "Определяет, следует ли считать пользователя активным. Вместо удаления "
+"следует отключить этот флаг."

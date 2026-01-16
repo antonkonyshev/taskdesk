@@ -7,6 +7,7 @@ export interface News {
     published?: Date
     updated?: Date
     author?: string
-    enclosure?: string
+    enclosure_url?: string
+    enclosure_type?: string
     feed?: number
 }
