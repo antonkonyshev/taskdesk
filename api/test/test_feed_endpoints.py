@@ -31,9 +31,9 @@ class FeedEndpointsTestCase(APITestCase):
     def test_not_authenticated(self):
         rsp = self.client.get("/api/v1/feed/")
         self.assertEqual(rsp.status_code, 401)
-        rsp = self.client.delete(f"/api/v1/task/{self.userfeed.id}/")
+        rsp = self.client.delete(f"/api/v1/feed/{self.userfeed.id}/")
         self.assertEqual(rsp.status_code, 401)
-        rsp = self.client.post(f"/api/v1/task/{self.userfeed.id}/")
+        rsp = self.client.post(f"/api/v1/feed/{self.userfeed.id}/")
         self.assertEqual(rsp.status_code, 401)
 
     def test_feeds_list(self):
@@ -82,3 +82,5 @@ class FeedEndpointsTestCase(APITestCase):
         userfeed = self.user.feeds.get(feed_id=self.afeed.id)
         rsp = self.client.delete(f"/api/v1/feed/{userfeed.id}/")
         self.assertEqual(rsp.status_code, 204)
+        userfeed = self.user.feeds.filter(id=userfeed.id).first()
+        self.assertIsNone(userfeed)

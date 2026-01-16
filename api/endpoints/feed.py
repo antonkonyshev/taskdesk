@@ -2,9 +2,7 @@
 News feeds management HTTP API endpoints.
 """
 
-from json import JSONDecodeError
-from fastapi import HTTPException, Depends, status
-from fastapi.responses import JSONResponse
+from fastapi import Depends, status
 
 from tdauth.models import User
 from news.models import Feed, UserFeed

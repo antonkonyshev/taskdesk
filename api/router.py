@@ -12,3 +12,4 @@ TaskDeskAPIRouter = APIRouter(redirect_slashes=True,
 
 from api.endpoints.task import *
 from api.endpoints.feed import *
+from api.endpoints.filter import *

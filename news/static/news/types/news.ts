@@ -9,5 +9,5 @@ export interface News {
     author?: string
     enclosure_url?: string
     enclosure_type?: string
-    feed?: number
+    feed_id?: number
 }

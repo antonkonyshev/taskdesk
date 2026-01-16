@@ -136,7 +136,7 @@ class Filter(TaskDeskBaseModel):
         related_name='newsfilters', verbose_name=_('User'), null=False
     )
     feed = models.ForeignKey(
-        'news.Feed', on_delete=models.CASCADE, related_name='newsfilters',
+        'news.UserFeed', on_delete=models.CASCADE, related_name='newsfilters',
         verbose_name=_('Feed'), null=True, blank=True,
     )
 
@@ -173,4 +173,4 @@ class Filter(TaskDeskBaseModel):
     
     async def asave(self, *args, **kwargs):
         self.before_save()
-        return await super(Filter, self).save(*args, **kwargs)
+        return await super(Filter, self).asave(*args, **kwargs)
