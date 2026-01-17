@@ -7,7 +7,7 @@ import i18n from 'TaskDesk/js/i18n'
 import FilterList from 'news/components/list/FilterList.vue'
 import AddButton from 'TaskDesk/js/common/components/AddButton.vue'
 import FilterForm from 'news/components/form/FilterForm.vue'
-import { updateFilter } from 'news/services/filter.service'
+import { updateFilter, fetchFilters } from 'news/services/filter.service'
 
 describe('filters related components rendering', () => {
     let filter = null
@@ -16,7 +16,7 @@ describe('filters related components rendering', () => {
     let store = null
 
     beforeEach(() => {
-        setActivePinia(createPinia())
+        vi.mock('news/services/filter.service.ts')
         config.global.plugins = [i18n]
         filter = {
             id: 2,
@@ -35,15 +35,18 @@ describe('filters related components rendering', () => {
             part: "end",
             feed: 3
         } as Filter
+        vi.mocked(fetchFilters).mockResolvedValue([filter, afilter, aafilter])
+        vi.mocked(updateFilter).mockResolvedValue(null)
+        setActivePinia(createPinia())
         store = useFilterStore()
-        store.filters = [filter, afilter, aafilter]
     })
 
     afterEach(() => {
         vi.resetAllMocks()
     })
 
-    test('filters list component', () => {
+    test('filters list component', async () => {
+        await store.loadFilters()
         const wrapper = mount(FilterList)
         expect(wrapper.text()).toContain("first")
         expect(wrapper.text()).toContain("second")
@@ -86,6 +89,7 @@ describe('filters related components rendering', () => {
     })
 
     test('filter editing form', async () => {
+        await store.loadFilters()
         let cancelled = false
         let submitted = false
         const id = store.filters[0].id
@@ -115,10 +119,11 @@ describe('filters related components rendering', () => {
         vi.mock('news/services/filter.service.ts')
         vi.mocked(updateFilter).mockResolvedValue(null)
         const wrapper = mount(FilterList)
+        await store.loadFilters()
         await wrapper.get({ ref: 'delete-btn' }).trigger('click')
         expect(store.filters.length).toBe(2)
-        expect(wrapper.text()).not.toContain("second")
+        expect(wrapper.text()).toContain("second")
         expect(wrapper.text()).toContain("first")
-        expect(wrapper.text()).toContain("third")
+        expect(wrapper.text()).not.toContain("third")
     })
 })

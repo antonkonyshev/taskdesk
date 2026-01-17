@@ -36,10 +36,16 @@ async def create_filter(
     filter = None
     if filter_id:
         filter = await user.newsfilters.filter(id=filter_id).afirst()
+    else:
+        filter = await user.newsfilters.filter(
+            entry=filter_data.entry, part=filter_data.part,
+            feed_id=filter_data.feed_id).afirst()
+        if filter:
+            return FilterData.from_filter(filter)
     if filter:
         if (
             filter.entry != filter_data.entry or filter.part != filter_data.part
-            or filter.feed_id != userfeed.id
+            or filter.feed_id != getattr(userfeed, 'feed_id', None)
         ):
             filter.entry = filter_data.entry
             filter.part = filter_data.part

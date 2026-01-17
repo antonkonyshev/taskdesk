@@ -18,13 +18,13 @@ export const updateFeed = async (feed: Feed, method: 'post'|'delete'): Promise<a
             const options = { method: method }
             if (method == "post") {
                 options['body'] = JSON.stringify({ url: feed.url, title: feed.title })
-                options['headers'] = {
-                    "Content-Type": "application/json",
-                    // @ts-ignore
-                    "X-CSRFToken": window.CSRFTOKEN
-                }
-                options['credentials'] = 'include'
             }
+            options['headers'] = {
+                "Content-Type": "application/json",
+                // @ts-ignore
+                "X-CSRFToken": window.CSRFTOKEN
+            }
+            options['credentials'] = 'include'
             // @ts-ignore
             const rsp = await fetch(window.API_BASE_URL +
                 "/feed/" + (feed.id ? (feed.id + "/") : ""), options)

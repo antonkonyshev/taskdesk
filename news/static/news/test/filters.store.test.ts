@@ -56,9 +56,9 @@ describe('filters store', () => {
 
     test('filter creation', async () => {
         await store.loadFilters()
-        const nfilter = {entry: "fourth", part: "full"} as Filter
-        vi.mocked(updateFilter).mockResolvedValue(4)
-        await store.addFilter(nfilter)
+        const nfilter = {id: 4, entry: "fourth", part: "full"} as Filter
+        vi.mocked(updateFilter).mockResolvedValue(nfilter)
+        await store.saveFilter(nfilter)
         expect(store.filters.length).toBe(4)
         expect(store.filters[0].id).toBe(4)
         expect(store.filters[0].entry).toBe('fourth')
@@ -70,7 +70,7 @@ describe('filters store', () => {
         await store.loadFilters()
         const nfilter = {entry: "test", part: "full"} as Filter
         vi.mocked(updateFilter).mockRejectedValue(new Error('Internal server error'))
-        await store.addFilter(nfilter)
+        await store.saveFilter(nfilter)
         expect(store.filters.length).toBe(3)
         expect(store.filters[0].id).toBe(3)
         expect(store.filters[0].entry).toBe('third')
@@ -102,14 +102,15 @@ describe('filters store', () => {
     test('filter editing', async () => {
         await store.loadFilters()
         store.filters[1].entry = 'testing'
-        await store.editFilter(store.filters[1])
+        await store.saveFilter(store.filters[1])
         expect(store.filters[1].entry).toBe('testing')
     })
 
     test('filter saving', async () => {
         await store.loadFilters()
-        vi.mocked(updateFilter).mockResolvedValue(4)
-        await store.saveFilter({ entry: "fourth", part: "full" })
+        const newFilter = { id: 4, entry: "fourth", part: "full" }
+        vi.mocked(updateFilter).mockResolvedValue(newFilter)
+        await store.saveFilter(newFilter)
         expect(store.filters.length).toBe(4)
 
         store.filters[1].title = 'three'

@@ -44,7 +44,7 @@ const submit = () => {
             </p>
 
             <p class="mt-6">
-                <button type="submit" @click="submit()" v-text="t('message.save')" ref="submit-btn"
+                <button type="submit" @click.stop="submit()" v-text="t('message.save')" ref="submit-btn"
                     class="bg-green-700 hover:bg-green-600 text-white transition-colors duration-200 hover:cursor-pointer font-bold py-3 px-6 rounded-lg min-w-xs sm:min-w-sm">
                 </button>
             </p>

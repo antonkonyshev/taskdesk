@@ -6,31 +6,44 @@ import { fetchFilters, updateFilter } from 'news/services/filter.service'
 export const useFilterStore = defineStore('filter', () => {
     const filters = ref<Array<Filter>>([])
 
-    async function loadFilters() {
-        (await fetchFilters()).forEach(async (filter: Filter) => {
-            const idx = filters.value.findIndex((elem) => elem.id == filter.id)
-            if (idx >= 0) {
-                filters.value[idx] = filter
-            } else {
-                filters.value.unshift(filter)
-            }
-        })
+    function refreshFilter(filter: Filter) {
+        if (!filter) {
+            return 
+        }
+        const idx = filters.value.findIndex(
+            (elem) => (filter.id && elem.id) ? filter.id == elem.id : (
+                filter.entry == elem.entry &&
+                filter.part == elem.part && filter.feed_id == elem.feed_id
+            ))
+        if (idx >= 0) {
+            filters.value.splice(idx, 1, filter)
+        } else {
+            filters.value.unshift(filter)
+        }
     }
 
-    async function addFilter(filter: Filter) {
-        filters.value.unshift(filter)
+    const loadFilters = async () => (await fetchFilters()).forEach(refreshFilter)
+
+    async function saveFilter(filter: Filter) {
+        if (!filter.id) {
+            filter.entry = filter.entry.toLowerCase()
+            filters.value.unshift(filter)
+        }
         try {
-            filter.id = await updateFilter(filter, 'post')
+            refreshFilter(await updateFilter(filter, 'post'))
         } catch(err) {
-            filters.value.splice(0, 1)
+            if (!filter.id) {
+                filters.value.splice(0, 1)
+            }
         }
     }
 
     async function removeFilter(filter: Filter) {
-        if (!filter.id) {
-            return
-        }
-        const idx = filters.value.findIndex((elem) => elem.id == filter.id)
+        const idx = filters.value.findIndex(
+            (elem) => (filter.id && elem.id) ? filter.id == elem.id : (
+                filter.entry == elem.entry && filter.part == elem.part &&
+                filter.feed_id == elem.feed_id
+            ))
         if (idx >= 0) {
             filters.value.splice(idx, 1)
         }
@@ -43,22 +56,5 @@ export const useFilterStore = defineStore('filter', () => {
         }
     }
 
-    async function editFilter(filter: Filter) {
-        try {
-            await updateFilter(filter, 'patch')
-        } catch(err) {}
-    }
-
-    async function saveFilter(filter: Filter) {
-        if (!filter) {
-            return
-        }
-        if (filter.id) {
-            await editFilter(filter)
-        } else {
-            await addFilter(filter)
-        }
-    }
-
-    return { filters, loadFilters, addFilter, removeFilter, editFilter, saveFilter }
+    return { filters, loadFilters, removeFilter, saveFilter }
 })

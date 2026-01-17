@@ -22,6 +22,7 @@ export const useFeedStore = defineStore('feed', () => {
 
     async function saveFeed(feed: Feed) {
         if (!feed.id) {
+            feed.url = feed.url.toLowerCase()
             feeds.value.unshift(feed)
         }
         try {
