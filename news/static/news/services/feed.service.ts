@@ -4,7 +4,7 @@ export const fetchFeeds = async (): Promise<Array<any>> => {
     return new Promise(async (resolve, reject) => {
         try {
             // @ts-ignore
-            const rsp = await fetch(window.API_BASE_URL + "/news/feed/")
+            const rsp = await fetch(window.API_BASE_URL + "/feed/")
             rsp.ok ? resolve(await rsp.json()) : reject(rsp.status)
         } catch(err) {
             reject(err)
@@ -12,20 +12,25 @@ export const fetchFeeds = async (): Promise<Array<any>> => {
     })
 }
 
-export const updateFeed = async (feed: Feed, method: 'post'|'patch'|'delete'): Promise<any> => {
+export const updateFeed = async (feed: Feed, method: 'post'|'delete'): Promise<any> => {
     return new Promise(async (resolve, reject) => {
         try {
             const options = { method: method }
-            if (method == "post" || method == "patch") {
+            if (method == "post") {
                 options['body'] = JSON.stringify({ url: feed.url, title: feed.title })
-                options['headers'] = { "Content-Type": "application/json" }
+                options['headers'] = {
+                    "Content-Type": "application/json",
+                    // @ts-ignore
+                    "X-CSRFToken": window.CSRFTOKEN
+                }
+                options['credentials'] = 'include'
             }
             // @ts-ignore
             const rsp = await fetch(window.API_BASE_URL +
-                "/news/feed/" + (feed.id ? (feed.id + "/") : ""), options)
+                "/feed/" + (feed.id ? (feed.id + "/") : ""), options)
             if (rsp.ok) {
                 try {
-                    method == 'post' ? resolve((await rsp.json()).id) : resolve(null)
+                    method == 'post' ? resolve(await rsp.json()) : resolve(null)
                 } catch (err) {
                     resolve(null)
                 }

@@ -12,6 +12,7 @@ export const fetchFilters = async (): Promise<Array<any>> => {
     })
 }
 
+// TODO: Modify these methods
 export const updateFilter = async (filter: Filter, method: 'post'|'patch'|'delete'): Promise<any> => {
     return new Promise(async (resolve, reject) => {
         try {

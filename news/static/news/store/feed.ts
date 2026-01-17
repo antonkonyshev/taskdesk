@@ -6,31 +6,35 @@ import { fetchFeeds, updateFeed } from 'news/services/feed.service'
 export const useFeedStore = defineStore('feed', () => {
     const feeds = ref<Array<Feed>>([])
 
-    async function loadFeeds() {
-        (await fetchFeeds()).forEach(async (feed: Feed) => {
-            const idx = feeds.value.findIndex((elem) => elem.id == feed.id)
-            if (idx >= 0) {
-                feeds.value[idx] = feed
-            } else {
-                feeds.value.unshift(feed)
-            }
-        })
+    function refreshFeed(feed: Feed) {
+        if (!feed) {
+            return 
+        }
+        const idx = feeds.value.findIndex((elem) => (feed.id && elem.id) ? feed.id == elem.id : feed.url == elem.url)
+        if (idx >= 0) {
+            feeds.value.splice(idx, 1, feed)
+        } else {
+            feeds.value.unshift(feed)
+        }
     }
 
-    async function addFeed(feed: Feed) {
-        feeds.value.unshift(feed)
+    const loadFeeds = async () => (await fetchFeeds()).forEach(refreshFeed)
+
+    async function saveFeed(feed: Feed) {
+        if (!feed.id) {
+            feeds.value.unshift(feed)
+        }
         try {
-            feed.id = await updateFeed(feed, 'post')
+            refreshFeed(await updateFeed(feed, 'post'))
         } catch(err) {
-            feeds.value.splice(0, 1)
+            if (!feed.id) {
+                feeds.value.splice(0, 1)
+            }
         }
     }
 
     async function removeFeed(feed: Feed) {
-        if (!feed.id) {
-            return
-        }
-        const idx = feeds.value.findIndex((elem) => elem.id == feed.id)
+        const idx = feeds.value.findIndex((elem) => (feed.id && elem.id) ? elem.id == feed.id : feed.url == elem.url)
         if (idx >= 0) {
             feeds.value.splice(idx, 1)
         }
@@ -43,22 +47,5 @@ export const useFeedStore = defineStore('feed', () => {
         }
     }
 
-    async function editFeed(feed: Feed) {
-        try {
-            await updateFeed(feed, 'patch')
-        } catch(err) {}
-    }
-
-    async function saveFeed(feed: Feed) {
-        if (!feed) {
-            return
-        }
-        if (feed.id) {
-            await editFeed(feed)
-        } else {
-            await addFeed(feed)
-        }
-    }
-
-    return { feeds, loadFeeds, addFeed, removeFeed, editFeed, saveFeed }
+    return { feeds, loadFeeds, removeFeed, saveFeed }
 })

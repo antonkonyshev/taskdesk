@@ -2,7 +2,7 @@ import { config, mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from "pinia"
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { useFeedStore } from 'news/store/feed'
-import { updateFeed } from 'news/services/feed.service'
+import { updateFeed, fetchFeeds } from 'news/services/feed.service'
 import { Feed } from 'news/types/feed'
 import i18n from 'TaskDesk/js/i18n'
 import FeedList from 'news/components/list/FeedList.vue'
@@ -16,6 +16,7 @@ describe('feeds related components rendering', () => {
     let store = null
 
     beforeEach(() => {
+        vi.mock('news/services/feed.service.ts')
         setActivePinia(createPinia())
         config.global.plugins = [i18n]
         feed = {
@@ -33,16 +34,17 @@ describe('feeds related components rendering', () => {
             url: "http://localhost:8000/rss3",
             title: "Third testing feed",
         } as Feed
+        vi.mocked(fetchFeeds).mockResolvedValue([feed, afeed, aafeed])
         store = useFeedStore()
-        store.feeds = [feed, afeed, aafeed]
     })
 
     afterEach(() => {
         vi.resetAllMocks()
     })
 
-    test('feeds list component', () => {
+    test('feeds list component', async () => {
         const wrapper = mount(FeedList)
+        await store.loadFeeds()
         expect(wrapper.text()).toContain("First testing feed")
         expect(wrapper.text()).toContain("http://localhost:8000/rss1")
         expect(wrapper.text()).toContain("Second testing feed")
@@ -77,6 +79,7 @@ describe('feeds related components rendering', () => {
     })
 
     test('feed editing form', async () => {
+        await store.loadFeeds()
         let cancelled = false
         let submitted = false
         const id = store.feeds[0].id
@@ -116,13 +119,14 @@ describe('feeds related components rendering', () => {
         vi.mock('news/services/feed.service.ts')
         vi.mocked(updateFeed).mockResolvedValue(null)
         const wrapper = mount(FeedList)
+        await store.loadFeeds()
         await wrapper.get({ ref: 'delete-btn' }).trigger('click')
         expect(store.feeds.length).toBe(2)
-        expect(wrapper.text()).not.toContain("Second testing feed")
-        expect(wrapper.text()).not.toContain("http://localhost:8000/rss2")
+        expect(wrapper.text()).toContain("Second testing feed")
+        expect(wrapper.text()).toContain("http://localhost:8000/rss2")
         expect(wrapper.text()).toContain("First testing feed")
         expect(wrapper.text()).toContain("http://localhost:8000/rss1")
-        expect(wrapper.text()).toContain("Third testing feed")
-        expect(wrapper.text()).toContain("http://localhost:8000/rss3")
+        expect(wrapper.text()).not.toContain("Third testing feed")
+        expect(wrapper.text()).not.toContain("http://localhost:8000/rss3")
     })
 })

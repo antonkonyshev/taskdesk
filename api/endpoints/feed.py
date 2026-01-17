@@ -22,18 +22,24 @@ async def list_feeds(user: User = Depends(Authentication())):
 
 
 @TaskDeskAPIRouter.post("/feed/", response_model=FeedData)
-async def create_feed(
+@TaskDeskAPIRouter.post("/feed/{feed_id}/", response_model=FeedData)
+async def update_feed(
     feeddata: FeedData,
+    feed_id: int | None = None,
     user: User = Depends(Authentication())
 ):
     """The endpoint creates or updates a news feed records."""
     feeddata.url = feeddata.url.lower().strip()
-    feed = await Feed.objects.filter(url=feeddata.url).afirst()
+    feed = None
+    if feed_id:
+        feed = await Feed.objects.filter(id=feed_id).afirst()
+    if not feed:
+        feed = await Feed.objects.filter(url=feeddata.url).afirst()
     if not feed:
         feed = Feed(url=feeddata.url)
         await feed.asave()
-    userfeed = await UserFeed.objects.select_related('feed').filter(
-        user_id=user.id, feed_id=feed.id).afirst()
+    userfeed = await user.feeds.select_related('feed').filter(
+        feed_id=feed.id).afirst()
     if not userfeed:
         userfeed = UserFeed(user=user, feed=feed, title=feeddata.title)
         await userfeed.asave()
@@ -47,7 +53,6 @@ async def create_feed(
                           status_code=status.HTTP_204_NO_CONTENT)
 async def delete_feed(userfeed_id: int, user: User = Depends(Authentication())):
     """The endpoint removes a relation between a user and a news feed."""
-    userfeed = await UserFeed.objects.filter(user_id=user.id,
-                                       feed_id=userfeed_id).afirst()
+    userfeed = await user.feeds.filter(feed_id=userfeed_id).afirst()
     if userfeed:
         await userfeed.adelete()

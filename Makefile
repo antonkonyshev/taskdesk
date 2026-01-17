@@ -4,5 +4,8 @@ dev:
 test:
 	python manage.py test --settings=TaskDesk.settings.testing
 
+vitest:
+	npm run test
+
 down:
 	sudo docker compose down

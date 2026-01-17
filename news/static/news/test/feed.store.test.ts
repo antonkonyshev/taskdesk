@@ -54,8 +54,9 @@ describe('feeds store', () => {
 
     test('feed creation', async () => {
         await store.loadFeeds()
-        vi.mocked(updateFeed).mockResolvedValue(4)
-        await store.addFeed({ title: "Fourth testing feed", url: "http://localhost:8000/rss4" })
+        const newFeed = { id: 4, title: "Fourth testing feed", url: "http://localhost:8000/rss4" }
+        vi.mocked(updateFeed).mockResolvedValue(newFeed)
+        await store.saveFeed(newFeed)
         expect(store.feeds.length).toBe(4)
         expect(store.feeds[0].id).toBe(4)
         expect(store.feeds[0].title).toBe('Fourth testing feed')
@@ -66,7 +67,7 @@ describe('feeds store', () => {
     test('feed creation with error', async () => {
         await store.loadFeeds()
         vi.mocked(updateFeed).mockRejectedValue(new Error('Internal server error'))
-        await store.addFeed({ title: "Fourth testing feed", url: "http://localhost:8000/rss4" })
+        await store.saveFeed({ title: "Fourth testing feed", url: "http://localhost:8000/rss4" })
         expect(store.feeds.length).toBe(3)
         expect(store.feeds[0].id).toBe(3)
         expect(store.feeds[0].title).toBe('Third testing feed')
@@ -101,14 +102,15 @@ describe('feeds store', () => {
         await store.loadFeeds()
         const feed = store.feeds[1]
         feed.title = 'Modified testing feed'
-        await store.editFeed(store.feeds[1])
+        await store.saveFeed(store.feeds[1])
         expect(store.feeds[1].title).toBe('Modified testing feed')
     })
 
     test('feed saving', async () => {
         await store.loadFeeds()
-        vi.mocked(updateFeed).mockResolvedValue(4)
-        await store.saveFeed({ title: "Fourth testing feed", url: "http://localhost:8000/rss4" })
+        const newFeed = { id: 4, title: "Fourth testing feed", url: "http://localhost:8000/rss4" }
+        vi.mocked(updateFeed).mockResolvedValue(newFeed)
+        await store.saveFeed(newFeed)
         expect(store.feeds.length).toBe(4)
 
         store.feeds[1].title = 'Modified third testing feed'
