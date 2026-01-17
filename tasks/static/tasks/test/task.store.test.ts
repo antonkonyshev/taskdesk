@@ -9,6 +9,7 @@ import {
 } from 'tasks/services/tasks.service'
 import i18n from 'TaskDesk/js/i18n'
 import { useTasksStore } from 'tasks/store/tasks'
+import { fetchItems } from 'TaskDesk/js/common/service'
 
 describe('task store', () => {
     let task = null
@@ -19,6 +20,7 @@ describe('task store', () => {
     beforeEach(() => {
         vi.useFakeTimers({ shouldAdvanceTime: true })
         vi.mock('tasks/services/tasks.service.ts')
+        vi.mock('TaskDesk/js/common/service.ts')
         vi.mocked(prepareTaskSocket).mockResolvedValue({})
         vi.mocked(closeTaskSocket).mockResolvedValue()
         setActivePinia(createPinia())
@@ -50,6 +52,7 @@ describe('task store', () => {
             depends: [],
             annotations: [],
         } as Task
+        vi.mocked(fetchItems).mockResolvedValue([task, atask, aatask])
         const tasksStore = useTasksStore()
         tasksStore.tasks = [task, atask, aatask]
         store = useTaskStore()

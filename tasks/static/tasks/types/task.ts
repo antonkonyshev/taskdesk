@@ -1,9 +1,12 @@
-export interface Annotation {
+import { Entity } from 'TaskDesk/js/common/types/entity'
+
+
+export interface Annotation extends Entity {
     entry?: Date
     description: string
 }
 
-export interface Task {
+export interface Task extends Entity {
     id?: number
     uuid?: string
     description?: string

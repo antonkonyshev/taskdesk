@@ -1,7 +1,9 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useWindowSize } from '@vueuse/core'
-import { closeTaskSocket, fetchTasks } from 'tasks/services/tasks.service'
+import { closeTaskSocket } from 'tasks/services/tasks.service'
+import { fetchItems } from 'TaskDesk/js/common/service'
+import { refreshItem } from 'TaskDesk/js/common/store'
 import { Task } from 'tasks/types/task'
 import { useTaskStore } from 'tasks/store/task'
 
@@ -10,16 +12,9 @@ export const useTasksStore = defineStore('tasks', () => {
     const taskStore = useTaskStore()
     const { width } = useWindowSize()
 
-    async function loadTasks() {
-        (await fetchTasks()).forEach(async (target: Task) => {
-            const idx = tasks.value.findIndex((elem) => elem.uuid == target.uuid)
-            if (idx >= 0) {
-                tasks.value[idx] = target
-            } else {
-                tasks.value.push(target)
-            }
-        })
-    }
+    const endpoint = () => "/task/"
+    const displayTask = (task: Task) => refreshItem(task, tasks, (elem: Task) => (task.uuid == elem.uuid), true)
+    const loadTasks = async () => (await fetchItems(endpoint())).forEach(displayTask)
 
     function createTask() {
         const task = {

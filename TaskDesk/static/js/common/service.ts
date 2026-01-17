@@ -1,10 +1,11 @@
-import { Feed } from 'news/types/feed'
+import { Entity } from 'TaskDesk/js/common/types/entity'
 
-export const fetchFeeds = async (): Promise<Array<any>> => {
+
+export const fetchItems = async (endpoint: string): Promise<Array<Entity>> => {
     return new Promise(async (resolve, reject) => {
         try {
             // @ts-ignore
-            const rsp = await fetch(window.API_BASE_URL + "/feed/")
+            const rsp = await fetch(window.API_BASE_URL + endpoint)
             rsp.ok ? resolve(await rsp.json()) : reject(rsp.status)
         } catch(err) {
             reject(err)
@@ -12,22 +13,22 @@ export const fetchFeeds = async (): Promise<Array<any>> => {
     })
 }
 
-export const updateFeed = async (feed: Feed, method: 'post'|'delete'): Promise<any> => {
+export const updateItem = async (
+    item: Entity, method: 'post'|'delete', endpoint: string,
+): Promise<Entity> => {
     return new Promise(async (resolve, reject) => {
         try {
-            const options = { method: method }
-            if (method == "post") {
-                options['body'] = JSON.stringify({ url: feed.url, title: feed.title })
-            }
-            options['headers'] = {
+            const options = { method: method, headers: {
                 "Content-Type": "application/json",
                 // @ts-ignore
-                "X-CSRFToken": window.CSRFTOKEN
+                "X-CSRFToken": window.CSRFTOKEN,
+                credentials: 'include',
+            }}
+            if (method == "post") {
+                options['body'] = JSON.stringify(item)
             }
-            options['credentials'] = 'include'
             // @ts-ignore
-            const rsp = await fetch(window.API_BASE_URL +
-                "/feed/" + (feed.id ? (feed.id + "/") : ""), options)
+            const rsp = await fetch(window.API_BASE_URL + endpoint, options)
             if (rsp.ok) {
                 try {
                     method == 'post' ? resolve(await rsp.json()) : resolve(null)

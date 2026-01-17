@@ -2,7 +2,7 @@ import { config } from '@vue/test-utils'
 import { createPinia, setActivePinia } from "pinia"
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { useFilterStore } from 'news/store/filter'
-import { fetchFilters, updateFilter } from 'news/services/filter.service'
+import { fetchItems, updateItem } from 'TaskDesk/js/common/service'
 import { Filter } from 'news/types/filter'
 import i18n from 'TaskDesk/js/i18n'
 
@@ -13,7 +13,7 @@ describe('filters store', () => {
     let store = null
 
     beforeEach(() => {
-        vi.mock('news/services/filter.service.ts')
+        vi.mock('TaskDesk/js/common/service.ts')
         filter = {
             id: 2,
             entry: "second",
@@ -31,8 +31,8 @@ describe('filters store', () => {
             part: "end",
             feed: 3
         } as Filter
-        vi.mocked(updateFilter).mockResolvedValue(null)
-        vi.mocked(fetchFilters).mockResolvedValue([filter, afilter, aafilter])
+        vi.mocked(updateItem).mockResolvedValue(null)
+        vi.mocked(fetchItems).mockResolvedValue([filter, afilter, aafilter])
         setActivePinia(createPinia())
         store = useFilterStore()
         config.global.plugins = [i18n]
@@ -57,7 +57,7 @@ describe('filters store', () => {
     test('filter creation', async () => {
         await store.loadFilters()
         const nfilter = {id: 4, entry: "fourth", part: "full"} as Filter
-        vi.mocked(updateFilter).mockResolvedValue(nfilter)
+        vi.mocked(updateItem).mockResolvedValue(nfilter)
         await store.saveFilter(nfilter)
         expect(store.filters.length).toBe(4)
         expect(store.filters[0].id).toBe(4)
@@ -69,7 +69,7 @@ describe('filters store', () => {
     test('filter creation with error', async () => {
         await store.loadFilters()
         const nfilter = {entry: "test", part: "full"} as Filter
-        vi.mocked(updateFilter).mockRejectedValue(new Error('Internal server error'))
+        vi.mocked(updateItem).mockRejectedValue(new Error('Internal server error'))
         await store.saveFilter(nfilter)
         expect(store.filters.length).toBe(3)
         expect(store.filters[0].id).toBe(3)
@@ -88,7 +88,7 @@ describe('filters store', () => {
 
     test('filter removing with error', async () => {
         await store.loadFilters()
-        vi.mocked(updateFilter).mockRejectedValue(new Error('Internal server error'))
+        vi.mocked(updateItem).mockRejectedValue(new Error('Internal server error'))
         await store.removeFilter(store.filters[1])
         expect(store.filters.length).toBe(3)
         expect(store.filters[0].id).toBe(3)
@@ -109,12 +109,12 @@ describe('filters store', () => {
     test('filter saving', async () => {
         await store.loadFilters()
         const newFilter = { id: 4, entry: "fourth", part: "full" }
-        vi.mocked(updateFilter).mockResolvedValue(newFilter)
+        vi.mocked(updateItem).mockResolvedValue(newFilter)
         await store.saveFilter(newFilter)
         expect(store.filters.length).toBe(4)
 
         store.filters[1].title = 'three'
-        vi.mocked(updateFilter).mockResolvedValue(null)
+        vi.mocked(updateItem).mockResolvedValue(null)
         await store.saveFilter(store.filters[1])
         expect(store.filters.length).toBe(4)
         expect(store.filters[1].title).toBe('three')

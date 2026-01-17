@@ -7,7 +7,7 @@ import i18n from 'TaskDesk/js/i18n'
 import FilterList from 'news/components/list/FilterList.vue'
 import AddButton from 'TaskDesk/js/common/components/AddButton.vue'
 import FilterForm from 'news/components/form/FilterForm.vue'
-import { updateFilter, fetchFilters } from 'news/services/filter.service'
+import { updateItem, fetchItems } from 'TaskDesk/js/common/service'
 
 describe('filters related components rendering', () => {
     let filter = null
@@ -16,7 +16,7 @@ describe('filters related components rendering', () => {
     let store = null
 
     beforeEach(() => {
-        vi.mock('news/services/filter.service.ts')
+        vi.mock('TaskDesk/js/common/service.ts')
         config.global.plugins = [i18n]
         filter = {
             id: 2,
@@ -35,8 +35,8 @@ describe('filters related components rendering', () => {
             part: "end",
             feed: 3
         } as Filter
-        vi.mocked(fetchFilters).mockResolvedValue([filter, afilter, aafilter])
-        vi.mocked(updateFilter).mockResolvedValue(null)
+        vi.mocked(fetchItems).mockResolvedValue([filter, afilter, aafilter])
+        vi.mocked(updateItem).mockResolvedValue(null)
         setActivePinia(createPinia())
         store = useFilterStore()
     })
@@ -117,7 +117,7 @@ describe('filters related components rendering', () => {
 
     test('filter removing button component', async () => {
         vi.mock('news/services/filter.service.ts')
-        vi.mocked(updateFilter).mockResolvedValue(null)
+        vi.mocked(updateItem).mockResolvedValue(null)
         const wrapper = mount(FilterList)
         await store.loadFilters()
         await wrapper.get({ ref: 'delete-btn' }).trigger('click')

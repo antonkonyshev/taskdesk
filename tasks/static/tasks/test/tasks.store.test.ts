@@ -4,9 +4,10 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { useTasksStore } from '../store/tasks'
 import { useTaskStore } from 'tasks/store/task'
 import { 
-    prepareTaskSocket, closeTaskSocket, fetchTasks
+    prepareTaskSocket, closeTaskSocket
 } from 'tasks/services/tasks.service'
 import i18n from 'TaskDesk/js/i18n'
+import { fetchItems } from 'TaskDesk/js/common/service'
 
 describe('tasks store', () => {
     let task = null
@@ -16,6 +17,7 @@ describe('tasks store', () => {
 
     beforeEach(() => {
         vi.mock('tasks/services/tasks.service.ts')
+        vi.mock('TaskDesk/js/common/service.ts')
         task = {
             id: 1,
             description: "First testing task",
@@ -42,7 +44,7 @@ describe('tasks store', () => {
         }
         vi.mocked(prepareTaskSocket).mockResolvedValue({})
         vi.mocked(closeTaskSocket).mockResolvedValue()
-        vi.mocked(fetchTasks).mockResolvedValue([task, atask, aatask])
+        vi.mocked(fetchItems).mockResolvedValue([task, atask, aatask])
         setActivePinia(createPinia())
         store = useTasksStore()
         config.global.plugins = [i18n]

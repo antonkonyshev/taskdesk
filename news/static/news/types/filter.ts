@@ -1,4 +1,6 @@
-export interface Filter {
+import { Entity } from 'static/js/common/types/entity'
+
+export interface Filter extends Entity {
     id?: number
     entry?: string
     part?: string  // "full" | "start" | "end" | "part"

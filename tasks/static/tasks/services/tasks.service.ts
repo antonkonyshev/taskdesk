@@ -69,15 +69,3 @@ export const denotateTask = async (data): Promise<void> => {
         }
     })
 }
-
-export const fetchTasks = async (): Promise<Array<any>> => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            // @ts-ignore
-            const rsp = await fetch(window.API_BASE_URL + "/task/")
-            rsp.ok ? resolve(await rsp.json()) : reject(rsp.status)
-        } catch(err) {
-            reject(err)
-        }
-    })
-}
