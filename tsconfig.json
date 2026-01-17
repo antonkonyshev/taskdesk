@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "baseUrl": ".",
         "paths": {
             "static/*": ["./TaskDesk/static/*"],
             "TaskDesk/*": ["./TaskDesk/static/*"],
