@@ -127,8 +127,7 @@ class News(TaskDeskBaseModel):
             ).exclude(
                 id__in=Mark.objects.values_list('news_id', flat=True).filter(**{
                     'user' if isinstance(user, User) else 'user_id': user,
-                    'category': Mark.Category.HIDDEN,
-                })
+                }).filter(category=Mark.Category.HIDDEN)
             )
 
     objects = NewsQuerySet.as_manager()

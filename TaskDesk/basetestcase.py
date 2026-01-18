@@ -17,8 +17,12 @@ from tdauth.models import User
     AUTOTESTING = True,
     CELERY_ALWAYS_EAGER=True,
     CELERY_TASK_ALWAYS_EAGER=True,
+    TASK_ALWAYS_EAGER=True,
     CELERY_TASK_EAGER_PROPAGATES_EXCEPTIONS=True,
-    BROKER_BACKEND="memory"
+    CELERY_TASK_EAGER_PROPAGATES=True,
+    BROKER_BACKEND="memory://",
+    BROKER_URL="memory://",
+    CELERY_BROKER_URL="memory://",
 )
 class BaseTestCase(TransactionTestCase):
     username = "test@example.com"

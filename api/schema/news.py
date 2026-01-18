@@ -3,9 +3,13 @@ News serializers for HTTP API.
 """
 
 from datetime import datetime
-from enum import Enum
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
+
+from django.forms.models import model_to_dict
+from django.db.models import QuerySet
+
+from news.models import News
 
 
 class NewsData(BaseModel):
@@ -19,3 +23,5 @@ class NewsData(BaseModel):
     enclosure_url: Optional[str] = None
     enclosure_type: Optional[str] = None
     published: datetime
+
+    model_config = ConfigDict(from_attributes=True)
