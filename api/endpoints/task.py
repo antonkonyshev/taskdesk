@@ -20,7 +20,7 @@ class TaskStorageLoader:
     TaskWarrior database loading for an authenticated user.
     """
 
-    def __init__(self, user: User = Depends(Authentication()), wsproto = False):
+    def __init__(self, user: User, wsproto = False):
         self.user = user
         self.wsproto = wsproto
     
@@ -39,12 +39,13 @@ class TaskStorageLoader:
 async def task_updating(
     socket: WebSocket,
     task_uuid: str,
-    storage: TaskStorage = Depends(TaskStorageLoader(wsproto=True)),
+    user: User = Depends(Authentication()),
 ):
     """
     The endpoint responsible for tasks data editing.
     """
     try:
+        storage = await TaskStorageLoader(user=user, wsproto=True)()
         await socket.accept()
         while True:
             try:
@@ -65,7 +66,7 @@ async def task_updating(
 
 @TaskDeskAPIRouter.get("/task/", response_model=list[TaskData])
 async def tasks_list(
-    storage: TaskStorage = Depends(TaskStorageLoader()),
+    user: User = Depends(Authentication()),
     params: TaskQueryParams = Depends(),
 ):
     """
@@ -75,6 +76,7 @@ async def tasks_list(
     loads all tasks at once anyway and the user expects to see all the
     tasks at once, so the pagination would only lead to excess IO operations.
     """
+    storage = await TaskStorageLoader(user=user, wsproto=True)()
     tasks = [TaskData.from_task(task) for task in storage.active()]
     tasks.sort(key = lambda elem: getattr(elem, params.ordering, None),
         reverse = params.descending)
@@ -82,12 +84,14 @@ async def tasks_list(
 
 @TaskDeskAPIRouter.delete("/task/{task_uuid}/", status_code=status.HTTP_204_NO_CONTENT)
 async def task_delete(
-    task_uuid: str, storage: TaskStorage = Depends(TaskStorageLoader())
+    task_uuid: str,
+    user: User = Depends(Authentication()),
 ):
     """
     The endpoint responsible for tasks removing.
     """
     try:
+        storage = await TaskStorageLoader(user=user, wsproto=True)()
         task = storage.tasks.filter(uuid = task_uuid)[0]
         task.delete()
         task.save()
@@ -95,16 +99,18 @@ async def task_delete(
         raise HTTPException(status_code = status.HTTP_204_NO_CONTENT)
     except Exception as err:
         # TODO: logging
-        raise HTTPException(status_code = status.HTTP_500_INTERNAL_SERVER_ERROR)
+        raise err
 
 @TaskDeskAPIRouter.post("/task/{task_uuid}/", status_code=status.HTTP_200_OK)
 async def task_complete(
-    task_uuid: str, storage: TaskStorage = Depends(TaskStorageLoader())
+    task_uuid: str,
+    user: User = Depends(Authentication()),
 ):
     """
     The endpoint responsible for marking tasks as completed.
     """
     try:
+        storage = await TaskStorageLoader(user=user, wsproto=True)()
         task = storage.tasks.filter(uuid = task_uuid)[0]
         task.done()
         task.save()
@@ -112,4 +118,4 @@ async def task_complete(
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND)
     except Exception as err:
         # TODO: logging
-        raise HTTPException(status_code = status.HTTP_500_INTERNAL_SERVER_ERROR)
+        raise err
