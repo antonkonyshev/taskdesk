@@ -3,7 +3,6 @@ News processing celery tasks. Loading from rss feeds and filtration.
 """
 
 from celery import shared_task
-from django.db.models import Q
 import feedparser
 
 from TaskDesk.tasks import atask

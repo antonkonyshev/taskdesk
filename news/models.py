@@ -57,7 +57,7 @@ class UserFeed(TaskDeskBaseModel):
 
         def active_for_feed(self, feed: int | Feed):
             return self.filter(
-                **{'feed' if isinstance(feed, Feed) else 'feed_id'}
+                **{'feed' if isinstance(feed, Feed) else 'feed_id': feed}
             ).for_active_users()
 
     objects = UserFeedQuerySet.as_manager()
@@ -102,8 +102,11 @@ class News(TaskDeskBaseModel):
         def unfiltered_for_user_feed(self, user: int | User, feed: int | Feed):
             news = self.filter(**{
                 'feed' if isinstance(feed, Feed) else 'feed_id': feed})
-            return news.filter(created__gt=Mark.objects.values_list(
-                'news__created', flat=True).last_for_user(user))
+            last_mark = Mark.objects.values_list('news__created', flat=True)\
+                .last_for_user(user)
+            if last_mark:
+                news = news.filter(created__gt=last_mark)
+            return news
 
         def by_feed_guid(self, feed: int | Feed, guid: str):
             return self.filter(**{
@@ -126,9 +129,12 @@ class News(TaskDeskBaseModel):
         return f"{self.__class__.__name__} (id={self.id}) [{self.title[:16]}]"
 
     @classmethod
-    def keywords(cls, content: str) -> Iterable[str]:
-        return (word for word in content.lower().strip().split()
+    def keywords(cls, content: str | TaskDeskBaseModel) -> Iterable[str]:
+        return (word for word in
+                (content if isinstance(content, str) else getattr(
+                    content, 'title', '')).lower().strip().split()
                 if len(word) > 2)
+
 
 class Mark(TaskDeskBaseModel):
     """
@@ -238,18 +244,18 @@ class Filter(TaskDeskBaseModel):
         self.before_save()
         return await super(Filter, self).asave(*args, **kwargs)
 
-    def apply_filter(words: Iterable[str]) -> bool:
+    def apply_filter(self, words: Iterable[str]) -> bool:
         """Check whether the filter should be applied to a list of words."""
-        if filter.part == Filter.Part.START:
-            if len([word for word in words if word.startswith(filter.entry)]):
+        if self.part == Filter.Part.START:
+            if len([word for word in words if word.startswith(self.entry)]):
                 return True
-        elif filter.part == Filter.Part.FULL:
-            if len([word for word in words if word == filter.entry]):
+        elif self.part == Filter.Part.FULL:
+            if len([word for word in words if word == self.entry]):
                 return True
-        elif filter.part == Filter.Part.PART:
-            if len([word for word in words if filter.entry in word]):
+        elif self.part == Filter.Part.PART:
+            if len([word for word in words if self.entry in word]):
                 return True
-        elif filter.part == Filter.Part.END:
-            if len([word for word in words if word.endswith(filter.entry)]):
+        elif self.part == Filter.Part.END:
+            if len([word for word in words if word.endswith(self.entry)]):
                 return True
         return False

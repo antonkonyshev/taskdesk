@@ -33,7 +33,7 @@ class TaskEndpointsTestCase(APITestCase):
 
     def test_tasks_list(self):
         tasks = async_to_sync(tasks_list)(
-            storage = self.storage,
+            user = self.user,
             params = TaskQueryParams()
         )
         self.assertEqual(len(tasks), 2)
@@ -43,14 +43,14 @@ class TaskEndpointsTestCase(APITestCase):
 
     def test_task_completion(self):
         async_to_sync(task_complete)(
-            task_uuid = self.atask['uuid'], storage = self.storage)
+            task_uuid = self.atask['uuid'], user = self.user)
         self.assertEqual(len(self.storage.active()), 1)
         self.assertEqual(len(self.storage.tasks.completed()), 1)
         self.assertEqual(len(self.storage.tasks.deleted()), 0)
 
     def test_task_removing(self):
         async_to_sync(task_delete)(
-            task_uuid = self.atask['uuid'], storage = self.storage)
+            task_uuid = self.atask['uuid'], user = self.user)
         self.assertEqual(len(self.storage.active()), 1)
         self.assertEqual(len(self.storage.tasks.completed()), 0)
         self.assertEqual(len(self.storage.tasks.deleted()), 1)

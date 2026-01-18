@@ -1,25 +1,18 @@
-import os.path as op
 import shutil
 
 from asgiref.sync import async_to_sync
 from django.utils import timezone
 
-from tasklib import Task
-
 from TaskDesk.basetestcase import BaseTestCase
-from tdauth.models import User
 from tasks.storage import TaskStorage
 
 
 class TaskStorageTestCase(BaseTestCase):
     def setUp(self):
-        self.user = User.objects.create_user(
-            email="test@example.com", password="123456")
-        self.user.is_active = True
-        self.user.save()
+        result = super().setUp()
         shutil.rmtree(self.user.task_db_path, ignore_errors=True)
         self.storage = async_to_sync(TaskStorage(self.user.task_db_path).load)()
-        return super().setUp()
+        return result
 
     def test_task_creation(self):
         task = self.storage.create_task(description = "testing task")

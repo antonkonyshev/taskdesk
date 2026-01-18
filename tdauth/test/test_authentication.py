@@ -5,17 +5,6 @@ from tdauth.models import User
 
 
 class AuthenticationTestCase(BaseTestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(
-            email="test@example.com", password="123456")
-        self.user.is_active = True
-        self.user.save()
-        return super().setUp()
-
-    def tearDown(self):
-        self.client.logout()
-        return super().tearDown()
-
     def test_not_authenticated_redirect(self):
         self.client.logout()
         rsp = self.client.get("/")
@@ -73,6 +62,7 @@ class AuthenticationTestCase(BaseTestCase):
         html = rsp.content.decode('utf8')
         self.assertIn('text-red', html)
         self.assertIn('field is required', html)
+        self.client.logout()
 
     def test_non_authenticated_logout(self):
         rsp = self.client.get(reverse('tdauth_logout'))
