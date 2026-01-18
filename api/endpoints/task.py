@@ -19,7 +19,6 @@ class TaskStorageLoader:
     """
     TaskWarrior database loading for an authenticated user.
     """
-
     def __init__(self, user: User, wsproto = False):
         self.user = user
         self.wsproto = wsproto

@@ -2,11 +2,14 @@
 News app related data models.
 """
 
+from collections.abc import Iterable
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
 from TaskDesk.models import TaskDeskBaseModel
+from tdauth.models import User
 
 
 class Feed(TaskDeskBaseModel):
@@ -47,6 +50,18 @@ class UserFeed(TaskDeskBaseModel):
     )
     title = models.CharField(_("Title"), max_length=64, blank=True, default='')
 
+    class UserFeedQuerySet(models.QuerySet):
+        """Customization of queryset manager for user feed subscriptions."""
+        def for_active_users(self):
+            return self.filter(user__is_active=True)
+
+        def active_for_feed(self, feed: int | Feed):
+            return self.filter(
+                **{'feed' if isinstance(feed, Feed) else 'feed_id'}
+            ).for_active_users()
+
+    objects = UserFeedQuerySet.as_manager()
+
     class Meta:
         verbose_name = _("User feed")
         verbose_name_plural = _("User feeds")
@@ -82,17 +97,38 @@ class News(TaskDeskBaseModel):
     published = models.DateTimeField(_("Published"), blank=False, null=False,
                                      db_index=True)
 
+    class NewsQuerySet(models.QuerySet):
+        """Customization of the news queryset manager."""
+        def unfiltered_for_user_feed(self, user: int | User, feed: int | Feed):
+            news = self.filter(**{
+                'feed' if isinstance(feed, Feed) else 'feed_id': feed})
+            return news.filter(created__gt=Mark.objects.values_list(
+                'news__created', flat=True).last_for_user(user))
+
+        def by_feed_guid(self, feed: int | Feed, guid: str):
+            return self.filter(**{
+                'feed' if isinstance(feed, Feed) else 'feed_id': feed,
+                'guid': guid,
+            })
+
+    objects = NewsQuerySet.as_manager()
+
     class Meta:
         verbose_name = _("News")
         verbose_name_plural = _("News")
         db_table = "news"
         ordering = ("-published",)
+        indexes = (models.Index(fields=('created',), name='news_created_idx'),)
         constraints = (models.UniqueConstraint(
             fields=('feed', 'guid',), name='unique_feed_guid'),)
 
     def __str__(self):
         return f"{self.__class__.__name__} (id={self.id}) [{self.title[:16]}]"
 
+    @classmethod
+    def keywords(cls, content: str) -> Iterable[str]:
+        return (word for word in content.lower().strip().split()
+                if len(word) > 2)
 
 class Mark(TaskDeskBaseModel):
     """
@@ -117,16 +153,32 @@ class Mark(TaskDeskBaseModel):
         blank=False, null=False
     )
 
+    class MarkQuerySet(models.QuerySet):
+        """Customization of queryset manager for the Mark model."""
+        def by_user(self, user: int | User):
+            return self.filter(**{
+                'user' if isinstance(user, User) else 'user_id': user})
+
+        def last_for_user(self, user: int | User):
+            return self.by_user(user).order_by('-created').first()
+
+        async def alast_for_user(self, user: int | User):
+            return await self.by_user(user).order_by('-created').afirst()
+
+    objects = MarkQuerySet.as_manager()
+
     class Meta:
         verbose_name = _("Mark")
         verbose_name_plural = _("Marks")
         db_table = 'mark'
+        indexes = (models.Index(fields=('created',), name='mark_created_idx'),)
         constraints = (models.UniqueConstraint(fields=('user', 'news',),
                                                name='unique_user_news'),)
 
     def __str__(self):
         return (f"{self.__class__.__name__} (id={self.id}) "
                 "[UID: {self.user_id} NID: {self.news_id}]")
+
 
 
 class Filter(TaskDeskBaseModel):
@@ -153,6 +205,17 @@ class Filter(TaskDeskBaseModel):
         null=False, default=Part.START
     )
 
+    class FilterQuerySet(models.QuerySet):
+        """Customization of queryset manager for the Filters model."""
+        def applicable_to_user_feed(self, user: int | User, feed: int | Feed):
+            return self.filter(
+                **{'user' if isinstance(user, User) else 'user_id': user}
+            ).filter(
+                models.Q(
+                    **{'feed' if isinstance(feed, Feed) else 'feed_id': feed}
+                ) | models.Q(feed_id__isnull=True)
+            )
+
     class Meta:
         verbose_name = _("News filter")
         verbose_name_plural = _("News filters")
@@ -174,3 +237,19 @@ class Filter(TaskDeskBaseModel):
     async def asave(self, *args, **kwargs):
         self.before_save()
         return await super(Filter, self).asave(*args, **kwargs)
+
+    def apply_filter(words: Iterable[str]) -> bool:
+        """Check whether the filter should be applied to a list of words."""
+        if filter.part == Filter.Part.START:
+            if len([word for word in words if word.startswith(filter.entry)]):
+                return True
+        elif filter.part == Filter.Part.FULL:
+            if len([word for word in words if word == filter.entry]):
+                return True
+        elif filter.part == Filter.Part.PART:
+            if len([word for word in words if filter.entry in word]):
+                return True
+        elif filter.part == Filter.Part.END:
+            if len([word for word in words if word.endswith(filter.entry)]):
+                return True
+        return False
