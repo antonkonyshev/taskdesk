@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-16 07:08+0000\n"
+"POT-Creation-Date: 2026-01-18 14:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
 #: TaskDesk/models.py:11
 msgid "Created"
 msgstr "Создан(а)"
@@ -36,8 +37,8 @@ msgstr "Задачи"
 msgid "Notes"
 msgstr "Заметки"
 
-#: TaskDesk/templates/_header.html:46 news/models.py:84 news/models.py:85
-#: news/models.py:106
+#: TaskDesk/templates/_header.html:46 news/models.py:137 news/models.py:138
+#: news/models.py:167
 msgid "News"
 msgstr "Новости"
 
@@ -57,111 +58,115 @@ msgstr "Страницы сайта, основанные на Wagtail CMS"
 msgid "News feed"
 msgstr "Лента новостей"
 
-#: news/models.py:14
+#: news/models.py:17
 msgid "URL"
 msgstr "URL"
 
-#: news/models.py:18 news/models.py:46 news/models.py:66 news/models.py:138
+#: news/models.py:21 news/models.py:49 news/models.py:82 news/models.py:219
 msgid "Feed"
 msgstr "Лента новостей"
 
-#: news/models.py:19
+#: news/models.py:22
 msgid "Feeds"
 msgstr "Ленты новостей"
 
-#: news/models.py:42 news/models.py:102 news/models.py:134 tdauth/models.py:61
+#: news/models.py:45 news/models.py:163 news/models.py:215 tdauth/models.py:61
 msgid "User"
 msgstr "Пользователь"
 
-#: news/models.py:50
-msgid "User feed"
-msgstr "Пользовательская лента новостей"
-
-#: news/models.py:51
-msgid "User feeds"
-msgstr "Пользовательские ленты новостей"
-
-#: news/models.py:69
-msgid "GUID"
-msgstr "GUID"
-
-#: news/models.py:70
+#: news/models.py:51 news/models.py:86
 msgid "Title"
 msgstr "Заголовок"
 
-#: news/models.py:72
+#: news/models.py:66
+msgid "User feed"
+msgstr "Пользовательская лента новостей"
+
+#: news/models.py:67
+msgid "User feeds"
+msgstr "Пользовательские ленты новостей"
+
+#: news/models.py:85
+msgid "GUID"
+msgstr "GUID"
+
+#: news/models.py:88
 msgid "Description"
 msgstr "Описание"
 
-#: news/models.py:73
+#: news/models.py:89
 msgid "Link"
 msgstr "Ссылка"
 
-#: news/models.py:74
+#: news/models.py:90
 msgid "Author"
 msgstr "Автор"
 
-#: news/models.py:75
+#: news/models.py:92
 msgid "Enclosure URL"
 msgstr "URL вложения"
 
-#: news/models.py:77
+#: news/models.py:94
 msgid "Enclosure type"
 msgstr "Тип вложения"
 
-#: news/models.py:80
+#: news/models.py:97
 msgid "Published"
 msgstr "Опубликована"
 
-#: news/models.py:110
+#: news/models.py:172
+msgid "Filter"
+msgstr ""
+
+#: news/models.py:176
 msgid "Hidden"
 msgstr "Скрыта"
 
-#: news/models.py:111
+#: news/models.py:177
 msgid "Bookmark"
 msgstr "Закладка"
 
-#: news/models.py:114
+#: news/models.py:180
 msgid "Category"
 msgstr "Категория"
 
-#: news/models.py:119
+#: news/models.py:199
 msgid "Mark"
 msgstr "Отметка"
 
-#: news/models.py:120
+#: news/models.py:200
 msgid "Marks"
 msgstr "Отметки"
 
-#: news/models.py:141
+#: news/models.py:222
 msgid "Entry"
 msgstr "Слово"
 
-#: news/models.py:144
+#: news/models.py:225
 msgid "Beginning of a word"
 msgstr "Начало слова"
 
-#: news/models.py:145
+#: news/models.py:226
 msgid "End of a word"
 msgstr "Окончание слова"
 
-#: news/models.py:146
+#: news/models.py:227
 msgid "Whole word"
 msgstr "Слово целиком"
 
-#: news/models.py:147
+#: news/models.py:228
 msgid "Any part of a word"
 msgstr "Любая часть слова"
 
-#: news/models.py:150
+#: news/models.py:231
 msgid "Part of a word"
 msgstr "Часть слова"
 
-#: news/models.py:155
+#: news/models.py:251
 msgid "News filter"
 msgstr "Фильтр новостей"
 
-#: news/models.py:156
+#: news/models.py:252
 msgid "News filters"
 msgstr "Фильтры новостей"
 
@@ -213,5 +218,6 @@ msgstr "Активирован(а)"
 msgid ""
 "Designates whether this user should be treated as active. Unselect this "
 "instead of deleting accounts."
-msgstr "Определяет, следует ли считать пользователя активным. Вместо удаления "
+msgstr ""
+"Определяет, следует ли считать пользователя активным. Вместо удаления "
 "следует отключить этот флаг."

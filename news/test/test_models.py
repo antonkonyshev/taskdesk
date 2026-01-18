@@ -83,7 +83,7 @@ class NewsModelsTestCase(BaseTestCase):
         self.assertEqual(news.first().title, "Second news in feed")
 
     def test_news_filtering_for_user(self):
-        news = News.objects.unfiltered_for_user_feed(self.user.id, self.feed)
+        news = News.objects.unfiltered_for_user_feed(self.user.id, self.userfeed)
         self.assertEqual(news.count(), 3)
         self.assertEqual(list(news.values_list('author', flat=True)), [
             'First Author', 'Second Author', 'Third Author'])
@@ -92,7 +92,7 @@ class NewsModelsTestCase(BaseTestCase):
                     category=Mark.Category.HIDDEN)
         mark.save()
 
-        news = News.objects.unfiltered_for_user_feed(self.user.id, self.feed)
+        news = News.objects.unfiltered_for_user_feed(self.user.id, self.userfeed)
         self.assertEqual(news.count(), 2)
         self.assertEqual(list(news.values_list('author', flat=True)), [
             'First Author', 'Second Author'])
@@ -101,10 +101,35 @@ class NewsModelsTestCase(BaseTestCase):
                     category=Mark.Category.BOOKMARK)
         mark.save()
 
-        news = News.objects.unfiltered_for_user_feed(self.user.id, self.feed)
+        news = News.objects.unfiltered_for_user_feed(self.user.id, self.userfeed)
         self.assertEqual(news.count(), 1)
         self.assertEqual(list(news.values_list('author', flat=True)),
                          ['First Author'])
+
+    def test_applicable_fitlers(self):
+        afeed = Feed(url="http://LocalHost:8000/Rss2")
+        afeed.save()
+        auserfeed = UserFeed(user=self.user, feed=afeed)
+        auserfeed.save()
+        afilter = Filter(user=self.user, feed=auserfeed, entry="Another",
+                         part="part")
+        afilter.save()
+
+        filters = Filter.objects.applicable_to_user_feed(
+            self.user, self.userfeed.id)
+        self.assertEqual(filters.count(), 3)
+        filterids = list(filters.values_list('id', flat=True).order_by('id'))
+        self.assertEqual(filterids,
+                         [self.filter.id, self.afilter.id, self.aafilter.id])
+        self.assertNotIn(afilter.id, filterids)
+
+        filters = Filter.objects.applicable_to_user_feed(
+            self.user, auserfeed.id)
+        self.assertEqual(filters.count(), 3)
+        filterids = list(filters.values_list('id', flat=True).order_by('id'))
+        self.assertEqual(filterids,
+                         [self.afilter.id, self.aafilter.id, afilter.id])
+        self.assertNotIn(self.filter.id, filterids)
 
     def test_filter_application_to_news(self):
         self.assertTrue(self.filter.apply_filter(News.keywords(self.news)))

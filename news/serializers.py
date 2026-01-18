@@ -44,13 +44,13 @@ class FeedEntry:
 
     def to_news(self, feed: int | Feed | None = None) -> News | None:
         """Creates news instance from a parsed news feed entry."""
-        guid = self._attr_with_fallbacks('guid', 'id', 'link', default='')[32:]
+        guid = self._attr_with_fallbacks('guid', 'id', 'link', default='')[-32:]
         if not guid:
             return
         if feed and News.objects.by_feed_guid(feed, guid).exists():
             return
 
-        news = News({'feed' if isinstance(feed, Feed) else 'feed_id': feed,
+        news = News(**{'feed' if isinstance(feed, Feed) else 'feed_id': feed,
                      'guid': guid})
         news.title = self._attr_with_fallbacks(
             'title', 'summary', 'description', max_length=128)

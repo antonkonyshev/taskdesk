@@ -15,6 +15,10 @@ from tdauth.models import User
     # DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3'}},
     TASKWARRIOR_STORAGE_PATH = "test_taskstorage",
     AUTOTESTING = True,
+    CELERY_ALWAYS_EAGER=True,
+    CELERY_TASK_ALWAYS_EAGER=True,
+    CELERY_TASK_EAGER_PROPAGATES_EXCEPTIONS=True,
+    BROKER_BACKEND="memory"
 )
 class BaseTestCase(TransactionTestCase):
     username = "test@example.com"

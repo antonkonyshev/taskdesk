@@ -72,7 +72,7 @@ class UserFeed(TaskDeskBaseModel):
 
     def __str__(self):
         return (f"{self.__class__.__name__} (id={self.id}) "
-                "[UID: {self.user_id} FID: {self.feed_id}]")
+                f"[UID: {self.user_id} FID: {self.feed_id}]")
 
 
 class News(TaskDeskBaseModel):
@@ -99,9 +99,13 @@ class News(TaskDeskBaseModel):
 
     class NewsQuerySet(models.QuerySet):
         """Customization of the news queryset manager."""
-        def unfiltered_for_user_feed(self, user: int | User, feed: int | Feed):
-            news = self.filter(**{
-                'feed' if isinstance(feed, Feed) else 'feed_id': feed})
+        def unfiltered_for_user_feed(
+            self, user: int | User, userfeed: int | UserFeed
+        ):
+            news = self.filter(feed_id__in=UserFeed.objects.values_list(
+                'feed_id', flat=True).filter(
+                    id=userfeed.id if isinstance(userfeed, UserFeed) else userfeed
+            ))
             last_mark = Mark.objects.values_list('news__created', flat=True)\
                 .last_for_user(user)
             if last_mark:
@@ -113,6 +117,19 @@ class News(TaskDeskBaseModel):
                 'feed' if isinstance(feed, Feed) else 'feed_id': feed,
                 'guid': guid,
             })
+
+        def unread_for_user(self, user: int | User):
+            return self.filter(
+                feed_id__in=UserFeed.objects.values_list('feed_id', flat=True)\
+                    .filter(**{
+                        'user' if isinstance(user, User) else 'user_id': user
+                    })
+            ).exclude(
+                id__in=Mark.objects.values_list('news_id', flat=True).filter(**{
+                    'user' if isinstance(user, User) else 'user_id': user,
+                    'category': Mark.Category.HIDDEN,
+                })
+            )
 
     objects = NewsQuerySet.as_manager()
 
@@ -150,6 +167,11 @@ class Mark(TaskDeskBaseModel):
         verbose_name=_("News"), null=False
     )
 
+    newsfilter = models.ForeignKey(
+        'news.Filter', on_delete=models.CASCADE, related_name='marks',
+        verbose_name=_("Filter"), null=True, blank=True
+    )
+
     class Category(models.IntegerChoices):
         HIDDEN = 1, _("Hidden")
         BOOKMARK = 2, _("Bookmark")
@@ -183,8 +205,7 @@ class Mark(TaskDeskBaseModel):
 
     def __str__(self):
         return (f"{self.__class__.__name__} (id={self.id}) "
-                "[UID: {self.user_id} NID: {self.news_id}]")
-
+                f"[UID: {self.user_id} NID: {self.news_id}]")
 
 
 class Filter(TaskDeskBaseModel):
@@ -213,14 +234,18 @@ class Filter(TaskDeskBaseModel):
 
     class FilterQuerySet(models.QuerySet):
         """Customization of queryset manager for the Filters model."""
-        def applicable_to_user_feed(self, user: int | User, feed: int | Feed):
+        def applicable_to_user_feed(
+            self, user: int | User, userfeed: int | UserFeed
+        ):
             return self.filter(
                 **{'user' if isinstance(user, User) else 'user_id': user}
             ).filter(
-                models.Q(
-                    **{'feed' if isinstance(feed, Feed) else 'feed_id': feed}
-                ) | models.Q(feed_id__isnull=True)
+                models.Q(**{
+                    'feed' if isinstance(userfeed, Feed) else 'feed_id': userfeed
+                }) | models.Q(feed_id__isnull=True)
             )
+
+    objects = FilterQuerySet.as_manager()
 
     class Meta:
         verbose_name = _("News filter")

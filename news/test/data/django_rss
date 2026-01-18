@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>The Django weblog</title><link>https://www.djangoproject.com/weblog/</link><description>Latest news about Django, the Python web framework.</description><atom:link href="https://www.djangoproject.com/rss/weblog/" rel="self"/><language>en</language><lastBuildDate>Tue, 06 Jan 2026 12:00:00 -0600</lastBuildDate><item><title>Django bugfix releases issued: 5.2.10, 6.0.1</title><link>https://www.djangoproject.com/weblog/2026/jan/06/bugfix-releases/</link><description>&lt;p&gt;Today we've issued the &lt;a class="reference external" href="https://docs.djangoproject.com/en/stable/releases/5.2.10/"&gt;5.2.10&lt;/a&gt; and &lt;a class="reference external" href="https://docs.djangoproject.com/en/stable/releases/6.0.1/"&gt;6.0.1&lt;/a&gt; bugfix releases.&lt;/p&gt;
+&lt;p&gt;The release packages and checksums are available from &lt;a class="reference external" href="/download/"&gt;our downloads page&lt;/a&gt;, as well as from the Python Package Index.&lt;/p&gt;
+&lt;p&gt;The PGP key ID used for these releases is Jacob Walls: &lt;a class="reference external" href="https://github.com/jacobtylerwalls.gpg"&gt;131403F4D16D8DC7&lt;/a&gt;&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Jacob Walls</dc:creator><pubDate>Tue, 06 Jan 2026 12:00:00 -0600</pubDate><guid>https://www.djangoproject.com/weblog/2026/jan/06/bugfix-releases/</guid></item><item><title>DSF member of the month - Clifford Gama</title><link>https://www.djangoproject.com/weblog/2025/dec/31/dsf-member-of-the-month-clifford-gama/</link><description>&lt;p&gt;For December 2025, we welcome Clifford Gama as our DSF member of the month! ⭐&lt;/p&gt;
+&lt;p&gt;Clifford contributed to Django core with more than 5 PRs merged in few months! He is part of the Triage and Review Team. He has been a DSF member since October 2024.   &lt;/p&gt;
+&lt;p&gt;You can learn more about Clifford by visiting &lt;a href="https://cliffordgama.com/"&gt;Clifford's website&lt;/a&gt; and &lt;a href="https://github.com/cliffordgama"&gt;his GitHub Profile&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Let’s spend some time getting to know Clifford better!&lt;/p&gt;
+&lt;h4 id="s-can-you-tell-us-a-little-about-yourself-hobbies-education-etc"&gt;Can you tell us a little about yourself (hobbies, education, etc)&lt;/h4&gt;
+&lt;p&gt;I'm Clifford. I hold a Bachelor's degree in Mechanical Engineering from the University of Zimbabwe.&lt;/p&gt;
+&lt;h4 id="s-how-did-you-start-using-django"&gt;How did you start using Django?&lt;/h4&gt;
+&lt;p&gt;During my first year in college, I was also exploring open online courses on EDx and I came across CS50's introduction to web development. After watching the introductory lecture -- which introduced me to git and GitHub -- I discovered Django's excellent documentation and got started on the polls tutorial. The docs were so comprehensive and helpful I never felt the need to return to CS50. (I generally prefer comprehensive first-hand, written learning material over summaries and videos.)&lt;/p&gt;
+&lt;p&gt;At the time, I had already experimented with flask, but I guess mainly because I didn't know SQL and because flask didn't have an ORM, I never quite picked it up. With Django I felt like I was taking a learning fast-track where I'd learn everything I needed in one go!&lt;/p&gt;
+&lt;p&gt;And that's how I started using Django.&lt;/p&gt;
+&lt;h4 id="s-what-projects-are-you-working-on-now"&gt;What projects are you working on now?&lt;/h4&gt;
+&lt;p&gt;At the moment, I’ve been focusing on improving my core skills in preparation for remote work, so I haven’t been starting new projects because of that. &lt;/p&gt;
+&lt;p&gt;That said, I’ve been working on a client project involving generating large, image-heavy PDFs with WeasyPrint, where I’ve been investigating performance bottlenecks and ways to speed up generation time, which was previously around 30 minutes 😱.&lt;/p&gt;
+&lt;h4 id="s-what-are-you-learning-about-these-days"&gt;What are you learning about these days?&lt;/h4&gt;
+&lt;p&gt;I’ve been reading Boost Your Git DX by Adam Johnson and learning how to boost my Git and shell developer experience, which has been a great read. Aside from that, inspired by some blogs and talks by Haki Benita, I am also learning about software design and performance. Additionally, I am working on improving my general fluency in Python.&lt;/p&gt;
+&lt;h4 id="s-what-other-framework-do-you-know-and-if-there-is-anything-you-would-like-to-have-in-django-if-you-had-magical-powers"&gt;What other framework do you know and if there is anything you would like to have in Django if you had magical powers?&lt;/h4&gt;
+&lt;p&gt;I am not familiar with any other frameworks, but if I had magic powers I'd add production-grade static-file serving in Django.&lt;/p&gt;
+&lt;h4 id="s-django-libraries-are-your-favorite-core-or-3rd-party"&gt;Django libraries are your favorite (core or 3rd party)?&lt;/h4&gt;
+&lt;p&gt;The ORM, Wagtail and Django's admin.&lt;/p&gt;
+&lt;h4 id="s-what-are-the-top-three-things-in-django-that-you-like"&gt;What are the top three things in Django that you like?&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;The community&lt;/li&gt;
+&lt;li&gt;The documentation&lt;/li&gt;
+&lt;li&gt;Djangonaut Space and the way new contributors are welcomed&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="s-how-did-you-start-contributing-to-django"&gt;How did you start contributing to Django?&lt;/h4&gt;
+&lt;p&gt;I started contributing to Django in August last year, which is when I discovered the community, which was a real game changer for me. Python was my first course at university, and I loved it because it was creative and there was no limit to what I could build with it.&lt;/p&gt;
+&lt;p&gt;Whenever I saw a problem in another course that could be solved programmatically, I jumped at it. My proudest project from that time was building an NxN matrix determinant calculator after learning about recursion and spotting the opportunity in an algebra class.&lt;/p&gt;
+&lt;p&gt;After COVID lockdown, I gave programming up for a while. With more time on my hands, I found myself prioritizing programming over core courses, so I took a break. Last year, I returned to it when I faced a problem that I could only solve with Django. My goal was simply to build an app quickly and go back to being a non-programmer, but along the way I thought I found a bug in Django, filed a ticket, and ended up writing a documentation PR. That’s when I really discovered the Django community.&lt;/p&gt;
+&lt;p&gt;What attracted me most was that contributions are held to high standards, but experienced developers are always ready to help you reach them. Contributing was collaborative, pushing everyone to do their best. It was a learning opportunity too good to pass up.&lt;/p&gt;
+&lt;h4 id="s-how-did-you-join-the-triage-and-review-team"&gt;How did you join the Triage and Review team?&lt;/h4&gt;
+&lt;p&gt;About the time after I contributed my first PR, I started looking at open tickets to find more to work on, and keep on learning. &lt;/p&gt;
+&lt;p&gt;Sometimes a ticket was awaiting triage, in which case the first step was to triage it before assigning it to working on it, and sometimes the ticket I wanted was already taken, in which case I'd look at the PR if available. 
+Reviewing a PR can be a faster way to learn about a particular part of the codebase, because someone has already done most of the investigative part of work, so I reviewed PRs as well. &lt;/p&gt;
+&lt;p&gt;After a while I got an invitation from Sarah Boyce, one of the fellows, to join the team. I didn't even know that I could join before I got the invitation, so I was thrilled!&lt;/p&gt;
+&lt;h4 id="s-how-the-work-is-going-so-far"&gt;How the work is going so far?&lt;/h4&gt;
+&lt;p&gt;It’s been rewarding. I’ve gained familiarity with the Django codebase and real experience collaborating with others, which already exceeds what I expected when I started contributing.&lt;/p&gt;
+&lt;p&gt;One unexpected highlight was forming a friendship through one of the first PRs I reviewed.&lt;/p&gt;
+&lt;p&gt;SiHyun Lee and I are now both part of the triage and review team, and I’m grateful for that connection.&lt;/p&gt;
+&lt;h4 id="s-what-are-your-hobbies-or-what-do-you-do-when-youre-not-working"&gt;What are your hobbies or what do you do when you’re not working?&lt;/h4&gt;
+&lt;p&gt;My main hobby is storytelling in a broad sense. In fact, it was a key reason I returned to programming after a long break. I enjoy discovering enduring stories from different cultures, times, and media—ranging from the deeply personal and literary to the distant and philosophical. I recently watched two Japanese classics and found I quite love them. I &lt;a href="https://cliffordgama.com/finds/ikiru"&gt;wrote about one of the films&lt;/a&gt; on my blog, and I also get to practice my Japanese, which I’ve been learning on Duolingo for about two years. I also enjoy playing speed chess.&lt;/p&gt;
+&lt;h4 id="s-do-you-have-any-suggestions-for-people-who-would-like-to-start-triage-and-review-tickets-and-prs"&gt;Do you have any suggestions for people who would like to start triage and review tickets and PRs?&lt;/h4&gt;
+&lt;p&gt;If there’s an issue you care about, or one that touches a part of the codebase you’re familiar with or curious about, jump in. Tickets aren’t always available to work on, but reviews always are, and they’re open to everyone. Reviewing helps PRs move faster, including your own if you have any open, sharpens your understanding of a component, and often clarifies the problem itself.&lt;/p&gt;
+&lt;p&gt;As Simon Charette &lt;a href="https://code.djangoproject.com/ticket/29222#comment:10"&gt;puts it&lt;/a&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“Triaging issues and spending time understanding them is often more valuable than landing code itself as it strengthen our common understanding of the problem and allow us to build a consistent experience accross the diverse interfaces Django provides.”&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;And you can put it on your CV!&lt;/p&gt;
+&lt;h4 id="s-is-there-anything-else-youd-like-to-say"&gt;Is there anything else you’d like to say?&lt;/h4&gt;
+&lt;p&gt;I’m grateful to everyone who contributes to making every part of Django what it is. I’m particularly thankful to whoever nominated me to be the DSF Member of the month.&lt;/p&gt;
+&lt;p&gt;I am optimistic about the future of Django. Django 6.1 is already shaping up with new features, and there are new projects like Django Bolt coming up.&lt;/p&gt;
+&lt;p&gt;Happy new year 🎊!&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for doing the interview, Clifford and happy new year to the Django community 💚!&lt;/strong&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sarah Abderemane</dc:creator><pubDate>Wed, 31 Dec 2025 14:42:35 -0600</pubDate><guid>https://www.djangoproject.com/weblog/2025/dec/31/dsf-member-of-the-month-clifford-gama/</guid></item><item><title>Hitting the Home Stretch: Help Us Reach the Django Software Foundation&amp;#x27;s Year-End Goal!</title><link>https://www.djangoproject.com/weblog/2025/dec/18/hitting-the-home-stretch-help-us-reach-the-django/</link><description>&lt;p&gt;As we wrap up another strong year for the Django community, we wanted to share an update and a thank you. This year, we raised our fundraising goal from $200,000 to $300,000, and we are excited to say we are now &lt;strong&gt;over 88% of the way there&lt;/strong&gt;. That puts us firmly in the home stretch, and a little more support will help us close the gap and reach 100%.&lt;/p&gt;
+&lt;p&gt;So why the higher goal this year? We expanded the Django Fellows program to include a third Fellow. In August, we welcomed &lt;a href="https://www.djangoproject.com/weblog/2025/aug/11/welcome-our-new-fellow-jacob-tyler-walls/"&gt;Jacob Tyler Walls as our newest Django Fellow&lt;/a&gt;. That extra capacity gives the team more flexibility and resilience, whether someone is taking parental leave, time off around holidays, or stepping away briefly for other reasons. It also makes it easier for Fellows to attend more Django events and stay connected with the community, all while keeping the project running smoothly without putting too much pressure on any one person.&lt;/p&gt;
+&lt;p&gt;We are also preparing to raise funds for an executive director role early next year. That work is coming soon, but &lt;strong&gt;right now, the priority is finishing this year strong&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;We want to say a sincere thank you to our existing sponsors and to everyone who has donated so far. Your support directly funds stable Django releases, security work, community programs, and the long-term health of the framework. If you or your organization have &lt;strong&gt;end-of-year matching funds or a giving program&lt;/strong&gt;, this is a great moment to put them to use and help push us past the finish line.&lt;/p&gt;
+&lt;p&gt;If you would like to help us reach that final stretch, you can find all the details on &lt;a href="https://www.djangoproject.com/fundraising/"&gt;our fundraising page&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Other ways to support Django:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href="https://www.djangoproject.com/fundraising/#benevity-giving"&gt;Benevity Workplace Giving Program&lt;/a&gt;:&lt;/strong&gt; If your employer participates, you can make donations to the DSF via payroll deduction.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href="https://github.com/sponsors/django"&gt;Sponsor Django via GitHub Sponsors&lt;/a&gt;:&lt;/strong&gt; Support Django directly through GitHub's sponsorship platform.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href="https://django.threadless.com/"&gt;Official Merch Store&lt;/a&gt;:&lt;/strong&gt; Buy official t-shirts, accessories, and more to support Django.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Thank you for helping support Django and the people who make it possible. We are incredibly grateful for this community and everything you do to keep Django strong.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Jeff Triplett</dc:creator><pubDate>Thu, 18 Dec 2025 16:04:04 -0600</pubDate><guid>https://www.djangoproject.com/weblog/2025/dec/18/hitting-the-home-stretch-help-us-reach-the-django/</guid></item><item><title>Introducing the 2026 DSF Board</title><link>https://www.djangoproject.com/weblog/2025/dec/18/introducing-the-2026-dsf-board/</link><description>&lt;h4 id="s-thank-you-to-our-outgoing-directors"&gt;Thank You to Our Outgoing Directors&lt;/h4&gt;
+&lt;p&gt;We extend our gratitude to Thibaud Colas and Sarah Abderemane, who are completing their terms on the board. Their contributions shaped the foundation in meaningful ways, and the following highlights only scratch the surface of their work.&lt;/p&gt;
+&lt;p&gt;Thibaud served as President in 2025 and Secretary in 2024. He was instrumental in governance improvements, the Django CNA initiative, election administration, and creating our &lt;a href="https://www.djangoproject.com/foundation/reports/2024/"&gt;first annual report&lt;/a&gt;. He also led our birthday campaign and helped with the creation of several new working groups this year. His thoughtful leadership helped the board navigate complex decisions.&lt;/p&gt;
+&lt;p&gt;Sarah served as Vice President in 2025 and contributed significantly to our outreach efforts, working group coordination, and membership management. She also served as a point of contact for the Django CNA initiative alongside Thibaud.&lt;/p&gt;
+&lt;p&gt;Both Thibaud and Sarah did too many things to list here. They were amazing ambassadors for the DSF, representing the board at many conferences and events. They will be deeply missed, and we are happy to have their continued membership and guidance in our many working groups.&lt;/p&gt;
+&lt;p&gt;On behalf of the board, thank you both for your commitment to Django and the DSF. The community is better for your service.&lt;/p&gt;
+&lt;h4 id="s-thank-you-to-our-2025-officers"&gt;Thank You to Our 2025 Officers&lt;/h4&gt;
+&lt;p&gt;Thank you to Tom Carrick and Jacob Kaplan-Moss for their service as officers in 2025.&lt;/p&gt;
+&lt;p&gt;Tom served as Secretary, keeping our meetings organized and our records in order. Jacob served as Treasurer, providing careful stewardship of the foundation's finances. Their dedication helped guide the DSF through another successful year.&lt;/p&gt;
+&lt;h4 id="s-welcome-to-our-newly-elected-directors"&gt;Welcome to Our Newly Elected Directors&lt;/h4&gt;
+&lt;p&gt;We welcome Priya Pahwa and Ryan Cheley to the board, and congratulate Jacob Kaplan-Moss on his re-election.&lt;/p&gt;
+&lt;h4 id="s-2026-dsf-board-officers"&gt;&lt;a href="https://www.djangoproject.com/foundation/#board-history"&gt;2026 DSF Board Officers&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;The board unanimously elected our officers for 2026:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;President:&lt;/strong&gt; Jeff Triplett&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Vice President:&lt;/strong&gt; Abigail Gbadago&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Treasurer:&lt;/strong&gt; Ryan Cheley&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Secretary:&lt;/strong&gt; Priya Pahwa&lt;/li&gt;
+&lt;li&gt;Jacob Kaplan-Moss&lt;/li&gt;
+&lt;li&gt;Paolo Melchiorre&lt;/li&gt;
+&lt;li&gt;Tom Carrick   &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I'm honored to serve as President for 2026. The DSF has important work ahead, and I'm looking forward to building on the foundation that previous boards have established.&lt;/p&gt;
+&lt;p&gt;Our monthly board meeting minutes may be found at &lt;a href="https://github.com/django/dsf-minutes"&gt;dsf-minutes&lt;/a&gt;, and &lt;a href="https://github.com/django/dsf-minutes/blob/main/2025/2025-12-11.md"&gt;December's minutes are available&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you have a great idea for the upcoming year or feel something needs our attention, please reach out to us via our &lt;a href="https://www.djangoproject.com/contact/foundation/"&gt;Contact the DSF&lt;/a&gt; page. We're always open to hearing from you.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Jeff Triplett</dc:creator><pubDate>Thu, 18 Dec 2025 12:50:00 -0600</pubDate><guid>https://www.djangoproject.com/weblog/2025/dec/18/introducing-the-2026-dsf-board/</guid></item><item><title>Django Code of Conduct Transparency Report 2025</title><link>https://www.djangoproject.com/weblog/2025/dec/11/django-code-of-conduct-transparency-report-2025/</link><description>&lt;p&gt;The &lt;a href="/foundation/teams/#code-of-conduct-team"&gt;Code of Conduct working group&lt;/a&gt; received 4 reports and met 12 times in 2025. This transparency report is a brief account of how those reports were handled. This year’s number is lower than previous years in part because of the formation of the &lt;a href="/foundation/teams/#online-community-team"&gt;Online Community Working Group&lt;/a&gt; which handles moderation on our official spaces and has been able to act directly on smaller scale infractions. In some cases we received additional reporting while investigating initial reports, but have not counted those as separate instances.&lt;/p&gt;
+&lt;p&gt;This working group conducts business in several ways. It has online meetings, typically once per month. It also discusses issues in a Slack channel, but most cases are handled in the meetings.
+The group welcomed three new members this year: Ariane Djeupang, Natalia Bidart, and Priya Pahwa. Natalia was selected by the new Online Communities Working Group as their liaison to the Code of Conduct Working group; Ariane and Priya were elected by the working group. The group also saw Jay Miller step down this year. We all want to thank Jay for his continued role in our community and for all the work he did with the Code of Conduct group.&lt;/p&gt;
+&lt;p&gt;It was the group’s intention to work with a consultant to update our Code of Conduct and processes. We reached out to two consultants to help with that work, but unfortunately we weren’t able to engage either to get that work completed. We hope to progress with that in 2026. In the meantime, we made a few internal process tweaks - creating up a new “ask CoC” channel with key stakeholders to discuss moderation and CoC enforcement, and having our team set up as moderators in GitHub until we find a better model.&lt;/p&gt;
+&lt;p&gt;Two reports from late 2024 carried into this year. Two reports resulted in suspensions from the relevant platforms. Another was shared with local event organizers.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Finally, this section provides a brief summary of the kinds of cases that were handled:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;One case involved repeated violations of the Discourse rules about self promotion. The working group recommended a suspension from the forum.&lt;/li&gt;
+&lt;li&gt;One case involved repeated behavior across several platforms that discouraged participation and created problems for others. The working group recommended a suspension from all relevant platforms and working groups.&lt;/li&gt;
+&lt;li&gt;One case involved an incident at a PSF-sponsored event. The information was passed on to the local organizers.&lt;/li&gt;
+&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Dan Ryan</dc:creator><pubDate>Thu, 11 Dec 2025 09:19:22 -0600</pubDate><guid>https://www.djangoproject.com/weblog/2025/dec/11/django-code-of-conduct-transparency-report-2025/</guid></item><item><title>Online Community Working Group GitHub repo and project</title><link>https://www.djangoproject.com/weblog/2025/dec/09/online-community-working-group-github-repo-and-pro/</link><description>&lt;p&gt;The Online Community Working Group has introduced a new GitHub repository designed to manage and track ideas, suggestions, and improvements across Django's various online community platforms.&lt;/p&gt;
+&lt;h4 id="s-introducing-the-online-community-working-group-repository"&gt;Introducing the Online Community Working Group Repository&lt;/h4&gt;
+&lt;p&gt;Primarily inspired by the rollout of the &lt;a href="https://github.com/django/new-features"&gt;New Features&lt;/a&gt; repository, the Online Community Working Group has launched &lt;a href="https://github.com/django/online-community-working-group"&gt;their own version&lt;/a&gt; that works in conjunction with the &lt;a href="https://github.com/orgs/django/projects/26"&gt;Online Community Working Group Ideas GitHub project&lt;/a&gt; to provide a mechanism to gather feedback, suggestions, and ideas from across the online community and track their progression.&lt;/p&gt;
+&lt;p&gt;The primary aim is to help better align Django's presence across multiple online platforms by providing:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Centralisation&lt;/strong&gt;: A community-platform-agnostic place to collect feedback, suggestions, and ideas from members of any of Django's online communities.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Visibility&lt;/strong&gt;: With a variety of platforms in use across the community, some of which require an account before their content can even be read, discussions can happen in what effectively amount to private silos. This centralised repository allows all suggestions and ideas to be viewed by everybody, regardless of their community platform of choice.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Consistency&lt;/strong&gt;: A suggestion for one platform can often be a good idea for another. Issues and ideas raised centrally can be assessed against all platforms to better align Django's online community experience.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id="s-how-to-use-the-online-community-working-group-repo"&gt;How to use the Online Community Working Group Repo&lt;/h4&gt;
+&lt;p&gt;If you have an idea or a suggestion for any of Django's online community platforms (such as the &lt;a href="https://forum.djangoproject.com/"&gt;Forum&lt;/a&gt;, &lt;a href="https://chat.djangoproject.com/"&gt;Discord&lt;/a&gt;, or elsewhere), the process starts by &lt;a href="https://github.com/django/online-community-working-group/issues"&gt;creating an issue&lt;/a&gt; in the new repository.&lt;/p&gt;
+&lt;p&gt;You'll be asked to summarise the idea, and answer a couple of short questions regarding which platform it applies to and the rationale behind your idea.&lt;/p&gt;
+&lt;p&gt;The suggestion will be visible on the public board, and people will be able to react to the idea with emoji responses as a quick measure of support, or provide longer-form answers as comments on the issue.&lt;/p&gt;
+&lt;p&gt;The Online Community Working Group will review, triage, and respond to all suggestions, before deciding whether or how they can be implemented across the community.&lt;/p&gt;
+&lt;h4 id="s-existing-online-communities"&gt;Existing Online Communities&lt;/h4&gt;
+&lt;p&gt;Note that we're not asking that you stop using any mechanisms in place within the particular community you're a part of currently—the Discord &lt;a href="https://discord.com/channels/856567261900832808/1092722048561840170"&gt;#suggestions&lt;/a&gt; channel is not going away, for example. However, we may ask that a suggestion or idea flagged within a particular platform be raised via this new GitHub repo instead, in order increase its visibility, apply it to multiple communities, or simply better track its resolution.&lt;/p&gt;
+&lt;h4 id="s-conclusion"&gt;Conclusion&lt;/h4&gt;
+&lt;p&gt;The Online Community Working Group was relatively recently set up, with the aim of improving the experience for members of all Django's communities online. This new repository takes a first step in that direction. Check out the repository at &lt;a href="https://github.com/django/online-community-working-group"&gt;django/online-community-working-group&lt;/a&gt; on GitHub to learn more and start helping shape Django's truly excellent community presence online.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Online Community Working Group</dc:creator><pubDate>Tue, 09 Dec 2025 08:00:47 -0600</pubDate><guid>https://www.djangoproject.com/weblog/2025/dec/09/online-community-working-group-github-repo-and-pro/</guid></item><item><title>Django 6.0 released</title><link>https://www.djangoproject.com/weblog/2025/dec/03/django-60-released/</link><description>&lt;p&gt;The Django team is happy to announce the release of Django 6.0.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://docs.djangoproject.com/en/6.0/releases/6.0/"&gt;The release notes&lt;/a&gt;
+assembles a mosaic of modern tools and thoughtful design. A few highlights are:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Template Partials: modularize templates using small, named fragments for cleaner,
+more maintainable code. (GSoC project by &lt;a class="reference external" href="https://github.com/FarhanAliRaza"&gt;Farhan Ali Raza&lt;/a&gt;,
+mentored by &lt;a class="reference external" href="https://github.com/carltongibson/"&gt;Carlton Gibson&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Background Tasks: run code outside the HTTP request-response cycle with a built-in,
+flexible task framework. (&lt;a class="reference external" href="https://github.com/RealOrangeOne/"&gt;Jake Howard&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Content Security Policy (CSP): easily configure and enforce browser-level security policies
+to protect against content injection. (&lt;a class="reference external" href="https://github.com/robhudson/"&gt;Rob Hudson&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Modernized Email API: compose and send emails with Python's &lt;tt class="docutils literal"&gt;EmailMessage&lt;/tt&gt; class for a
+cleaner, Unicode-friendly interface. (&lt;a class="reference external" href="https://github.com/medmunds/"&gt;Mike Edmunds&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can get Django 6.0 from &lt;a class="reference external" href="https://www.djangoproject.com/download/"&gt;our downloads page&lt;/a&gt; or from &lt;a class="reference external" href="https://pypi.python.org/pypi/Django/6.0"&gt;the Python Package Index&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The PGP key ID used for this release is Natalia Bidart: &lt;a class="reference external" href="https://github.com/nessita.gpg"&gt;2EE82A8D9470983E&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;With the release of Django 6.0, Django 5.2 has reached the end of mainstream support.
+The final minor bug fix release,
+&lt;a class="reference external" href="https://docs.djangoproject.com/en/stable/releases/5.2.9/"&gt;5.2.9&lt;/a&gt;,
+was issued yesterday. Django 5.2 will receive security and data loss fixes until April 2028.
+All users are encouraged to upgrade before then to continue receiving fixes for
+security issues.&lt;/p&gt;
+&lt;p&gt;Django 5.1 has reached the end of extended support. The final security release,
+&lt;a class="reference external" href="https://docs.djangoproject.com/en/stable/releases/5.1.15/"&gt;5.1.15&lt;/a&gt;,
+was issued on Dec. 2, 2025. All Django 5.1 users are encouraged to &lt;a class="reference external" href="https://docs.djangoproject.com/en/dev/howto/upgrade-version/"&gt;upgrade&lt;/a&gt; to a supported
+Django version.&lt;/p&gt;
+&lt;p&gt;See the &lt;a class="reference external" href="https://www.djangoproject.com/download/#supported-versions"&gt;downloads page&lt;/a&gt; for a table of
+supported versions and the future release schedule.&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Natalia Bidart</dc:creator><pubDate>Wed, 03 Dec 2025 06:00:00 -0600</pubDate><guid>https://www.djangoproject.com/weblog/2025/dec/03/django-60-released/</guid></item><item><title>Django security releases issued: 5.2.9, 5.1.15, and 4.2.27</title><link>https://www.djangoproject.com/weblog/2025/dec/02/security-releases/</link><description>&lt;p&gt;In accordance with &lt;a class="reference external" href="https://docs.djangoproject.com/en/dev/internals/security/"&gt;our security release policy&lt;/a&gt;, the Django team
+is issuing releases for
+&lt;a class="reference external" href="https://docs.djangoproject.com/en/dev/releases/5.2.9/"&gt;Django 5.2.9&lt;/a&gt;,
+&lt;a class="reference external" href="https://docs.djangoproject.com/en/dev/releases/5.1.15/"&gt;Django 5.1.15&lt;/a&gt;, and
+&lt;a class="reference external" href="https://docs.djangoproject.com/en/dev/releases/4.2.27/"&gt;Django 4.2.27&lt;/a&gt;.
+These releases address the security issues detailed below. We encourage all
+users of Django to upgrade as soon as possible.&lt;/p&gt;
+&lt;div class="section" id="s-cve-2025-13372-potential-sql-injection-in-filteredrelation-column-aliases-on-postgresql"&gt;
+&lt;h3&gt;CVE-2025-13372: Potential SQL injection in &lt;tt class="docutils literal"&gt;FilteredRelation&lt;/tt&gt; column aliases on PostgreSQL&lt;/h3&gt;
+&lt;p&gt;&lt;tt class="docutils literal"&gt;FilteredRelation&lt;/tt&gt; was subject to SQL injection in column aliases,
+using a suitably crafted dictionary, with dictionary expansion, as the
+&lt;tt class="docutils literal"&gt;**kwargs&lt;/tt&gt; passed to &lt;tt class="docutils literal"&gt;QuerySet.annotate()&lt;/tt&gt; or &lt;tt class="docutils literal"&gt;QuerySet.alias()&lt;/tt&gt;
+on PostgreSQL.&lt;/p&gt;
+&lt;p&gt;Thanks to Stackered for the report.&lt;/p&gt;
+&lt;p&gt;This issue has severity &amp;quot;high&amp;quot; according to the Django security policy.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="s-cve-2025-64460-potential-denial-of-service-vulnerability-in-xml-serializer-text-extraction"&gt;
+&lt;h3&gt;CVE-2025-64460: Potential denial-of-service vulnerability in XML serializer text extraction&lt;/h3&gt;
+&lt;p&gt;Algorithmic complexity in &lt;tt class="docutils literal"&gt;django.core.serializers.xml_serializer.getInnerText()&lt;/tt&gt; allowed a remote attacker
+to cause a potential denial-of-service triggering CPU and memory exhaustion via specially crafted
+XML input submitted to a service that invokes XML &lt;tt class="docutils literal"&gt;Deserializer&lt;/tt&gt;.
+The vulnerability resulted from repeated string concatenation while recursively collecting text nodes,
+which produced superlinear computation resulting in service degradation or outage.&lt;/p&gt;
+&lt;p&gt;Thanks to Seokchan Yoon (&lt;a class="reference external" href="https://ch4n3.kr/"&gt;https://ch4n3.kr/&lt;/a&gt;) for the report.&lt;/p&gt;
+&lt;p&gt;This issue has severity &amp;quot;moderate&amp;quot; according to the Django security policy.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="s-affected-supported-versions"&gt;
+&lt;h3&gt;Affected supported versions&lt;/h3&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Django main&lt;/li&gt;
+&lt;li&gt;Django 6.0 (currently at release candidate status)&lt;/li&gt;
+&lt;li&gt;Django 5.2&lt;/li&gt;
+&lt;li&gt;Django 5.1&lt;/li&gt;
+&lt;li&gt;Django 4.2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="s-resolution"&gt;
+&lt;h3&gt;Resolution&lt;/h3&gt;
+&lt;p&gt;Patches to resolve the issue have been applied to Django's
+main, 6.0 (currently at release candidate status), 5.2, 5.1, and 4.2 branches.
+The patches may be obtained from the following changesets.&lt;/p&gt;
+&lt;div class="section" id="s-cve-2025-13372-potential-sql-injection-in-filteredrelation-column-aliases-on-postgresql-1"&gt;
+&lt;h4&gt;CVE-2025-13372: Potential SQL injection in &lt;tt class="docutils literal"&gt;FilteredRelation&lt;/tt&gt; column aliases on PostgreSQL&lt;/h4&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;On the &lt;a class="reference external" href="https://github.com/django/django/commit/5b90ca1e7591fa36fccf2d6dad67cf1477e6293e"&gt;main branch&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;On the &lt;a class="reference external" href="https://github.com/django/django/commit/56aea00c3c5e1aacf4ed05f8ee06c2e78f02cea0"&gt;6.0 branch&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;On the &lt;a class="reference external" href="https://github.com/django/django/commit/479415ce5249bcdebeb6570c72df2a87f45a7bbf"&gt;5.2 branch&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;On the &lt;a class="reference external" href="https://github.com/django/django/commit/9c6a5bde24240382807d13bc3748d08444709355"&gt;5.1 branch&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;On the &lt;a class="reference external" href="https://github.com/django/django/commit/f997037b235f6b5c9e7c4a501491ec45f3400f3d"&gt;4.2 branch&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="s-cve-2025-64460-potential-denial-of-service-vulnerability-in-xml-serializer-text-extraction-1"&gt;
+&lt;h4&gt;CVE-2025-64460: Potential denial-of-service vulnerability in XML serializer text extraction&lt;/h4&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;On the &lt;a class="reference external" href="https://github.com/django/django/commit/50efb718b31333051bc2dcb06911b8fa1358c98c"&gt;main branch&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;On the &lt;a class="reference external" href="https://github.com/django/django/commit/1dbd07a608e495a0c229edaaf84d58d8976313b5"&gt;6.0 branch&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;On the &lt;a class="reference external" href="https://github.com/django/django/commit/99e7d22f55497278d0bcb2e15e72ef532e62a31d"&gt;5.2 branch&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;On the &lt;a class="reference external" href="https://github.com/django/django/commit/0db9ea4669312f1f4973e09f4bca06ab9c1ec74b"&gt;5.1 branch&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;On the &lt;a class="reference external" href="https://github.com/django/django/commit/4d2b8803bebcdefd2b76e9e8fc528d5fddea93f0"&gt;4.2 branch&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="s-the-following-releases-have-been-issued"&gt;
+&lt;h3&gt;The following releases have been issued&lt;/h3&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Django 5.2.9 (&lt;a class="reference external" href="https://www.djangoproject.com/download/5.2.9/tarball/"&gt;download Django 5.2.9&lt;/a&gt; |
+&lt;a class="reference external" href="https://www.djangoproject.com/download/5.2.9/checksum/"&gt;5.2.9 checksums&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Django 5.1.15 (&lt;a class="reference external" href="https://www.djangoproject.com/download/5.1.15/tarball/"&gt;download Django 5.1.15&lt;/a&gt; |
+&lt;a class="reference external" href="https://www.djangoproject.com/download/5.1.15/checksum/"&gt;5.1.15 checksums&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Django 4.2.27 (&lt;a class="reference external" href="https://www.djangoproject.com/download/4.2.27/tarball/"&gt;download Django 4.2.27&lt;/a&gt; |
+&lt;a class="reference external" href="https://www.djangoproject.com/download/4.2.27/checksum/"&gt;4.2.27 checksums&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The PGP key ID used for this release is Natalia Bidart: &lt;a class="reference external" href="https://github.com/nessita.gpg"&gt;2EE82A8D9470983E&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="s-general-notes-regarding-security-reporting"&gt;
+&lt;h3&gt;General notes regarding security reporting&lt;/h3&gt;
+&lt;p&gt;As always, we ask that potential security issues be reported via private email
+to &lt;tt class="docutils literal"&gt;security&amp;#64;djangoproject.com&lt;/tt&gt;, and not via Django's Trac instance, nor via
+the Django Forum. Please see &lt;a class="reference external" href="https://www.djangoproject.com/security/"&gt;our security policies&lt;/a&gt; for further information.&lt;/p&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Natalia Bidart</dc:creator><pubDate>Tue, 02 Dec 2025 06:00:00 -0600</pubDate><guid>https://www.djangoproject.com/weblog/2025/dec/02/security-releases/</guid></item><item><title>2026 DSF Board Election Results</title><link>https://www.djangoproject.com/weblog/2025/nov/28/2026-dsf-board-election-results/</link><description>&lt;p&gt;The 2026 DSF Board Election has closed, and the following candidates have been elected:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Jacob Kaplan-Moss&lt;/li&gt;
+&lt;li&gt;Priya Pahwa&lt;/li&gt;
+&lt;li&gt;Ryan Cheley&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;They will all serve two years for their term.&lt;/p&gt;
+&lt;h3 id="s-2026-board"&gt;2026 Board&lt;/h3&gt;
+&lt;p&gt;Directors &lt;a href="https://www.djangoproject.com/weblog/2024/nov/17/2025-dsf-board-election-results/"&gt;elected for the 2025 DSF Board&lt;/a&gt; - Abigail Gbadago, Jeff Triplett, Paolo Melchiorre, Tom Carrick - are continuing with one year left to serve on the board.&lt;/p&gt;
+&lt;p&gt;Therefore, the combined 2026 DSF Board of Directors are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Abigail Gbadago&lt;/li&gt;
+&lt;li&gt;Jacob Kaplan-Moss*&lt;/li&gt;
+&lt;li&gt;Jeff Triplett&lt;/li&gt;
+&lt;li&gt;Paolo Melchiorre&lt;/li&gt;
+&lt;li&gt;Priya Pahwa*&lt;/li&gt;
+&lt;li&gt;Ryan Cheley*&lt;/li&gt;
+&lt;li&gt;Tom Carrick&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;* Elected to a two year term&lt;/p&gt;
+&lt;p&gt;&lt;img alt="2026 DSF Board: Abigail Gbadago, Jacob Kaplan-Moss, Jeff Triplett, Paolo Melchiorre, Priya Pahwa, Ryan Cheley, Tom Carrick" src="https://media.djangoproject.com/blog/images/2025/11/2026_DSF_Board_profile_pictures.png"&gt;&lt;/p&gt;
+&lt;p&gt;Congratulations to our winners, and a huge thank you to our departing board members Sarah Abderemane and Thibaud Colas.&lt;/p&gt;
+&lt;p&gt;Thank you again to everyone who nominated themselves. Even if you were not successful, you gave our community the chance to make their voices heard in who they wanted to represent them.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Thibaud Colas</dc:creator><pubDate>Fri, 28 Nov 2025 00:15:12 -0600</pubDate><guid>https://www.djangoproject.com/weblog/2025/nov/28/2026-dsf-board-election-results/</guid></item><item><title>DSF member of the month -  Akio Ogasahara</title><link>https://www.djangoproject.com/weblog/2025/nov/21/dsf-member-of-the-month-akio-ogasahara/</link><description>&lt;p&gt;For November 2025, we welcome Akio Ogasahara as our DSF member of the month! ⭐&lt;/p&gt;
+&lt;p&gt;Akio is a technical writer and systems engineer. He contributed to the Japanese translation for many years. He has been a DSF member since June 2025.
+You can learn more about Akio by visiting &lt;a href="https://x.com/libratechw"&gt;Akio's X account&lt;/a&gt; and &lt;a href="https://github.com/libratechw"&gt;his GitHub Profile&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Let’s spend some time getting to know Akio better!&lt;/p&gt;
+&lt;h4 id="s-can-you-tell-us-a-little-about-yourself-hobbies-education-etc"&gt;Can you tell us a little about yourself (hobbies, education, etc.)&lt;/h4&gt;
+&lt;p&gt;I was born in 1986 in Rochester, Minnesota, to Japanese parents, and I’ve lived in Japan since I was one. I’ve been fascinated by machines for as long as I can remember. I hold a master’s degree in mechanical engineering. I’ve worked as a technical writer and a software PM, and I’m currently in QA at a Japanese manufacturer.&lt;/p&gt;
+&lt;h4 id="s-im-curious-where-does-your-nickname-libratech-come-from"&gt;I'm curious, where does your nickname “libratech” come from?&lt;/h4&gt;
+&lt;p&gt;I often used “Libra” as a handle because the symbol of Libra—a balanced scale—reflects a value I care deeply about: fairness in judgment. I combined that with “tech,” from “tech writer,” to create “libratech.”&lt;/p&gt;
+&lt;h4 id="s-how-did-you-start-using-django"&gt;How did you start using Django?&lt;/h4&gt;
+&lt;p&gt;Over ten years ago, I joined a hands-on workshop using a Raspberry Pi to visualize sensor data, and we built the dashboard with Django. That was my first real experience.&lt;/p&gt;
+&lt;h4 id="s-what-other-framework-do-you-know-and-if-there-is-anything-you-would-like-to-have-in-django-if-you-had-magical-powers"&gt;What other framework do you know and if there is anything you would like to have in Django if you had magical powers?&lt;/h4&gt;
+&lt;p&gt;I’ve used Flask and FastAPI. If I could wish for anything, I’d love “one-click” deployment that turns a Django project into an ultra-lightweight app running on Cloudflare Workers.&lt;/p&gt;
+&lt;h4 id="s-what-projects-are-you-working-on-now"&gt;What projects are you working on now?&lt;/h4&gt;
+&lt;p&gt;As a QA engineer, I’m building Pandas pipelines for quality-data cleansing and creating BI dashboards.&lt;/p&gt;
+&lt;h4 id="s-what-are-you-learning-about-these-days"&gt;What are you learning about these days?&lt;/h4&gt;
+&lt;p&gt;I’m studying for two Japanese certifications: the &lt;em&gt;Database Specialist&lt;/em&gt; exam and the &lt;em&gt;Quality Control Examination (QC Kentei)&lt;/em&gt;.&lt;/p&gt;
+&lt;h4 id="s-which-django-libraries-are-your-favorite-core-or-3rd-party"&gt;Which Django libraries are your favorite (core or 3rd party)?&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;Django admin&lt;/strong&gt;, without question. In real operations, websites aren’t run only by programmers—most teams eventually need CRM-like capabilities. Django admin maps beautifully to that practical reality.&lt;/p&gt;
+&lt;h4 id="s-what-are-the-top-three-things-in-django-that-you-like"&gt;What are the top three things in Django that you like?&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Django admin&lt;/li&gt;
+&lt;li&gt;Strong security&lt;/li&gt;
+&lt;li&gt;DRY by design&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="s-you-have-contributed-a-lot-on-the-japanese-documentation-what-made-you-contribute-to-translate-for-the-japanese-language-in-the-first-place"&gt;You have contributed a lot on the Japanese documentation, what made you contribute to translate for the Japanese language in the first place?&lt;/h4&gt;
+&lt;p&gt;I went through several joint surgeries and suddenly had a lot of time. I’d always wanted to contribute to open source, but I knew my coding skills weren’t my strongest asset. I did, however, have years of experience writing manuals—so translation felt like a meaningful way to help.&lt;/p&gt;
+&lt;h4 id="s-do-you-have-any-advice-for-people-who-could-be-hesitant-to-contribute-to-translation-of-django-documentation"&gt;Do you have any advice for people who could be hesitant to contribute to translation of Django documentation?&lt;/h4&gt;
+&lt;p&gt;Translation has fewer strict rules than code contributions, and you can start simply by creating a Transifex account. If a passage feels unclear, improve it! And if you have questions, the &lt;a href="https://discord.gg/RZvawz6KgC"&gt;Django-ja translation team is happy to help on our Discord&lt;/a&gt;.&lt;/p&gt;
+&lt;h4 id="s-i-know-you-have-some-interest-in-ai-as-a-technical-writer-do-you-have-an-idea-on-how-django-could-evolve-with-ai"&gt;I know you have some interest in AI as a technical writer, do you have an idea on how Django could evolve with AI?&lt;/h4&gt;
+&lt;p&gt;Today’s AI is excellent at working with existing code—spotting N+1 queries or refactoring SQL without changing behavior. But code written entirely by AI often has weak security. That’s why solid unit tests and Django’s strong security guardrails will remain essential: they let us harness AI’s creativity safely.&lt;/p&gt;
+&lt;h4 id="s-django-is-celebrating-its-20th-anniversary-do-you-have-a-nice-story-to-share"&gt;Django is celebrating its 20th anniversary, do you have a nice story to share?&lt;/h4&gt;
+&lt;p&gt;The surgeries were tough, but they led me to documentation translation, which reconnected me with both English and Django. I’m grateful for that path.&lt;/p&gt;
+&lt;h4 id="s-what-are-your-hobbies-or-what-do-you-do-when-youre-not-working"&gt;What are your hobbies or what do you do when you’re not working?&lt;/h4&gt;
+&lt;p&gt;Outside of computers, I enjoy playing drums in a band and watching musicals and stage plays! 🎵&lt;/p&gt;
+&lt;h4 id="s-is-there-anything-else-youd-like-to-say"&gt;Is there anything else you’d like to say?&lt;/h4&gt;
+&lt;p&gt;If you ever visit Japan, of course sushi and ramen are great—but don’t miss the sweets and ice creams you can find at local supermarkets and convenience stores! They’re inexpensive, come in countless varieties, and I’m sure you’ll discover a new favorite!🍦&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for doing the interview, Akio !&lt;/strong&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sarah Abderemane</dc:creator><pubDate>Fri, 21 Nov 2025 07:00:00 -0600</pubDate><guid>https://www.djangoproject.com/weblog/2025/nov/21/dsf-member-of-the-month-akio-ogasahara/</guid></item></channel></rss>
