@@ -5,7 +5,7 @@ import { useNewsStore } from 'news/store/news'
 import { News } from 'news/types/news'
 import i18n from 'TaskDesk/js/i18n'
 import { updateItem, fetchItems } from 'TaskDesk/js/common/service'
-import { prepareWebSocket, closeWebSocket } from 'TaskDesk/js/common/websockets'
+import { prepareNewsSocket, closeNewsSocket } from 'news/services/news.service'
 import { router } from 'news/navigation/routing'
 import NewsNavigation from 'news/components/navigation/NewsNavigation.vue'
 import NewsList from 'news/components/list/NewsList.vue'
@@ -19,9 +19,9 @@ describe('news related components rendering', () => {
     let socket = { send: (data) => lastRequest = data }
 
     beforeEach(() => {
-        vi.mock('TaskDesk/js/common/websockets')
-        vi.mocked(prepareWebSocket).mockResolvedValue(socket)
-        vi.mocked(closeWebSocket).mockResolvedValue()
+        vi.mock('news/services/news.service')
+        vi.mocked(prepareNewsSocket).mockResolvedValue(socket)
+        vi.mocked(closeNewsSocket).mockResolvedValue()
         vi.mock('TaskDesk/js/common/service')
         vi.mocked(updateItem).mockResolvedValue(null)
         vi.mocked(fetchItems).mockResolvedValue([])

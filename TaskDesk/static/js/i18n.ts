@@ -42,6 +42,7 @@ export default createI18n({
                 word_part: "Any part of a word",
                 filter_entry_placeholder: "Greenland",
                 published: "Published",
+                load_more_news: "Load more news",
             }
         },
 
@@ -84,6 +85,7 @@ export default createI18n({
                 word_part: "Любая часть слова",
                 filter_entry_placeholder: "Гренланд",
                 published: "Опубликовано",
+                load_more_news: "Загрузить больше новостей",
             }
         }
     }

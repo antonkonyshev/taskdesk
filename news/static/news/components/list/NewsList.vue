@@ -87,9 +87,9 @@ feedStore.loadFeeds()
 </script>
 
 <template>
-    <div class="flex-1 xl:max-w-screen-xl">
+    <div class="flex flex-col items-center xl:max-w-screen-xl">
         <div v-for="(news, index) in store.news" :key="news.id"
-            class="flex relative gap-3 my-3 bg-gray-200 duration-400"
+            class="flex w-full relative gap-3 my-3 bg-gray-200 duration-400"
             :class="{'bg-green-700': isSwiping == 'right'}">
 
             <span class="absolute opacity-0 top-0 right-5 w-[50px] h-[100%] duration-500 bg-no-repeat bg-center bg-contain svg-eye-slash"
@@ -109,8 +109,8 @@ feedStore.loadFeeds()
                 :class="{'transition-all duration-500 ease-linear': !isSwiping}"
                 class="relative p-3 size-full shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white cursor-pointer">
 
-                <span class="flex flex-col sm:flex-row">
-                    <span class="flex flex-col flex-1">
+                <span class="flex flex-col gap-3 md:gap-4 lg:gap-5 sm:flex-row">
+                    <span class="flex flex-col gap-1 sm:gap-2 flex-1">
                         <span class="font-semibold flex flex-row justify-between items-start gap-2">
                             <span v-text="news.title" class="text-lg"></span>
                         </span>
@@ -125,7 +125,8 @@ feedStore.loadFeeds()
                         </span>
                     </span>
 
-                    <span class="flex flex-col sm:order-first min-w-[30%] lg:min-w-[310px] min-h-[200px] sm:min-h-auto md:min-h-[150px] lg:min-h-[150px]">
+                    <span class="flex flex-col gap-2 sm:order-first min-w-[30%] lg:min-w-[310px] min-h-[200px] sm:min-h-auto md:min-h-[150px] lg:min-h-[150px]"
+                        :class="{'min-h-auto sm:hidden': !news.enclosure_url}">
                         <span v-if="news.enclosure_url"
                             class="flex flex-1 w-full bg-cover bg-center bg-no-repeat"
                             :style="{'background-image': 'url(\'' + news.enclosure_url + '\')'}"></span>
@@ -150,5 +151,13 @@ feedStore.loadFeeds()
                 </span>
             </a>
         </div>
+
+        <button type="button" @click="store.fetchMoreNews()"
+            class="action-button mt-2 mb-5 !px-4 gap-2 hover:bg-green-700 hover:!border-green-700 hover:text-white font-semibold duration-200 group flex flex-row items-center shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white cursor-pointer">
+
+            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-refresh group-hover:invert-100"></span>
+
+            <span v-text="t('message.load_more_news')"></span>
+        </button>
     </div>
 </template>

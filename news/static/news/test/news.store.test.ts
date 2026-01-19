@@ -3,7 +3,7 @@ import { createPinia, setActivePinia } from "pinia"
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { useNewsStore } from 'news/store/news'
 import { News } from 'news/types/news'
-import { prepareWebSocket, closeWebSocket } from 'TaskDesk/js/common/websockets'
+import { prepareNewsSocket, closeNewsSocket } from 'news/services/news.service'
 import i18n from 'TaskDesk/js/i18n'
 
 describe('news store', () => {
@@ -12,13 +12,13 @@ describe('news store', () => {
     let aanews = null
     let store = null
     let lastRequest = null
-    let socket = { send: (data) => lastRequest = data }
+    const socket = { send: (data) => lastRequest = data }
 
     beforeEach(() => {
         vi.useFakeTimers({ shouldAdvanceTime: true })
-        vi.mock('TaskDesk/js/common/websockets')
-        vi.mocked(prepareWebSocket).mockResolvedValue(socket)
-        vi.mocked(closeWebSocket).mockResolvedValue()
+        vi.mock('news/services/news.service')
+        vi.mocked(prepareNewsSocket).mockResolvedValue(socket)
+        vi.mocked(closeNewsSocket).mockResolvedValue()
         news = {
             id: 2,
             guid: "something",

@@ -16,12 +16,14 @@ describe('task store', () => {
     let atask = null
     let aatask = null
     let store = null
+    let lastRequest = null
+    const socket = { send: (data) => lastRequest = data }
 
     beforeEach(() => {
         vi.useFakeTimers({ shouldAdvanceTime: true })
         vi.mock('tasks/services/tasks.service.ts')
         vi.mock('TaskDesk/js/common/service.ts')
-        vi.mocked(prepareTaskSocket).mockResolvedValue({})
+        vi.mocked(prepareTaskSocket).mockResolvedValue(socket)
         vi.mocked(closeTaskSocket).mockResolvedValue()
         setActivePinia(createPinia())
         config.global.plugins = [i18n]

@@ -7,8 +7,10 @@ from json import JSONDecodeError
 from fastapi import (WebSocket, WebSocketDisconnect, Depends,
                      WebSocketException, status)
 
+from TaskDesk.tasks import atask
 from tdauth.models import User
 from news.models import News, Mark
+from news.tasks import fetch_all_news
 
 from api.authentication import Authentication
 from api.router import TaskDeskAPIRouter
@@ -45,6 +47,8 @@ async def list_news(
                         Mark.Category.HIDDEN
                             if request.get('request', '') == 'hide'
                             else Mark.Category.BOOKMARK)
+                elif request.get('request', None) == 'fetch':
+                    atask(fetch_all_news)
             except JSONDecodeError as err:
                 # TODO: add logging
                 print(err)
