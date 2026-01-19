@@ -6,6 +6,7 @@ from collections.abc import Iterable
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 from django.conf import settings
 
 from TaskDesk.models import TaskDeskBaseModel
@@ -127,7 +128,7 @@ class News(TaskDeskBaseModel):
             ).exclude(
                 id__in=Mark.objects.values_list('news_id', flat=True).filter(**{
                     'user' if isinstance(user, User) else 'user_id': user,
-                }).filter(category=Mark.Category.HIDDEN)
+                })
             )
 
     objects = NewsQuerySet.as_manager()
@@ -205,6 +206,22 @@ class Mark(TaskDeskBaseModel):
     def __str__(self):
         return (f"{self.__class__.__name__} (id={self.id}) "
                 f"[UID: {self.user_id} NID: {self.news_id}]")
+
+    @classmethod
+    async def mark_news(
+        cls, user: User | int, news: News | int, category: Category.values
+    ):
+        user_kwarg = {'user' if isinstance(user, User) else 'user_id': user}
+        news_kwarg = {'news' if isinstance(news, News) else 'news_id': news}
+        mark = await cls.objects.filter(**user_kwarg).filter(**news_kwarg)\
+            .afirst()
+        if not mark:
+            mark = cls(category=category, **user_kwarg, **news_kwarg)
+            await mark.asave()
+        elif mark and mark.category != category:
+            mark.category = category
+            mark.created = timezone.now()
+            await mark.asave()
 
 
 class Filter(TaskDeskBaseModel):

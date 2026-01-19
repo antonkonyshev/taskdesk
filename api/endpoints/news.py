@@ -8,7 +8,7 @@ from fastapi import (WebSocket, WebSocketDisconnect, Depends,
                      WebSocketException, status)
 
 from tdauth.models import User
-from news.models import News
+from news.models import News, Mark
 
 from api.authentication import Authentication
 from api.router import TaskDeskAPIRouter
@@ -36,6 +36,15 @@ async def list_news(
                             )[:NEWS_PER_ONE_REQUEST_LIMIT]:
                         await socket.send_json(data=NewsData.model_validate(
                             news_values).model_dump_json())
+                elif (
+                    request.get('request', '') in ('hide', 'bookmark') and
+                    request.get('id', None)
+                ):
+                    await Mark.mark_news(
+                        user, request.get('id', None),
+                        Mark.Category.HIDDEN
+                            if request.get('request', '') == 'hide'
+                            else Mark.Category.BOOKMARK)
             except JSONDecodeError as err:
                 # TODO: add logging
                 print(err)

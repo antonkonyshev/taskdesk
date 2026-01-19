@@ -2,7 +2,7 @@ import { useWebSocket, UseWebSocketReturn } from "@vueuse/core"
 
 export const prepareWebSocket = (
     socket: UseWebSocketReturn<any>, url: string,
-    callback: (ws: WebSocket, event: MessageEvent) => Promise<void>
+    callback: (ws: WebSocket, event: MessageEvent) => void
 ): Promise<any> => {
     return new Promise((resolve, reject) => {
         try {

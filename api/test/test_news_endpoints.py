@@ -1,5 +1,6 @@
 import os.path as op
 import json
+from time import sleep
 
 from fastapi import WebSocketDisconnect
 
@@ -52,3 +53,40 @@ class NewsEndpointsTestCase(APITestCase):
             self.assertEqual(data.get('enclosure_type'), 'image/jpeg')
             data = socket.receive_json()
             self.assertTrue(json.loads(data))
+
+    def test_news_hiding_and_bookmarking(self):
+        self.assertEqual(News.objects.unread_for_user(self.user).count(), 12)
+        news = News.objects.unread_for_user(self.user).first()
+        anews = News.objects.unread_for_user(self.user).last()
+        self.login()
+        with self.client.websocket_connect("/api/v1/news/") as socket:
+            socket.send_json({'request': 'hide', 'id': news.id})
+            sleep(1)
+            self.assertEqual(News.objects.unread_for_user(self.user).count(), 11)
+            socket.send_json({'request': 'bookmark', 'id': anews.id})
+            sleep(1)
+            self.assertEqual(News.objects.unread_for_user(self.user).count(), 10)
+            self.assertEqual(self.user.marks.count(), 2)
+            self.assertEqual(self.user.marks.filter(
+                category=Mark.Category.HIDDEN).count(), 1)
+            self.assertEqual(self.user.marks.filter(
+                category=Mark.Category.BOOKMARK).count(), 1)
+
+            socket.send_json({'request': 'hide', 'id': anews.id})
+            sleep(1)
+            self.assertEqual(News.objects.unread_for_user(self.user).count(), 10)
+            self.assertEqual(self.user.marks.count(), 2)
+            self.assertEqual(self.user.marks.filter(
+                category=Mark.Category.HIDDEN).count(), 2)
+            self.assertEqual(self.user.marks.filter(
+                category=Mark.Category.BOOKMARK).count(), 0)
+
+            socket.send_json({'request': 'bookmark', 'id': news.id})
+            socket.send_json({'request': 'bookmark', 'id': anews.id})
+            sleep(1)
+            self.assertEqual(News.objects.unread_for_user(self.user).count(), 10)
+            self.assertEqual(self.user.marks.count(), 2)
+            self.assertEqual(self.user.marks.filter(
+                category=Mark.Category.HIDDEN).count(), 0)
+            self.assertEqual(self.user.marks.filter(
+                category=Mark.Category.BOOKMARK).count(), 2)

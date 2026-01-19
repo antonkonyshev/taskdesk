@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { useNewsStore } from 'news/store/news'
 import { News } from 'news/types/news'
 import { prepareWebSocket, closeWebSocket } from 'TaskDesk/js/common/websockets'
+import { receiveNews } from 'news/services/news.service'
 import i18n from 'TaskDesk/js/i18n'
 
 describe('news store', () => {
@@ -11,7 +12,8 @@ describe('news store', () => {
     let anews = null
     let aanews = null
     let store = null
-    let socket = {send: async (data) => {}}
+    let lastRequest = null
+    let socket = { send: (data) => lastRequest = data }
 
     beforeEach(() => {
         vi.useFakeTimers({ shouldAdvanceTime: true })
@@ -32,9 +34,9 @@ describe('news store', () => {
             guid: "somethingelse",
             title: "First testing news",
             published: new Date(new Date().getDate() - 2000),
-            updated: new Date(),
             author: "John Doe",
-            enclosure: "http://localhost:8000/img/test.png",
+            enclosure_url: "http://localhost:8000/img/test.png",
+            enclosure_type: "image/png",
             feed: 1,
         } as News
         aanews = {
@@ -49,7 +51,9 @@ describe('news store', () => {
         setActivePinia(createPinia())
         store = useNewsStore()
         config.global.plugins = [i18n]
-        store.updateNews([aanews, anews, news])
+        store.refreshNews(aanews)
+        store.refreshNews(anews)
+        store.refreshNews(news)
     })
 
     afterEach(() => {
@@ -61,10 +65,10 @@ describe('news store', () => {
         expect(store.news.length).toBe(3)
         expect(store.news[0].id).toBe(3)
         expect(store.news[0].title).toBe('Third testing news')
-        expect(store.news[1].id).toBe(2)
-        expect(store.news[1].title).toBe('Second testing news')
-        expect(store.news[2].id).toBe(1)
-        expect(store.news[2].title).toBe('First testing news')
+        expect(store.news[1].id).toBe(1)
+        expect(store.news[1].title).toBe('First testing news')
+        expect(store.news[2].id).toBe(2)
+        expect(store.news[2].title).toBe('Second testing news')
     })
 
     test('news updating from backend', async () => {
@@ -77,32 +81,37 @@ describe('news store', () => {
             published: new Date(new Date().getDate()),
         } as News
         await store.loadNews()
-        store.updateNews([aaanews, aanews, anews, news])
+        store.refreshNews(aanews)
+        store.refreshNews(anews)
+        store.refreshNews(news)
+        store.refreshNews(aaanews)
         expect(store.news.length).toBe(4)
-        expect(store.news[0].id).toBe(4)
-        expect(store.news[0].title).toBe('Fourth testing news')
-        expect(store.news[1].id).toBe(3)
-        expect(store.news[1].title).toBe('Third testing news')
-        expect(store.news[2].id).toBe(2)
-        expect(store.news[2].title).toBe('Second testing news')
-        expect(store.news[3].id).toBe(1)
-        expect(store.news[3].title).toBe('First testing news')
-    })
-
-    test('news hiding and bookmarking', async () => {
-        await store.loadNews()
-        expect(store.news.length).toBe(3)
-        expect(store.news[1].id).toBe(2)
-        await store.markNews(store.news[1], true)
-        expect(store.news.length).toBe(2)
         expect(store.news[0].id).toBe(3)
         expect(store.news[0].title).toBe('Third testing news')
         expect(store.news[1].id).toBe(1)
         expect(store.news[1].title).toBe('First testing news')
+        expect(store.news[2].id).toBe(2)
+        expect(store.news[2].title).toBe('Second testing news')
+        expect(store.news[3].id).toBe(4)
+        expect(store.news[3].title).toBe('Fourth testing news')
+    })
+
+    test('news hiding and bookmarking', async () => {
+        store.refreshNews(aanews)
+        store.refreshNews(anews)
+        store.refreshNews(news)
+        expect(store.news.length).toBe(3)
+        expect(store.news[1].id).toBe(1)
+        await store.markNews(store.news[1], true)
+        expect(store.news.length).toBe(2)
+        expect(store.news[0].id).toBe(3)
+        expect(store.news[0].title).toBe('Third testing news')
+        expect(store.news[1].id).toBe(2)
+        expect(store.news[1].title).toBe('Second testing news')
         await store.markNews(store.news[0])
         expect(store.news.length).toBe(1)
-        expect(store.news[0].id).toBe(1)
-        expect(store.news[0].title).toBe('First testing news')
+        expect(store.news[0].id).toBe(2)
+        expect(store.news[0].title).toBe('Second testing news')
         await store.markNews(store.news[0])
         expect(store.news.length).toBe(0)
     })

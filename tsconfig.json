@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "paths": {
-            "static/*": ["./TaskDesk/static/*"],
+            // "static/*": ["./TaskDesk/static/*"],
             "TaskDesk/*": ["./TaskDesk/static/*"],
             "tasks/*": ["./tasks/static/tasks/*"],
             "notes/*": ["./notes/static/notes/*"],

@@ -3,17 +3,15 @@ import { useTasksStore } from "tasks/store/tasks"
 
 let socket = null
 
-const receiveMessage = async (ws: WebSocket, event: MessageEvent) => {
-    await useTasksStore().refreshTask(JSON.parse(event.data))
-}
+const receiveMessage = async (
+    ws: WebSocket, event: MessageEvent
+) => await useTasksStore().refreshTask(JSON.parse(event.data))
 
-export const prepareTaskSocket = (uuid: string): Promise<any> => {
-    return prepareWebSocket(socket, "/task/" + uuid + "/", receiveMessage)
-}
+export const prepareTaskSocket = (
+    uuid: string
+): Promise<any> => prepareWebSocket(socket, "/task/" + uuid + "/", receiveMessage)
 
-export const closeTaskSocket = (): Promise<void> => {
-    return closeWebSocket(socket)
-}
+export const closeTaskSocket = (): Promise<void> => closeWebSocket(socket)
 
 export const markTask = (uuid: string, method: 'post'|'delete'): Promise<void> => {
     return new Promise(async (resolve, reject) => {

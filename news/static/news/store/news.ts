@@ -1,29 +1,16 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { refreshItem } from 'TaskDesk/js/common/store'
 import { News } from 'news/types/news'
 import { prepareNewsSocket } from 'news/services/news.service'
 
 export const useNewsStore = defineStore('news', () => {
     const news = ref<Array<News>>([])
 
-    async function loadNews() {
-        try {
-            (await prepareNewsSocket()).send(JSON.stringify({ request: "list" }))
-        } catch(err) {
-            console.error(err)
-        }
-    }
-
-    function updateNews(data: Array<News>) {
-        data.sort((elema, elemb) => { return elema.published.getDate() - elemb.published.getDate() }).forEach((current) => {
-            const idx = news.value.findIndex((elem) => elem.id == current.id)
-            if (idx >= 0) {
-                news.value.splice(idx, 1, current)
-            } else {
-                news.value.unshift(current)
-            }
-        })
-    }
+    const refreshNews = (data: News) => refreshItem(
+        data, news, (elem) => elem.id == data.id, true)
+    const loadNews = async () => (await prepareNewsSocket()).send(
+        JSON.stringify({ request: "list" }))
 
     async function markNews(target: News, bookmark = false) {
         try {
@@ -39,5 +26,5 @@ export const useNewsStore = defineStore('news', () => {
         }
     }
 
-    return { news, loadNews, updateNews, markNews }
+    return { news, loadNews, refreshNews, markNews }
 })

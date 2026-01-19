@@ -1,13 +1,12 @@
 export interface News {
-    id?: number
-    guid?: string
-    title?: string
+    id: number
+    guid: string
+    title: string
     description?: string
-    link?: string
-    published?: Date
-    updated?: Date
+    link: string
+    published: Date
     author?: string
     enclosure_url?: string
     enclosure_type?: string
-    feed_id?: number
+    feed?: number
 }
