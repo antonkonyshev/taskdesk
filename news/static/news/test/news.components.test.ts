@@ -3,8 +3,9 @@ import { createPinia, setActivePinia } from "pinia"
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { useNewsStore } from 'news/store/news'
 import { News } from 'news/types/news'
-import { prepareNewsSocket, closeNewsSocket } from 'news/services/news.service'
 import i18n from 'TaskDesk/js/i18n'
+import { updateItem, fetchItems } from 'TaskDesk/js/common/service'
+import { prepareWebSocket, closeWebSocket } from 'TaskDesk/js/common/websockets'
 import { router } from 'news/navigation/routing'
 import NewsNavigation from 'news/components/navigation/NewsNavigation.vue'
 import NewsList from 'news/components/list/NewsList.vue'
@@ -14,11 +15,16 @@ describe('news related components rendering', () => {
     let anews = null
     let aanews = null
     let store = null
+    let lastRequest = null
+    let socket = { send: (data) => lastRequest = data }
 
     beforeEach(() => {
-        vi.mock('news/services/news.service.ts')
-        vi.mocked(prepareNewsSocket).mockResolvedValue({})
-        vi.mocked(closeNewsSocket).mockResolvedValue()
+        vi.mock('TaskDesk/js/common/websockets')
+        vi.mocked(prepareWebSocket).mockResolvedValue(socket)
+        vi.mocked(closeWebSocket).mockResolvedValue()
+        vi.mock('TaskDesk/js/common/service')
+        vi.mocked(updateItem).mockResolvedValue(null)
+        vi.mocked(fetchItems).mockResolvedValue([])
         setActivePinia(createPinia())
         config.global.plugins = [i18n, router]
         news = {
@@ -35,9 +41,9 @@ describe('news related components rendering', () => {
             guid: "somethingelse",
             title: "First testing news",
             published: new Date(new Date().getDate() - 2000),
-            updated: new Date(),
             author: "John Doe",
-            enclosure: "http://localhost:8000/img/test.png",
+            enclosure_url: "http://localhost:8000/img/test.png",
+            enclosure_type: "image/png",
             feed: 1,
         } as News
         aanews = {

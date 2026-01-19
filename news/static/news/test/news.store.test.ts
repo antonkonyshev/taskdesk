@@ -4,7 +4,6 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { useNewsStore } from 'news/store/news'
 import { News } from 'news/types/news'
 import { prepareWebSocket, closeWebSocket } from 'TaskDesk/js/common/websockets'
-import { receiveNews } from 'news/services/news.service'
 import i18n from 'TaskDesk/js/i18n'
 
 describe('news store', () => {

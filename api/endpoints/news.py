@@ -34,7 +34,7 @@ async def list_news(
                             .values(
                                 *NewsData.model_fields.keys()
                             )[:NEWS_PER_ONE_REQUEST_LIMIT]:
-                        await socket.send_json(data=NewsData.model_validate(
+                        await socket.send_text(data=NewsData.model_validate(
                             news_values).model_dump_json())
                 elif (
                     request.get('request', '') in ('hide', 'bookmark') and

@@ -1,42 +1,154 @@
 <script setup lang="ts">
-import { watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import moment from 'moment/min/moment-with-locales'
 import { useNewsStore } from 'news/store/news'
 import { closeNewsSocket } from 'news/services/news.service'
+import { useFeedStore } from 'news/store/feed'
+import { News } from 'news/types/news'
 
 const { t } = useI18n()
 const store = useNewsStore()
+const feedStore = useFeedStore()
+const newsElements = ref<Array<HTMLAnchorElement>>([])
+const isSwiping = ref<string>('')
 
-const route = useRoute()
-watch(() => route.path, (nextPath, prevPath) => {
-    if (nextPath != prevPath && ['/', '/news', '/news/', '/news/reading', '/news/reading/'].indexOf(prevPath) >= 0) {
+onBeforeRouteLeave((nextPath, prevPath) => {
+    if (nextPath.path != prevPath.path && ['/', '/news', '/news/', '/news/reading', '/news/reading/'].indexOf(prevPath.path) >= 0) {
         closeNewsSocket()
     }
 })
+
+const stripHtmlTags = (text: string) => {
+    const html = new DOMParser().parseFromString(text, 'text/html')
+    return html.body.textContent || ""
+}
+
+const newsFeedTitle = (id: number) => {
+    const feed = feedStore.feeds.find((elem) => elem.id == id)
+    return feed ? (feed.title || feed.url) : ''
+}
+
+const swipeStartX = ref<number>(0)
+let preventClicks = false
+const onTouchStart = (news: News, index: number, event) => {
+    const screenX = 'changedTouches' in event ? event.changedTouches[0].clientX : event.screenX
+    swipeStartX.value = screenX
+}
+
+const onTouchMove = (news: News, index: number, event) => {
+    if (swipeStartX.value <= 0) {
+        return
+    }
+    const screenX = 'changedTouches' in event ? event.changedTouches[0].clientX : event.screenX
+    const distance = Math.abs(screenX) - Math.abs(swipeStartX.value)
+    const direction = distance > 0 ? 'right' : 'left'
+    if (!preventClicks && Math.abs(distance) > 20) {
+        preventClicks = true
+    }
+    if (isSwiping.value != direction) {
+        isSwiping.value = direction
+    }
+    const elem = newsElements.value[index]
+    elem.style.left = distance.toString() + 'px'
+}
+
+const onTouchEnd = (news: News, index: number, event) => {
+    isSwiping.value = ''
+    const elem = newsElements.value[index]
+    const screenX = 'changedTouches' in event ? event.changedTouches[0].clientX : event.screenX
+    const distance = Math.abs(screenX) - Math.abs(swipeStartX.value)
+    swipeStartX.value = 0
+    setTimeout(() => preventClicks = false, 100)
+    const direction = distance > 0 ? 'right' : 'left'
+    if (Math.abs(distance) / elem.clientWidth > 0.25) {
+        if (direction == 'left') {
+            setTimeout(() => store.markNews(news), 400)
+            elem.style.left = '-' + (elem.clientWidth * 2).toString() + 'px'
+        } else if (direction == 'right') {
+            setTimeout(() => store.markNews(news, true), 400)
+            elem.style.left = (elem.clientWidth * 2).toString() + 'px'
+        }
+    } else {
+        elem.style.left = '0'
+    }
+}
+
+const preventClickOnSwipe = (event: Event) => {
+    if (preventClicks) {
+        event.preventDefault()
+        event.stopPropagation()
+    }
+}
+
+store.loadNews()
+feedStore.loadFeeds()
 </script>
 
 <template>
-    <div class="flex-1 overflow-y-scroll scroll-smooth overflow-x-hidden max-h-[calc(100vh_+_0.75rem)] md:-ml-6 md:pl-6">
-        <a v-for="news in store.news" :key="news.id"
-            :href="news.link" target="_blank"
-            class="flex flex-row my-3 p-3 md:mx-4 shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white duration-200 cursor-pointer">
+    <div class="flex-1 xl:max-w-screen-xl">
+        <div v-for="(news, index) in store.news" :key="news.id"
+            class="flex relative gap-3 my-3 bg-gray-200 duration-400"
+            :class="{'bg-green-700': isSwiping == 'right'}">
 
-            <span class="flex flex-col">
-                <span class="font-semibold flex flex-row justify-between items-start gap-2">
-                    <span v-text="news.title" class="text-lg flex-1"></span>
+            <span class="absolute opacity-0 top-0 right-5 w-[50px] h-[100%] duration-500 bg-no-repeat bg-center bg-contain svg-eye-slash"
+                :class="{'opacity-100': isSwiping == 'left'}"></span>
+            <span class="absolute opacity-0 top-0 left-5 w-[50px] h-[100%] duration-500 bg-no-repeat bg-center bg-contain svg-bookmark invert-100"
+                :class="{'opacity-100': isSwiping == 'right'}"></span>
 
-                    <span v-text="news.description" class="text-md flex-1"></span>
+            <a :href="news.link" target="_blank"
+                ref="newsElements"
+                @touchstart="onTouchStart(news, index, $event)"
+                @touchend="onTouchEnd(news, index, $event)"
+                @touchmove="onTouchMove(news, index, $event)"
+                @mousedown.prevent="onTouchStart(news, index, $event)"
+                @mousemove.prevent="onTouchMove(news, index, $event)"
+                @mouseup.prevent="onTouchEnd(news, index, $event)"
+                @click="preventClickOnSwipe($event)"
+                :class="{'transition-all duration-500 ease-linear': !isSwiping}"
+                class="relative p-3 size-full shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white cursor-pointer">
+
+                <span class="flex flex-col sm:flex-row">
+                    <span class="flex flex-col flex-1">
+                        <span class="font-semibold flex flex-row justify-between items-start gap-2">
+                            <span v-text="news.title" class="text-lg"></span>
+                        </span>
+                        
+                        <span v-html="stripHtmlTags(news.description)" class="text-md flex-1"></span>
+
+                        <span class="hidden sm:flex sm:flex-row">
+                            <span v-text="newsFeedTitle(news.feed)" class="flex-1"></span>
+
+                            <span
+                                v-text="news.published ? (t('message.published') + ' ' + moment(news.published).fromNow()) : ''"></span>
+                        </span>
+                    </span>
+
+                    <span class="flex flex-col sm:order-first min-w-[30%] lg:min-w-[310px] min-h-[200px] sm:min-h-auto md:min-h-[150px] lg:min-h-[150px]">
+                        <span v-if="news.enclosure_url"
+                            class="flex flex-1 w-full bg-cover bg-center bg-no-repeat"
+                            :style="{'background-image': 'url(\'' + news.enclosure_url + '\')'}"></span>
+
+                        <span class="flex flex-row sm:flex-col sm:hidden">
+                            <span v-text="newsFeedTitle(news.feed)" class="flex-1"></span>
+
+                            <span
+                                v-text="news.published ? (t('message.published') + ' ' + moment(news.published).fromNow()) : ''"></span>
+                        </span>
+                    </span>
+
+                    <span class="flex flex-row sm:flex-col justify-end gap-3">
+                        <span @click.stop.prevent="store.markNews(news, true)" class="action-button hover:bg-green-700 hover:!border-green-700 group">
+                            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-bookmark group-hover:invert-100"></span>
+                        </span>
+
+                        <span @click.stop.prevent="store.markNews(news)" class="action-button hover:bg-gray-300">
+                            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-eye-slash"></span>
+                        </span>
+                    </span>
                 </span>
-
-                <span class="flex flex-row gap-1 items-center" v-if="news.published">
-                    <span v-text="news.published ? (t('message.due_date') + ' ' + moment(news.published).fromNow()) : ''"
-                        class="flex-1"></span>
-                </span>
-            </span>
-            ,
-            <img v-if="news.enclosure" :src="news.enclosure" :alt="news.title" />
-        </a>
+            </a>
+        </div>
     </div>
 </template>

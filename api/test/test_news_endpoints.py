@@ -1,5 +1,4 @@
 import os.path as op
-import json
 from time import sleep
 
 from fastapi import WebSocketDisconnect
@@ -38,8 +37,8 @@ class NewsEndpointsTestCase(APITestCase):
         with self.client.websocket_connect("/api/v1/news/") as socket:
             socket.send_json({'request': 'list'})
             data = socket.receive_json()
-            self.assertTrue(json.loads(data))
-            data = json.loads(socket.receive_json())
+            self.assertTrue(data)
+            data = socket.receive_json()
             self.assertIn('цены на новые легковые автомобили', data.get('title'))
             self.assertIn('события и мнения о рынках', data.get('description'))
             self.assertEqual(data.get('guid'), '2688634')
@@ -52,7 +51,7 @@ class NewsEndpointsTestCase(APITestCase):
                           data.get('enclosure_url'))
             self.assertEqual(data.get('enclosure_type'), 'image/jpeg')
             data = socket.receive_json()
-            self.assertTrue(json.loads(data))
+            self.assertTrue(data)
 
     def test_news_hiding_and_bookmarking(self):
         self.assertEqual(News.objects.unread_for_user(self.user).count(), 12)

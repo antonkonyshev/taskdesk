@@ -41,6 +41,7 @@ export default createI18n({
                 word_full: "Full word",
                 word_part: "Any part of a word",
                 filter_entry_placeholder: "Greenland",
+                published: "Published",
             }
         },
 
@@ -82,6 +83,7 @@ export default createI18n({
                 word_full: "Слово целиком",
                 word_part: "Любая часть слова",
                 filter_entry_placeholder: "Гренланд",
+                published: "Опубликовано",
             }
         }
     }
