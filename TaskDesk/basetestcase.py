@@ -5,6 +5,10 @@ from django.core.cache import cache
 from tdauth.models import User
 
 
+def atask_mocked(task, *args, **kwargs):
+    task(*args, **kwargs)
+
+
 @override_settings(
     MEDIA_ROOT=f"{settings.MEDIA_ROOT}_test",
     CACHES={'default': {
@@ -18,6 +22,7 @@ from tdauth.models import User
     CELERY_ALWAYS_EAGER=True,
     CELERY_TASK_ALWAYS_EAGER=True,
     TASK_ALWAYS_EAGER=True,
+    ALWAYS_EAGER=True,
     CELERY_TASK_EAGER_PROPAGATES_EXCEPTIONS=True,
     CELERY_TASK_EAGER_PROPAGATES=True,
     BROKER_BACKEND="memory://",

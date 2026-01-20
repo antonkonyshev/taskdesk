@@ -1,14 +1,11 @@
 import os.path as op
-from datetime import datetime
-
-from django.conf import settings
-from django.utils import timezone
 
 from TaskDesk.basetestcase import BaseTestCase
-from tdauth.models import User
+from TaskDesk.tasks import atask
 
 from news.models import News, Feed, UserFeed, Filter, Mark
-from news.tasks import fetch_news_from_rss_feed, filter_news_for_user_feed
+from news.tasks import (fetch_news_from_rss_feed, filter_news_for_userfeed,
+                        fetch_all_news)
 
 
 class NewsTasksTestCase(BaseTestCase):
@@ -45,7 +42,7 @@ class NewsTasksTestCase(BaseTestCase):
         self.assertEqual(News.objects.count(), 247)
 
     def test_parsing_news_correctly_first_example(self):
-        fetch_news_from_rss_feed(self.feed1.id)
+        atask(fetch_news_from_rss_feed, self.feed1.id)
         news = self.feed1.news.exclude(enclosure_url='').order_by('-published')\
             .first()
         self.assertIn('цены на новые легковые автомобили', news.title)
@@ -62,7 +59,7 @@ class NewsTasksTestCase(BaseTestCase):
         self.assertEqual(news.enclosure_type, 'image/jpeg')
 
     def test_parsing_news_correctly_second_example(self):
-        fetch_news_from_rss_feed(self.feed2.id)
+        atask(fetch_news_from_rss_feed, self.feed2.id)
         news = self.feed2.news.order_by('-published').first()
         self.assertIn('Python 3.15.0 alpha 4', news.title)
         self.assertIn('635039112097', news.guid)
@@ -76,7 +73,7 @@ class NewsTasksTestCase(BaseTestCase):
         self.assertFalse(news.enclosure_url)
 
     def test_parsing_news_correctly_third_example(self):
-        fetch_news_from_rss_feed(self.feed3.id)
+        atask(fetch_news_from_rss_feed, self.feed3.id)
         news = self.feed3.news.order_by('-published').first()
         self.assertIn('Django bugfix releases issued: 5.2.10', news.title)
         self.assertIn('jan/06/bugfix-releases/', news.guid)
@@ -90,7 +87,7 @@ class NewsTasksTestCase(BaseTestCase):
         self.assertFalse(news.enclosure_url)
 
     def test_parsing_news_correctly_fourth_example(self):
-        fetch_news_from_rss_feed(self.feed4.id)
+        atask(fetch_news_from_rss_feed, self.feed4.id)
         news = self.feed4.news.order_by('-published').first()
         self.assertIn('Сотни тысяч россиян остались без электро', news.title)
         self.assertIn('trosnabzheniya-posle', news.guid)
@@ -114,73 +111,50 @@ class NewsTasksTestCase(BaseTestCase):
         userfeed3.save()
         userfeed4 = UserFeed(user=self.user, feed=self.feed4)
         userfeed4.save()
+        atask(fetch_all_news)
+
+        self.assertEqual(News.objects.unread_for_user(self.user).count(), 247)
+
         filter1 = Filter(user=self.user, feed=userfeed1, entry='автомоби',
                part=Filter.Part.START)
         filter1.save()
+        atask(filter_news_for_userfeed, userfeed1.id)
+        self.assertEqual(News.objects.unread_for_user(self.user).count(), 245)
+        atask(filter_news_for_userfeed, userfeed1.id)
+        self.assertEqual(News.objects.unread_for_user(self.user).count(), 245)
+
         filter2 = Filter(user=self.user, feed=userfeed2, entry='3.15.0',
                part=Filter.Part.FULL)
         filter2.save()
+        self.assertEqual(News.objects.unread_for_user(self.user).count(), 241)
+        atask(filter_news_for_userfeed, userfeed2.id)
+        self.assertEqual(News.objects.unread_for_user(self.user).count(), 241)
+
         filter3 = Filter(user=self.user, feed=userfeed3, entry='ugfix',
                part=Filter.Part.PART)
         filter3.save()
+        self.assertEqual(News.objects.unread_for_user(self.user).count(), 240)
+        atask(filter_news_for_userfeed, userfeed3.id)
+        self.assertEqual(News.objects.unread_for_user(self.user).count(), 240)
+
         filter4 = Filter(user=self.user, feed=userfeed4, entry='ссиян',
                part=Filter.Part.END)
         filter4.save()
-        fetch_news_from_rss_feed(self.feed1.id)
-        fetch_news_from_rss_feed(self.feed2.id)
-        fetch_news_from_rss_feed(self.feed3.id)
-        fetch_news_from_rss_feed(self.feed4.id)
-
-        self.assertEqual(News.objects.unread_for_user(self.user).count(), 247)
-        filter_news_for_user_feed(self.user.id, userfeed1.id)
-        self.assertEqual(News.objects.unread_for_user(self.user).count(), 245)
-        filter_news_for_user_feed(self.user.id, userfeed1.id)
-        self.assertEqual(News.objects.unread_for_user(self.user).count(), 245)
-
-        filter_news_for_user_feed(self.user.id, userfeed2.id)
-        self.assertEqual(News.objects.unread_for_user(self.user).count(), 241)
-        filter_news_for_user_feed(self.user.id, userfeed2.id)
-        self.assertEqual(News.objects.unread_for_user(self.user).count(), 241)
-
-        filter_news_for_user_feed(self.user.id, userfeed3.id)
-        self.assertEqual(News.objects.unread_for_user(self.user).count(), 240)
-        filter_news_for_user_feed(self.user.id, userfeed3.id)
-        self.assertEqual(News.objects.unread_for_user(self.user).count(), 240)
-
-        filter_news_for_user_feed(self.user.id, userfeed4.id)
         self.assertEqual(News.objects.unread_for_user(self.user).count(), 237)
-        filter_news_for_user_feed(self.user.id, userfeed4.id)
+        atask(filter_news_for_userfeed, userfeed4.id)
         self.assertEqual(News.objects.unread_for_user(self.user).count(), 237)
 
-        Mark.objects.all().update(created=datetime(year=2025, month=1, day=1,
-                                                   tzinfo=timezone.now().tzinfo))
         filter5 = Filter(user=self.user, entry='PyTHoN', part=Filter.Part.START)
         filter5.save()
-        filter_news_for_user_feed(self.user.id, userfeed1.id)
-        filter_news_for_user_feed(self.user.id, userfeed2.id)
-        filter_news_for_user_feed(self.user.id, userfeed3.id)
-        filter_news_for_user_feed(self.user.id, userfeed4.id)
-        self.assertEqual(News.objects.unread_for_user(self.user).count(), 216) 
+        self.assertEqual(News.objects.unread_for_user(self.user).count(), 216)
 
-        Mark.objects.all().update(created=datetime(year=2025, month=1, day=1,
-                                                   tzinfo=timezone.now().tzinfo))
         filter6 = Filter(user=self.user, entry='Django', part=Filter.Part.FULL)
         filter6.save()
-        filter_news_for_user_feed(self.user.id, userfeed1.id)
-        filter_news_for_user_feed(self.user.id, userfeed2.id)
-        filter_news_for_user_feed(self.user.id, userfeed3.id)
-        filter_news_for_user_feed(self.user.id, userfeed4.id)
         self.assertEqual(News.objects.unread_for_user(self.user).count(), 212)
 
-        Mark.objects.all().update(created=datetime(year=2025, month=1, day=1,
-                                                   tzinfo=timezone.now().tzinfo))
         filter7 = Filter(user=self.user, entry='рос', part=Filter.Part.PART)
         filter7.save()
-        filter_news_for_user_feed(self.user.id, userfeed1.id)
-        filter_news_for_user_feed(self.user.id, userfeed2.id)
-        filter_news_for_user_feed(self.user.id, userfeed3.id)
-        filter_news_for_user_feed(self.user.id, userfeed4.id)
-        self.assertEqual(News.objects.unread_for_user(self.user).count(), 145)
+        self.assertEqual(News.objects.unread_for_user(self.user).count(), 142)
 
         mark1 = Mark(news=News.objects.filter(marks__isnull=True)\
                      .order_by('-published').first(),

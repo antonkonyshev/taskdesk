@@ -1,7 +1,6 @@
 from django.urls import reverse
 
 from TaskDesk.basetestcase import BaseTestCase
-from tdauth.models import User
 
 
 class AuthenticationTestCase(BaseTestCase):

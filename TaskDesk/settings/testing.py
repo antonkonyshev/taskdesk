@@ -22,3 +22,14 @@ DATABASES = {
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.MD5PasswordHasher',
 ]
+
+CELERY_TASK_ALWAYS_EAGER = True
+CELERY_ALWAYS_EAGER = True
+CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
+CELERY_BROKER_URL = "memory://"
+
+def atask_mocked(task, *args, **kwargs):
+    task(*args, **kwargs)
+
+from unittest.mock import patch
+patch('TaskDesk.tasks.atask', side_effect=atask_mocked).start()

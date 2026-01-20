@@ -86,4 +86,8 @@ describe('news related components rendering', () => {
         expect(wrapper.text()).toContain("Third testing news description")
         expect(wrapper.html()).toContain("http://localhost:8000/news/reading")
     })
+
+    test('news bookmarking', () => {
+        expect(false).toBeTruthy()
+    })
 })

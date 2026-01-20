@@ -10,6 +10,7 @@ from django.utils import timezone
 from django.conf import settings
 
 from TaskDesk.models import TaskDeskBaseModel
+from TaskDesk.tasks import atask
 from tdauth.models import User
 
 
@@ -101,16 +102,15 @@ class News(TaskDeskBaseModel):
     class NewsQuerySet(models.QuerySet):
         """Customization of the news queryset manager."""
         def unfiltered_for_user_feed(
-            self, user: int | User, userfeed: int | UserFeed
+            self, userfeed: int | UserFeed
         ):
-            news = self.filter(feed_id__in=UserFeed.objects.values_list(
-                'feed_id', flat=True).filter(
-                    id=userfeed.id if isinstance(userfeed, UserFeed) else userfeed
-            ))
+            if not isinstance(userfeed, UserFeed):
+                userfeed = UserFeed.objects.get(id=userfeed)
+            news = self.filter(feed_id=userfeed.feed_id)
             last_mark = Mark.objects.values_list('news__created', flat=True)\
-                .last_for_user(user)
+                .last_for_userfeed(userfeed)
             if last_mark:
-                news = news.filter(created__gt=last_mark)
+                return news.filter(created__gt=last_mark)
             return news
 
         def by_feed_guid(self, feed: int | Feed, guid: str):
@@ -190,8 +190,20 @@ class Mark(TaskDeskBaseModel):
         def last_for_user(self, user: int | User):
             return self.by_user(user).order_by('-created').first()
 
+        def last_for_userfeed(self, userfeed: UserFeed):
+            return self.by_user(userfeed.user_id)\
+                .filter(news_id__in=News.objects.values_list('id', flat=True)\
+                        .filter(feed_id=userfeed.feed_id))\
+                .order_by('-created').first()
+
         async def alast_for_user(self, user: int | User):
             return await self.by_user(user).order_by('-created').afirst()
+
+        async def alast_for_userfeed(self, userfeed: UserFeed):
+            return await self.by_user(userfeed.user_id)\
+                .filter(news_id__in=News.objects.values_list('id', flat=True)\
+                        .filter(feed_id=userfeed.feed_id))\
+                .order_by('-created').afirst()
 
     objects = MarkQuerySet.as_manager()
 
@@ -251,15 +263,13 @@ class Filter(TaskDeskBaseModel):
     class FilterQuerySet(models.QuerySet):
         """Customization of queryset manager for the Filters model."""
         def applicable_to_user_feed(
-            self, user: int | User, userfeed: int | UserFeed
+            self, userfeed: int | UserFeed
         ):
-            return self.filter(
-                **{'user' if isinstance(user, User) else 'user_id': user}
-            ).filter(
-                models.Q(**{
-                    'feed' if isinstance(userfeed, Feed) else 'feed_id': userfeed
-                }) | models.Q(feed_id__isnull=True)
-            )
+            if not isinstance(userfeed, UserFeed):
+                userfeed = UserFeed.objects.get(id=userfeed)
+            return self.filter(user_id=userfeed.user_id).filter(
+                models.Q(feed_id=userfeed.id) |
+                models.Q(feed_id__isnull=True))
 
     objects = FilterQuerySet.as_manager()
 
@@ -277,13 +287,29 @@ class Filter(TaskDeskBaseModel):
     def before_save(self):
         self.entry = self.entry.lower()
 
+    def after_save(self):
+        try:
+            if self.feed_id:
+                from news.tasks import filter_news_for_userfeed
+                atask(filter_news_for_userfeed, self.feed_id)
+            else:
+                from news.tasks import filter_news_for_user
+                atask(filter_news_for_user, self.user_id)
+        except Exception as err:
+            # TODO: add logging
+            pass
+
     def save(self, *args, **kwargs):
         self.before_save()
-        return super(Filter, self).save(*args, **kwargs)
+        result = super(Filter, self).save(*args, **kwargs)
+        self.after_save()
+        return result
     
     async def asave(self, *args, **kwargs):
         self.before_save()
-        return await super(Filter, self).asave(*args, **kwargs)
+        result = await super(Filter, self).asave(*args, **kwargs)
+        self.after_save()
+        return result
 
     def apply_filter(self, words: Iterable[str]) -> bool:
         """Check whether the filter should be applied to a list of words."""
