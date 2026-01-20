@@ -140,11 +140,17 @@ feedStore.loadFeeds()
                     </span>
 
                     <span class="flex flex-row sm:flex-col justify-end gap-3">
-                        <span @click.stop.prevent="store.markNews(news, true)" class="action-button hover:bg-green-700 hover:!border-green-700 group">
+                        <span @click.stop.prevent="store.markNews(news, true)"
+                            class="action-button hover:bg-green-700 hover:!border-green-700 group"
+                            ref="bookmark-btn">
+
                             <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-bookmark group-hover:invert-100"></span>
                         </span>
 
-                        <span @click.stop.prevent="store.markNews(news)" class="action-button hover:bg-gray-300">
+                        <span @click.stop.prevent="store.markNews(news)"
+                            class="action-button hover:bg-gray-300"
+                            ref="hide-btn">
+
                             <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-eye-slash"></span>
                         </span>
                     </span>

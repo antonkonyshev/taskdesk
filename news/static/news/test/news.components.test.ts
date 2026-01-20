@@ -87,7 +87,18 @@ describe('news related components rendering', () => {
         expect(wrapper.html()).toContain("http://localhost:8000/news/reading")
     })
 
-    test('news bookmarking', () => {
-        expect(false).toBeTruthy()
+    test('news bookmarking', async () => {
+        const wrapper = mount(NewsList)
+        await wrapper.get({ ref: 'bookmark-btn' }).trigger('click')
+        expect(store.news.length).toBe(2)
+        expect(wrapper.text()).not.toContain("Second testing news")
+        expect(wrapper.text()).toContain("First testing news")
+        expect(wrapper.text()).toContain("Third testing news")
+
+        await wrapper.get({ ref: 'hide-btn' }).trigger('click')
+        expect(store.news.length).toBe(1)
+        expect(wrapper.text()).not.toContain("Second testing news")
+        expect(wrapper.text()).not.toContain("First testing news")
+        expect(wrapper.text()).toContain("Third testing news")
     })
 })
