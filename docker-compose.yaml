@@ -13,6 +13,7 @@ services:
       - "8000:8000"
     volumes:
       - ${BACKEND_ROOT_DIR:-.}:/opt/taskdesk
+      - ${BACKEND_ROOT_DIR:-../Workspace/taskstorage}:/opt/taskdesk/taskstorage
     depends_on:
       db:
         condition: service_healthy
@@ -23,7 +24,7 @@ services:
       mq:
         condition: service_healthy
       worker:
-        condition: service_started
+        condition: service_healthy
 
   frontend:
     build:
@@ -51,8 +52,9 @@ services:
       - taskdesk_network
     volumes:
       - ${BACKEND_ROOT_DIR:-.}:/opt/taskdesk
+      - ${BACKEND_ROOT_DIR:-../Workspace/taskstorage}:/opt/taskdesk/taskstorage
     healthcheck:
-      test: "celery -A TaskDesk status || exit 1"
+      test: ["CMD", "celery", "-A", "TaskDesk", "status"]
       interval: 10s
       timeout: 30s
       retries: 5

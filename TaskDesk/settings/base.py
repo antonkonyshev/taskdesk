@@ -26,11 +26,8 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 INSTALLED_APPS = [
     "api",
     "news",
-    "notes",
     "tasks",
     "tdauth",
-    "home",
-    "search",
     "django_utils",
     "widget_tweaks",
     "wagtail_modeladmin",
@@ -96,9 +93,9 @@ ASGI_APPLICATION = "TaskDesk.asgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB", "notes"),
-        "USER": os.getenv("POSTGRES_USER", "notes"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "notes"),
+        "NAME": os.getenv("POSTGRES_DB", "taskdesk"),
+        "USER": os.getenv("POSTGRES_USER", "taskdesk"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "taskdesk"),
         "HOST": os.getenv("POSTGRES_HOST", "localhost"),
         "PORT": os.getenv("POSTGRES_PORT", "5432"),
     }
