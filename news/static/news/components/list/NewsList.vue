@@ -91,7 +91,7 @@ if (!feedStore.feeds.length) {
 <template>
     <div class="flex flex-col items-center xl:max-w-screen-xl">
         <div v-for="(news, index) in store.news" :key="news.id"
-            class="flex w-full relative gap-3 my-3 bg-gray-200 duration-400"
+            class="flex w-full relative gap-3 my-3 bg-gray-200"
             :class="{'bg-green-700': isSwiping == 'right'}">
 
             <span class="absolute opacity-0 top-0 right-5 w-[50px] h-[100%] duration-500 bg-no-repeat bg-center bg-contain svg-eye-slash"
@@ -146,14 +146,14 @@ if (!feedStore.feeds.length) {
                             class="action-button hover:bg-green-700 hover:!border-green-700 group"
                             ref="bookmark-btn">
 
-                            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-bookmark group-hover:invert-100"></span>
+                            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-bookmark group-hover:invert-100 dark:invert-100"></span>
                         </span>
 
                         <span @click.stop.prevent="store.markNews(news)"
                             class="action-button hover:bg-gray-300"
                             ref="hide-btn">
 
-                            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-eye-slash"></span>
+                            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-eye-slash dark:invert-100"></span>
                         </span>
                     </span>
                 </span>

@@ -1,5 +1,5 @@
 <template>
-    <nav class="bg-white mt-[-1px] shadow-xs border-b border-b-gray-300 px-4 sm:px-6 pb-2.5 w-full dark:bg-gray-900 dark:shadow-xl dark:border-b-black">
+    <nav class="bg-white z-5 mt-[-1px] shadow-xs border-b border-b-gray-300 px-4 sm:px-6 pb-2.5 w-full dark:bg-gray-900 dark:shadow-xl dark:border-b-black">
         <!--<div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl"> -->
             <ul class="flex flex-row flex-wrap justify-start items-center gap-3 w-full max-w-screen-xl mx-auto font-medium sm:mt-0" role="menu">
                 <li role="menuitem">
