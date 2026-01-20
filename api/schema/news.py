@@ -5,11 +5,7 @@ News serializers for HTTP API.
 from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel, ConfigDict
-
-from django.forms.models import model_to_dict
-from django.db.models import QuerySet
-
-from news.models import News
+from enum import Enum
 
 
 class NewsData(BaseModel):
@@ -25,3 +21,18 @@ class NewsData(BaseModel):
     published: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class NewsRequest(str, Enum):
+    unread = "unread"
+    hide = "hide"
+    bookmark = "bookmark"
+    reading = "reading"
+    hidden = "hidden"
+    fetch = "fetch"
+    feed = "feed"
+
+
+class NewsQuery(BaseModel):
+    request: NewsRequest
+    id: Optional[int] = None

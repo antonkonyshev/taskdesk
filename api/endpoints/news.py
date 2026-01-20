@@ -14,7 +14,7 @@ from news.tasks import fetch_all_news
 
 from api.authentication import Authentication
 from api.router import TaskDeskAPIRouter
-from api.schema.news import NewsData
+from api.schema.news import NewsData, NewsQuery, NewsRequest
 
 
 NEWS_PER_ONE_REQUEST_LIMIT = 10
@@ -30,24 +30,34 @@ async def list_news(
         await socket.accept()
         while True:
             try:
-                request = await socket.receive_json()
-                if request.get('request', None) == 'list':
-                    async for news_values in News.objects.unread_for_user(user)\
-                            .values(
-                                *NewsData.model_fields.keys()
-                            )[:NEWS_PER_ONE_REQUEST_LIMIT]:
+                query = NewsQuery.model_validate(await socket.receive_json())
+                if query.request in (
+                    NewsRequest.unread, NewsRequest.reading, NewsRequest.hidden,
+                    NewsRequest.feed,
+                ):
+                    news_queryset = News.objects.values(
+                        *NewsData.model_fields.keys())
+                    if query.request == NewsRequest.unread:
+                        news_queryset = news_queryset.unread_for_user(user)
+                    elif query.request == NewsRequest.reading:
+                        news_queryset = news_queryset.bookmarked_for_user(user)
+                    elif query.request == NewsRequest.hidden:
+                        news_queryset = news_queryset.hidden_for_user(user)
+                    elif query.request == NewsRequest.feed and query.id:
+                        news_queryset = news_queryset.unread_for_user_feed(
+                            user, query.id)
+                    async for news_values \
+                            in news_queryset[:NEWS_PER_ONE_REQUEST_LIMIT]:
                         await socket.send_text(data=NewsData.model_validate(
                             news_values).model_dump_json())
                 elif (
-                    request.get('request', '') in ('hide', 'bookmark') and
-                    request.get('id', None)
+                    query.request in (NewsRequest.hide, NewsRequest.bookmark)
+                    and query.id
                 ):
-                    await Mark.mark_news(
-                        user, request.get('id', None),
-                        Mark.Category.HIDDEN
-                            if request.get('request', '') == 'hide'
-                            else Mark.Category.BOOKMARK)
-                elif request.get('request', None) == 'fetch':
+                    await Mark.mark_news(user, query.id, Mark.Category.HIDDEN
+                                         if query.request == NewsRequest.hide
+                                         else Mark.Category.BOOKMARK)
+                elif query.request == NewsRequest.fetch:
                     atask(fetch_all_news)
             except JSONDecodeError as err:
                 # TODO: add logging

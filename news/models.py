@@ -62,6 +62,10 @@ class UserFeed(TaskDeskBaseModel):
                 **{'feed' if isinstance(feed, Feed) else 'feed_id': feed}
             ).for_active_users()
 
+        def by_user(self, user: int | User):
+            return self.filter(
+                **{'user' if isinstance(user, User) else 'user_id': user})
+
     objects = UserFeedQuerySet.as_manager()
 
     class Meta:
@@ -119,17 +123,27 @@ class News(TaskDeskBaseModel):
                 'guid': guid,
             })
 
+        def all_for_user(self, user: int | User):
+            return self.filter(feed_id__in=UserFeed.objects\
+                               .values_list('feed_id', flat=True).by_user(user))
+
         def unread_for_user(self, user: int | User):
+            return self.all_for_user(user).exclude(
+                id__in=Mark.objects.values_list('news_id', flat=True).by_user(user))
+
+        def unread_for_user_feed(self, user: int | User, feed: int | Feed):
+            return self.unread_for_user(user).filter(**{
+                'feed' if isinstance(feed, Feed) else 'feed_id': feed})
+
+        def bookmarked_for_user(self, user: int | User):
             return self.filter(
-                feed_id__in=UserFeed.objects.values_list('feed_id', flat=True)\
-                    .filter(**{
-                        'user' if isinstance(user, User) else 'user_id': user
-                    })
-            ).exclude(
-                id__in=Mark.objects.values_list('news_id', flat=True).filter(**{
-                    'user' if isinstance(user, User) else 'user_id': user,
-                })
-            )
+                id__in=Mark.objects.values_list('news_id', flat=True)\
+                .bookmarked_by_user(user))
+                       
+        def hidden_for_user(self, user: int | User):
+            return self.filter(
+                id__in=Mark.objects.values_list('news_id', flat=True)\
+                .hidden_by_user(user))
 
     objects = NewsQuerySet.as_manager()
 
@@ -186,6 +200,12 @@ class Mark(TaskDeskBaseModel):
         def by_user(self, user: int | User):
             return self.filter(**{
                 'user' if isinstance(user, User) else 'user_id': user})
+
+        def bookmarked_by_user(self, user: int | User):
+            return self.by_user(user).filter(category=Mark.Category.BOOKMARK)
+
+        def hidden_by_user(self, user: int | User):
+            return self.by_user(user).filter(category=Mark.Category.HIDDEN)
 
         def last_for_user(self, user: int | User):
             return self.by_user(user).order_by('-created').first()

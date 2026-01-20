@@ -14,7 +14,7 @@ export const useNewsStore = defineStore('news', () => {
     const refreshNews = (data: News) => refreshItem(
         data, news, (elem) => elem.id == data.id, true)
     const loadNews = async () => (await prepareNewsSocket()).send(
-        JSON.stringify({ request: "list" }))
+        JSON.stringify({ request: "unread" }))
 
     async function markNews(target: News, bookmark = false) {
         try {

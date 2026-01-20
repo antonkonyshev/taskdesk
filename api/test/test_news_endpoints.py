@@ -3,7 +3,7 @@ from time import sleep
 
 from fastapi import WebSocketDisconnect
 
-from news.models import Feed, UserFeed, Filter, Mark, News
+from news.models import Feed, UserFeed, Mark, News
 from news.tasks import fetch_news_from_rss_feed
 
 from .api_testcase import APITestCase
@@ -31,11 +31,11 @@ class NewsEndpointsTestCase(APITestCase):
         session = self.client.websocket_connect("/api/v1/news/")
         self.assertRaises(WebSocketDisconnect, session.__enter__)
 
-    def test_news_list_requesting(self):
+    def test_unread_news_list_requesting(self):
         self.assertEqual(News.objects.count(), 37)
         self.login()
         with self.client.websocket_connect("/api/v1/news/") as socket:
-            socket.send_json({'request': 'list'})
+            socket.send_json({'request': 'unread'})
             data = socket.receive_json()
             self.assertTrue(data)
             data = socket.receive_json()
@@ -52,6 +52,39 @@ class NewsEndpointsTestCase(APITestCase):
             self.assertEqual(data.get('enclosure_type'), 'image/jpeg')
             data = socket.receive_json()
             self.assertTrue(data)
+
+    def test_bookmarked_news_list_request(self):
+        news = News.objects.unread_for_user(self.user).first()
+        anews = News.objects.unread_for_user(self.user).last()
+        Mark(user=self.user, news=news, category=Mark.Category.BOOKMARK).save()
+        Mark(user=self.user, news=anews, category=Mark.Category.HIDDEN).save()
+        self.login()
+        with self.client.websocket_connect("/api/v1/news/") as socket:
+            socket.send_json({'request': 'reading'})
+            data = socket.receive_json()
+            self.assertTrue(data)
+            self.assertIn('запрет на создание', data.get('title'))
+
+    def test_hidden_news_list_request(self):
+        news = News.objects.unread_for_user(self.user).first()
+        anews = News.objects.unread_for_user(self.user).last()
+        Mark(user=self.user, news=news, category=Mark.Category.BOOKMARK).save()
+        Mark(user=self.user, news=anews, category=Mark.Category.HIDDEN).save()
+        self.login()
+        with self.client.websocket_connect("/api/v1/news/") as socket:
+            socket.send_json({'request': 'hidden'})
+            data = socket.receive_json()
+            self.assertTrue(data)
+            self.assertIn('самозанятые в 2025 году', data.get('title'))
+
+    def test_news_list_for_feed_request(self):
+        self.login()
+        with self.client.websocket_connect("/api/v1/news/") as socket:
+            socket.send_json({'request': 'feed', 'id': self.feed1.id})
+            data = socket.receive_json()
+            self.assertTrue(data)
+            data = socket.receive_json()
+            self.assertIn('цены на новые легковые автомобили', data.get('title'))
 
     def test_news_hiding_and_bookmarking(self):
         self.assertEqual(News.objects.unread_for_user(self.user).count(), 12)
