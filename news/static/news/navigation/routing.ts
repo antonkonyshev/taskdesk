@@ -4,14 +4,15 @@ import NewsList from 'news/components/list/NewsList.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 export const routes = {
-    news: { path: "/news", component: NewsList },
+    news: { path: "/news", component: NewsList, props: { request: "unread" }},
+    reading: { path: "/news/reading", component: NewsList, props: { request: "reading" }},
     feeds: { path: "/news/feeds", component: FeedList },
     filters: { path: "/news/filters", component: FilterList },
-    reading: { path: "/news/reading", component: NewsList },
-    default: { path: "/", component: NewsList },
+    viewed: { path: "/news/viewed", component: NewsList, props: { request: "hidden" }},
+    default: { path: "/", component: NewsList, props: { request: "unread" }},
 }
 
 export const router = createRouter({
     history: createWebHistory(),
-    routes: [ routes.news, routes.feeds, routes.filters, routes.reading, routes.default ],
+    routes: [ routes.news, routes.reading, routes.viewed, routes.feeds, routes.filters, routes.default ],
 })

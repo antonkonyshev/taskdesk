@@ -4,20 +4,20 @@ import { onBeforeRouteLeave } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import moment from 'moment/min/moment-with-locales'
 import { useNewsStore } from 'news/store/news'
-import { closeNewsSocket } from 'news/services/news.service'
 import { useFeedStore } from 'news/store/feed'
-import { News } from 'news/types/news'
+import { News, NewsQuery } from 'news/types/news'
 
+
+const newsQuery = withDefaults(defineProps<NewsQuery>(), { request: 'unread' } as NewsQuery)
 const { t } = useI18n()
 const store = useNewsStore()
+store.setQuery(newsQuery as NewsQuery)
 const feedStore = useFeedStore()
 const newsElements = ref<Array<HTMLAnchorElement>>([])
 const isSwiping = ref<string>('')
 
 onBeforeRouteLeave((nextPath, prevPath) => {
-    if (nextPath.path != prevPath.path && ['/', '/news', '/news/', '/news/reading', '/news/reading/'].indexOf(prevPath.path) >= 0) {
-        closeNewsSocket()
-    }
+    store.dropNews()
 })
 
 const stripHtmlTags = (text: string) => {
@@ -83,7 +83,9 @@ const preventClickOnSwipe = (event: Event) => {
 }
 
 store.loadNews()
-feedStore.loadFeeds()
+if (!feedStore.feeds.length) {
+    feedStore.loadFeeds()
+}
 </script>
 
 <template>

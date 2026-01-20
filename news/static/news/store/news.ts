@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { refreshItem } from 'TaskDesk/js/common/store'
-import { News } from 'news/types/news'
+import { News, NewsQuery } from 'news/types/news'
 import { prepareNewsSocket } from 'news/services/news.service'
 
 
@@ -10,11 +10,12 @@ const FETCHING_MORE_NEWS_PERIOD = 300000
 
 export const useNewsStore = defineStore('news', () => {
     const news = ref<Array<News>>([])
+    let newsQuery: Readonly<any>
 
     const refreshNews = (data: News) => refreshItem(
         data, news, (elem) => elem.id == data.id, true)
-    const loadNews = async () => (await prepareNewsSocket()).send(
-        JSON.stringify({ request: "unread" }))
+    const loadNews = async () => (await prepareNewsSocket()).send(JSON.stringify(
+        (newsQuery && newsQuery.request) ? newsQuery: { request: 'unread' }))
 
     async function markNews(target: News, bookmark = false) {
         try {
@@ -44,5 +45,13 @@ export const useNewsStore = defineStore('news', () => {
         }
     }
 
-    return { news, loadNews, refreshNews, markNews, fetchMoreNews }
+    const setQuery = (query: NewsQuery) => {
+        newsQuery = query
+    }
+
+    const dropNews = () => {
+        news.value = []
+    }
+
+    return { news, loadNews, refreshNews, markNews, fetchMoreNews, setQuery, dropNews }
 })

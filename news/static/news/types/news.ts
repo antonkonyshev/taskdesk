@@ -10,3 +10,8 @@ export interface News {
     enclosure_type?: string
     feed?: number
 }
+
+export interface NewsQuery {
+    request: 'unread'|'reading'|'hidden'|'feed'
+    id?: number
+}

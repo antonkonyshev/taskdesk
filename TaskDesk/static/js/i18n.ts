@@ -43,6 +43,8 @@ export default createI18n({
                 filter_entry_placeholder: "Greenland",
                 published: "Published",
                 load_more_news: "Load more news",
+                viewed: "Viewed",
+                preferences: "Preferences",
             }
         },
 
@@ -86,6 +88,8 @@ export default createI18n({
                 filter_entry_placeholder: "Гренланд",
                 published: "Опубликовано",
                 load_more_news: "Загрузить больше новостей",
+                viewed: "Просмотренные",
+                preferences: "Настройки",
             }
         }
     }

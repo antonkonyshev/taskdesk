@@ -76,7 +76,7 @@ describe('news related components rendering', () => {
     })
 
     test('news list component', () => {
-        const wrapper = mount(NewsList)
+        const wrapper = mount(NewsList, {props: {request: "unread"}})
         expect(wrapper.text()).toContain("First testing news")
         expect(wrapper.html()).toContain("http://localhost:8000/news/")
         expect(wrapper.text()).toContain("Second testing news")
@@ -88,7 +88,7 @@ describe('news related components rendering', () => {
     })
 
     test('news bookmarking', async () => {
-        const wrapper = mount(NewsList)
+        const wrapper = mount(NewsList, {props: {request: "unread"}})
         await wrapper.get({ ref: 'bookmark-btn' }).trigger('click')
         expect(store.news.length).toBe(2)
         expect(wrapper.text()).not.toContain("Second testing news")

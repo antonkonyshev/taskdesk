@@ -7,12 +7,14 @@ export const prepareWebSocket = async (
 ): Promise<Ref<UseWebSocketReturn<any>>> => {
     return new Promise((resolve, reject) => {
         try {
-            if (!socket.value || !socket.value.status || socket.value.status.value == "CLOSED") {
+            if (!socket.value || !socket.value.status.value) {
                 // @ts-ignore
                 socket.value = useWebSocket(window.API_BASE_URL + url, {
                     autoReconnect: { retries: 3, delay: 3000, onFailed: reject },
                     onMessage: callback,
                 })
+            } else if (socket.value && socket.value.status.value == "CLOSED") {
+                socket.value.open()
             }
             resolve(socket)
         } catch(err) {
@@ -28,7 +30,6 @@ export const closeWebSocket = (socket: Ref<any>): Promise<void> => {
                 if (socket.value.status && socket.value.status.value != "CLOSED") {
                     socket.value.close()
                 }
-                socket = null
                 resolve()
             }
         } catch(err) {
