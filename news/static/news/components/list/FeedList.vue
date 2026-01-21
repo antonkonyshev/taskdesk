@@ -6,7 +6,7 @@ import { useFeedStore } from 'news/store/feed'
 import { Feed } from 'news/types/feed'
 import FeedForm from 'news/components/form/FeedForm.vue'
 
-const mdWidth = 768;
+const mdWidth = 640;
 const { width } = useWindowSize()
 const store = useFeedStore()
 const selectedFeed = ref<Feed>(null)
@@ -25,13 +25,13 @@ store.loadFeeds()
 </script>
 
 <template>
-    <div class="flex flex-row">
+    <div class="flex flex-row w-full max-w-screen-xl">
         <div v-if="(!selectedFeed || width >= mdWidth) && store.feeds.length"
-            class="flex-1 overflow-y-scroll scroll-smooth overflow-x-hidden max-h-[calc(100vh_+_0.75rem)] md:-ml-6 md:pl-6">
+            class="flex-1 overflow-y-scroll scroll-smooth max-h-[calc(100vh_+_0.75rem)] md:-ml-6 md:pl-6">
             <div v-for="feed in store.feeds" :key="feed.id"
                 @click="selectedFeed = feed"
                 :class="{ '!shadow-lg !scale-[102%]': (selectedFeed && feed.id === selectedFeed.id) }"
-                class="flex flex-row items-center my-3 p-3 md:mx-4 shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white duration-200 cursor-pointer">
+                class="flex flex-row items-center my-3 p-3 shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white duration-200 cursor-pointer">
 
                 <div class="flex-1">
                     <h2 class="font-semibold flex flex-row justify-between items-start gap-2">
@@ -42,7 +42,7 @@ store.loadFeeds()
                 </div>
 
                 <button type="button" @click.stop="store.removeFeed(feed)" class="action-button hover:bg-red-700 hover:!border-red-700 group ml-auto" ref="delete-btn">
-                    <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-trash group-hover:invert-100"></span>
+                    <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-trash dark:invert-100 group-hover:invert-100"></span>
                 </button>
             </div>
 

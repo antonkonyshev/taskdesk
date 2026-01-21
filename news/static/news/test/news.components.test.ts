@@ -19,6 +19,7 @@ describe('news related components rendering', () => {
     let socket = { send: (data) => lastRequest = data }
 
     beforeEach(() => {
+        vi.useFakeTimers()
         vi.mock('news/services/news.service')
         vi.mocked(prepareNewsSocket).mockResolvedValue(socket)
         vi.mocked(closeNewsSocket).mockResolvedValue()
@@ -90,12 +91,14 @@ describe('news related components rendering', () => {
     test('news bookmarking', async () => {
         const wrapper = mount(NewsList, {props: {request: "unread"}})
         await wrapper.get({ ref: 'bookmark-btn' }).trigger('click')
+        await vi.runAllTimersAsync()
         expect(store.news.length).toBe(2)
         expect(wrapper.text()).not.toContain("Second testing news")
         expect(wrapper.text()).toContain("First testing news")
         expect(wrapper.text()).toContain("Third testing news")
 
         await wrapper.get({ ref: 'hide-btn' }).trigger('click')
+        await vi.runAllTimersAsync()
         expect(store.news.length).toBe(1)
         expect(wrapper.text()).not.toContain("Second testing news")
         expect(wrapper.text()).not.toContain("First testing news")

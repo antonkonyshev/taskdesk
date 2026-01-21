@@ -19,12 +19,12 @@ const showAnnotationInput = ref(false)
             <span v-text="moment(annotation.entry).fromNow()"></span>
 
             <button type="button" @click="store.denotate(annotation.description)" class="group cursor-pointer action-button !px-1 !py-0.5 mt-0.5 !rounded-md hover:bg-red-700 hover:!border-red-700 duration-200">
-                <span class="inline-block size-4 bg-no-repeat bg-center bg-contain svg-trash group-hover:invert-100"></span>
+                <span class="inline-block size-4 bg-no-repeat bg-center bg-contain svg-trash dark:invert-100 group-hover:invert-100"></span>
             </button>
         </span>
 
         <button v-if="!showAnnotationInput" type="button" @click="showAnnotationInput = true" class="flex flex-row items-center gap-1 mt-1 hover:underline cursor-pointer">
-            <span class="inline-block size-5 bg-no-repeat bg-center bg-contain svg-plus-circle mt-0.5"></span>
+            <span class="inline-block size-5 bg-no-repeat bg-center bg-contain svg-plus-circle dark:invert-100 mt-0.5"></span>
 
             <span v-text="t('message.add_annotation')"></span>
         </button>

@@ -17,11 +17,11 @@ const submit = () => {
 </script>
 
 <template>
-    <div class="flex-1 lg:flex-2 my-3 mx-3 md:!ml-0 px-4 py-3.5 bg-white min-h-screen shadow-[0px_0px_5px_-2px_#000]">
+    <div class="flex-1 lg:flex-2 my-3 mx-3 md:!ml-0 px-4 py-3.5 bg-white min-h-screen shadow-[0px_0px_5px_-2px_#000] dark:bg-gray-800 dark:text-white">
         <form name="filterForm" @submit.prevent="submit">
             <p>
                 <button type="button" @click="emit('cancel')" class="action-button hover:bg-gray-300" ref="cancel-btn">
-                    <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-arrow-left"></span>
+                    <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-arrow-left dark:invert-100 dark:hover:invert-0"></span>
                 </button>
             </p>
 
@@ -29,13 +29,13 @@ const submit = () => {
                 <label for="id_entry" v-text="t('message.word')" />
                 <input id="id_entry" name="entry" type="text" v-model="entry"
                     :placeholder="t('message.filter_entry_placeholder')"
-                    class="input-field rounded-lg min-w-xs sm:min-w-sm md:min-w-md lg:min-w-lg xl:min-w-xl" />
+                    class="input-field rounded-lg min-w-xs sm:min-w-sm md:min-w-md lg:min-w-lg xl:min-w-xl dark:!bg-gray-700" />
             </p>
 
             <p class="mt-2">
                 <label for="id_part" v-text="t('message.part_of_word')" />
                 <select id="id_part" name="part" v-model="part"
-                    class="input-field rounded-lg min-w-xs sm:min-w-sm md:min-w-md lg:min-w-lg xl:min-w-xl">
+                    class="input-field rounded-lg min-w-xs sm:min-w-sm md:min-w-md lg:min-w-lg xl:min-w-xl dark:!bg-gray-700">
                     <option value="start" v-text="t('message.word_start')"></option>
                     <option value="end" v-text="t('message.word_end')"></option>
                     <option value="full" v-text="t('message.word_full')"></option>

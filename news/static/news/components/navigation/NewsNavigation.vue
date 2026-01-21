@@ -30,27 +30,27 @@
                         <span v-text="t('message.preferences')"></span>
                     </button>
 
-                    <div class="absolute hidden z-10 right-0 mt-2 w-48 bg-white shadow-black shadow-sm py-1 border-b-gray-900"
+                    <div class="absolute hidden z-10 right-0 mt-2 w-48 bg-white shadow-black shadow-sm py-1 border-b-gray-900 dark:bg-gray-900"
                         :class="{'!block': preferencesMenu}" role="menu"
                         aria-orientation="vertical"
                         aria-labelledby="preferences-btn">
 
                         <router-link :to="routes.viewed" @click="preferencesMenu = false"
-                            class="navigation-button sm:px-4">
+                            class="navigation-button px-4">
 
                             <span class="navigation-icon svg-eye"></span>
                             <span v-text="t('message.viewed')"></span>
                         </router-link>
 
                         <router-link :to="routes.feeds" @click="preferencesMenu = false"
-                            class="navigation-button sm:px-4">
+                            class="navigation-button px-4">
 
                             <span class="navigation-icon svg-rss"></span>
                             <span v-text="t('message.feeds')"></span>
                         </router-link>
 
                         <router-link :to="routes.filters" @click="preferencesMenu = false"
-                            class="navigation-button sm:px-4">
+                            class="navigation-button px-4">
 
                             <span class="navigation-icon svg-funnel"></span>
                             <span v-text="t('message.filters')"></span>

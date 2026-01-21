@@ -13,7 +13,7 @@ const store = useTaskStore()
 </script>
 
 <template>
-    <div class="flex-1 lg:flex-2 my-3 mx-3 md:!ml-0 px-4 py-3.5 bg-white min-h-screen shadow-[0px_0px_5px_-2px_#000]">
+    <div class="flex-1 lg:flex-2 my-3 mx-3 md:!ml-0 px-4 py-3.5 bg-white min-h-screen shadow-[0px_0px_5px_-2px_#000] dark:bg-gray-800 dark:text-white">
         <Actions />
 
         <h2 class="font-semibold text-2xl flex flex-col xl:flex-row gap-2 items-start xl:items-center pt-4 pb-3">
@@ -22,8 +22,8 @@ const store = useTaskStore()
                 :placeholder="t('message.enter_task_description')"
                 :value="store.task.description" />
 
-            <StateLabels :task="store.task" class="gap-2" label-class="text-lg" common-label-class="bg-gray-200"
-                critical-label-class="bg-red-200" allow-row-arrangement="true" />
+            <StateLabels :task="store.task" class="gap-2" label-class="text-lg" common-label-class="bg-gray-200 dark:bg-gray-700"
+                critical-label-class="bg-red-200 dark:text-black" allow-row-arrangement="true" />
         </h2>
 
         <p v-if="store.task.uuid != 'new'" class="flex flex-row items-center gap-2">
@@ -34,7 +34,7 @@ const store = useTaskStore()
                 @focusin="store.editing" @input="store.editing" :value="store.task.project" />
 
             <span v-if="store.task.tags" v-for="tag in store.task.tags" v-text="tag"
-                class="bg-gray-200 task-label !pt-0"></span>
+                class="bg-gray-200 task-label !pt-0 dark:bg-gray-700"></span>
         </p>
 
         <DatesDetails />

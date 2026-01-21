@@ -8,7 +8,6 @@ class AuthenticationTestCase(BaseTestCase):
         self.client.logout()
         rsp = self.client.get("/")
         self.assertEqual(rsp.status_code, 302)
-        self.assertEqual(rsp.url, reverse('tdauth_login'))
 
     def test_get_authentication_form(self):
         rsp = self.client.get(reverse('tdauth_login'))

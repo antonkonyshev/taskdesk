@@ -4,11 +4,11 @@
     <form method="POST" action="{% cache 604800 tdauthloginpageurl %}{% url 'tdauth_login' %}{% endcache %}">
         {% csrf_token %}
 
-        <div class="w-full px-5 flex flex-col gap-5 items-center text-lg">
+        <div class="w-full px-5 flex flex-col gap-5 items-center text-lg dark:text-white">
 
             <p>
                 {{ form.username.label_tag }}
-                {{ form.username|add_class:"input-field rounded-lg min-w-xs" }}
+                {{ form.username|add_class:"input-field rounded-lg min-w-xs auth-input dark:text-black"|attr:"placeholder:john@gmail.com" }}
                 {% if form.username.errors %}
                 <p class="text-red-800 mt-2">
                 {% for error in form.username.errors %}{{ error }}{% endfor %}
@@ -18,7 +18,7 @@
 
             <p>
                 {{ form.password.label_tag }}
-                {{ form.password|add_class:"input-field rounded-lg min-w-xs" }}
+                {{ form.password|add_class:"input-field rounded-lg min-w-xs auth-input dark:text-black"|attr:"placeholder:*********" }}
                 {% if form.password.errors %}
                 <p class="text-red-800 mt-2">
                 {% for error in form.password.errors %}{{ error }}{% endfor %}

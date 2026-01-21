@@ -20,12 +20,12 @@ const tasksStore = useTasksStore()
                 <span v-text="task.description" class="text-lg flex-1"
                     :class="{ 'text-gray-600': task.depending === true || tasksStore.isTaskDepending(task) || task.wait }"></span>
 
-                <StateLabels :task="task" class="gap-1" label-class="text-xs" common-label-class="bg-gray-200"
+                <StateLabels :task="task" class="gap-1" label-class="text-xs" common-label-class="bg-gray-200 dark:bg-gray-700"
                     critical-label-class="bg-red-700 text-white" shorten-labels="400" />
             </h2>
 
             <ul v-if="task.tags" class="flex flex-row flex-wrap gap-2 py-1">
-                <li v-for="tag in task.tags" v-text="tag" class="bg-gray-200 text-xs task-label"></li>
+                <li v-for="tag in task.tags" v-text="tag" class="bg-gray-200 dark:bg-gray-700 text-xs task-label"></li>
                 <li v-if="!task.due && task.project" v-text="task.project" class="bg-gray-200 text-xs task-label ml-auto"></li>
             </ul>
 
@@ -33,7 +33,7 @@ const tasksStore = useTasksStore()
                 <span v-text="task.due ? (t('message.due_date') + ' ' + moment(task.due).fromNow()) : ''"
                     class="flex-1"></span>
 
-                <span v-if="task.project" v-text="task.project" class="bg-gray-200 text-xs task-label !pb-1"></span>
+                <span v-if="task.project" v-text="task.project" class="bg-gray-200 dark:bg-gray-700 text-xs task-label !pb-1"></span>
             </p>
         </div>
     </div>

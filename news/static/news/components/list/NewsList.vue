@@ -50,18 +50,24 @@ const onTouchMove = (news: News, index: number, event) => {
     if (isSwiping.value != direction) {
         isSwiping.value = direction
     }
-    const elem = newsElements.value[index]
-    elem.style.left = distance.toString() + 'px'
+    if (Math.abs(distance) > 20) {
+        const elem = newsElements.value[index]
+        elem.style.left = distance.toString() + 'px'
+    }
 }
 
-const onTouchEnd = (news: News, index: number, event) => {
-    isSwiping.value = ''
+const onTouchEnd = (news: News, index: number, event, direction = null) => {
     const elem = newsElements.value[index]
-    const screenX = 'changedTouches' in event ? event.changedTouches[0].clientX : event.screenX
-    const distance = Math.abs(screenX) - Math.abs(swipeStartX.value)
-    swipeStartX.value = 0
-    setTimeout(() => preventClicks = false, 100)
-    const direction = distance > 0 ? 'right' : 'left'
+    let distance = elem.clientWidth || 100
+    if (!direction) {
+        isSwiping.value = ''
+        distance = Math.abs('changedTouches' in
+            event ? event.changedTouches[0].clientX : event.screenX
+        ) - Math.abs(swipeStartX.value)
+        swipeStartX.value = 0
+        setTimeout(() => preventClicks = false, 100)
+        direction = distance > 0 ? 'right' : 'left'
+    }
     if (Math.abs(distance) / elem.clientWidth > 0.25) {
         if (direction == 'left') {
             setTimeout(() => store.markNews(news), 400)
@@ -91,13 +97,13 @@ if (!feedStore.feeds.length) {
 <template>
     <div class="flex flex-col items-center xl:max-w-screen-xl">
         <div v-for="(news, index) in store.news" :key="news.id"
-            class="flex w-full relative gap-3 my-3 bg-gray-200"
+            class="flex w-full relative gap-3 my-3 bg-gray-200 touch-pan-x"
             :class="{'bg-green-700': isSwiping == 'right'}">
 
             <span class="absolute opacity-0 top-0 right-5 w-[50px] h-[100%] duration-500 bg-no-repeat bg-center bg-contain svg-eye-slash"
-                :class="{'opacity-100': isSwiping == 'left'}"></span>
+                :class="{'opacity-100 !duration-[0ms]': isSwiping == 'left', }"></span>
             <span class="absolute opacity-0 top-0 left-5 w-[50px] h-[100%] duration-500 bg-no-repeat bg-center bg-contain svg-bookmark invert-100"
-                :class="{'opacity-100': isSwiping == 'right'}"></span>
+                :class="{'opacity-100 !duration-[0ms]': isSwiping == 'right'}"></span>
 
             <a :href="news.link" target="_blank"
                 ref="newsElements"
@@ -142,14 +148,14 @@ if (!feedStore.feeds.length) {
                     </span>
 
                     <span class="flex flex-row sm:flex-col justify-end gap-3">
-                        <span @click.stop.prevent="store.markNews(news, true)"
+                        <span @click.stop.prevent="onTouchEnd(news, index, $event, 'right')"
                             class="action-button hover:bg-green-700 hover:!border-green-700 group"
                             ref="bookmark-btn">
 
                             <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-bookmark group-hover:invert-100 dark:invert-100"></span>
                         </span>
 
-                        <span @click.stop.prevent="store.markNews(news)"
+                        <span @click.stop.prevent="onTouchEnd(news, index, $event, 'left')"
                             class="action-button hover:bg-gray-300"
                             ref="hide-btn">
 
