@@ -1,9 +1,9 @@
-import { ref } from 'vue'
 import { useNewsStore } from "news/store/news"
+import { UseWebSocketReturn } from "@vueuse/core"
 import { prepareWebSocket, closeWebSocket } from "TaskDesk/js/common/websockets"
 import { News } from "news/types/news"
 
-const socket = ref<any>(null)
+let socket: UseWebSocketReturn<any> | null = null
 let closeSocketTimeoutId = null
 const newsSocketTimeout = 600000
 
@@ -18,8 +18,8 @@ export const renewNewsSocketTimeout = (): void => {
 
 export const prepareNewsSocket = async () => {
     renewNewsSocketTimeout()
-    await prepareWebSocket(socket, "/news/", receiveNews)
-    return socket.value
+    socket = await prepareWebSocket(socket, "/news/", receiveNews)
+    return socket
 }
 
 export const closeNewsSocket = (): Promise<void> => closeWebSocket(socket)

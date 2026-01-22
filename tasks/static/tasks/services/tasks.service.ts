@@ -1,17 +1,17 @@
-import { ref } from "vue"
+import { UseWebSocketReturn } from "@vueuse/core"
 import { prepareWebSocket, closeWebSocket } from "TaskDesk/js/common/websockets"
 import { useTasksStore } from "tasks/store/tasks"
 import { Task } from "tasks/types/task"
 
-const socket = ref<any>(null)
+let socket: UseWebSocketReturn<any> | null = null
 
 const receiveMessage = async (
     ws: WebSocket, event: MessageEvent
 ) => await useTasksStore().refreshTask(JSON.parse(event.data) as Task)
 
 export const prepareTaskSocket = async (uuid: string) => {
-    await prepareWebSocket(socket, "/task/" + uuid + "/", receiveMessage)
-    return socket.value
+    socket = await prepareWebSocket(socket, "/task/" + uuid + "/", receiveMessage)
+    return socket
 }
 
 export const closeTaskSocket = (): Promise<void> => closeWebSocket(socket)

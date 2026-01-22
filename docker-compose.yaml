@@ -3,7 +3,7 @@ services:
     build:
       dockerfile: ./docker/backend.dev.dockerfile
     env_file:
-      - ./docker/environment
+      - ./docker/dev.env
     entrypoint: "uvicorn TaskDesk.asgi:application --host 0.0.0.0 --reload --reload-include *.html"
     stdin_open: true
     tty: true
@@ -47,7 +47,7 @@ services:
     build:
       dockerfile: ./docker/worker.dev.dockerfile
     env_file:
-      - ./docker/environment
+      - ./docker/dev.env
     entrypoint: "celery -A TaskDesk worker --loglevel=info"
     networks:
       - taskdesk_network
@@ -80,7 +80,7 @@ services:
     ports:
       - "15672:15672"
     env_file:
-      - ./docker/environment
+      - ./docker/dev.env
     volumes:
       - ${RABBITMQ_VOLUME_DIR:-../Workspace/rabbitmq}:/var/lib/rabbitmq
       - ${BACKEND_ROOT_DIR:-../Workspace/log/rabbitmq}:/var/log/rabbitmq
@@ -99,7 +99,7 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - ./docker/environment
+      - ./docker/dev.env
     volumes:
       - ${POSTGRES_DATABASE_DIR:-../Workspace/postgres}:/var/lib/postgresql
       - ${BACKEND_ROOT_DIR:-../Workspace/log/postgresql}:/var/log/postgresql

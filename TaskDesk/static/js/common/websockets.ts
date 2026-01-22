@@ -1,20 +1,19 @@
-import { Ref } from "vue"
 import { useWebSocket, UseWebSocketReturn } from "@vueuse/core"
 
 export const prepareWebSocket = async (
-    socket: Ref<any>, url: string,
+    socket: UseWebSocketReturn<any>, url: string,
     callback: (ws: WebSocket, event: MessageEvent) => void
-): Promise<Ref<UseWebSocketReturn<any>>> => {
+): Promise<UseWebSocketReturn<any>> => {
     return new Promise((resolve, reject) => {
         try {
-            if (!socket.value || !socket.value.status.value) {
+            if (!socket || !socket.status.value) {
                 // @ts-ignore
-                socket.value = useWebSocket(window.API_BASE_URL + url, {
+                socket = useWebSocket(window.API_BASE_URL + url, {
                     autoReconnect: { retries: 3, delay: 3000, onFailed: reject },
                     onMessage: callback,
                 })
-            } else if (socket.value && socket.value.status.value == "CLOSED") {
-                socket.value.open()
+            } else if (socket && socket.status.value == "CLOSED") {
+                socket.open()
             }
             resolve(socket)
         } catch(err) {
@@ -23,14 +22,16 @@ export const prepareWebSocket = async (
     })
 }
 
-export const closeWebSocket = (socket: Ref<any>): Promise<void> => {
+export const closeWebSocket = (
+    socket: UseWebSocketReturn<any>
+): Promise<any> => {
     return new Promise((resolve, reject) => {
         try {
             if (socket) {
-                if (socket.value.status && socket.value.status.value != "CLOSED") {
-                    socket.value.close()
+                if (socket.status && socket.status.value != "CLOSED") {
+                    socket.close()
                 }
-                resolve()
+                resolve(socket)
             }
         } catch(err) {
             reject(err)
