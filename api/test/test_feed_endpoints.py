@@ -12,16 +12,16 @@ class FeedEndpointsTestCase(APITestCase):
         self.auser.save()
         result = super().setUp()
 
-        self.feed = Feed(url="http://localhost:8000/rss1")
+        self.feed = Feed(url="http://localhost:8888/rss1")
         self.feed.save()
         self.userfeed = UserFeed(feed=self.feed, user=self.user,
                                  title="Testing feed")
         self.userfeed.save()
-        self.afeed = Feed(url="http://localhost:8000/rss2")
+        self.afeed = Feed(url="http://localhost:8888/rss2")
         self.afeed.save()
         self.auserfeed = UserFeed(feed=self.afeed, user=self.user)
         self.auserfeed.save()
-        self.aafeed = Feed(url="http://localhost:8000/rss3")
+        self.aafeed = Feed(url="http://localhost:8888/rss3")
         self.aafeed.save()
         self.aauserfeed = UserFeed(feed=self.aafeed, user=self.auser,
                                    title="Another feed")
@@ -49,10 +49,10 @@ class FeedEndpointsTestCase(APITestCase):
     def test_feed_creation(self):
         self.login()
         rsp = self.client.post(f"/api/v1/feed/", json={
-            'url': 'http://localhost:8000/rss4',
+            'url': 'http://localhost:8888/rss4',
         })
         self.assertEqual(rsp.status_code, 200)
-        feed = Feed.objects.get(url='http://localhost:8000/rss4')
+        feed = Feed.objects.get(url='http://localhost:8888/rss4')
         userfeed = self.user.feeds.get(feed_id=feed.id)
         self.assertEqual(userfeed.title, "")
 
@@ -67,10 +67,10 @@ class FeedEndpointsTestCase(APITestCase):
 
     def test_feed_update(self):
         self.login()
-        userfeed = self.user.feeds.get(feed__url="http://localhost:8000/rss2")
+        userfeed = self.user.feeds.get(feed__url="http://localhost:8888/rss2")
         self.assertEqual(userfeed.title, "")
         rsp = self.client.post("/api/v1/feed/", json={
-            'url': 'http://localhost:8000/rss2',
+            'url': 'http://localhost:8888/rss2',
             'title': 'Second testing feed',
         })
         self.assertEqual(rsp.status_code, 200)

@@ -2,6 +2,7 @@
 Task management HTTP API related controllers.
 """
 
+import logging
 from json import JSONDecodeError
 from fastapi import (WebSocket, WebSocketDisconnect, HTTPException, Depends,
                      WebSocketException, status)
@@ -15,6 +16,9 @@ from api.authentication import Authentication
 from api.router import TaskDeskAPIRouter
 
 
+logger = logging.getLogger('api')
+
+
 class TaskStorageLoader:
     """
     TaskWarrior database loading for an authenticated user.
@@ -26,8 +30,9 @@ class TaskStorageLoader:
     async def __call__(self) -> TaskStorage:
         try:
             return await TaskStorage(self.user.task_db_path).load()
-        except Exception as err:
-            # TODO: add logging
+        except Exception:
+            logger.exception("Error on task storage loading for a user. "
+                             f"{str(self.user)}")
             if self.wsproto:
                 raise WebSocketException(code = status.WS_1011_INTERNAL_ERROR)
             else:
@@ -56,9 +61,12 @@ async def task_updating(
                 elif data.get('uuid', None) == task_uuid:
                     storage.patch_task(**data)
             except Task.DoesNotExist:
+                logger.exception("Error on task data update by request. "
+                                 f"User:{str(user)} TUUID:{task_uuid}")
                 raise WebSocketException(code = status.WS_1011_INTERNAL_ERROR)
             except JSONDecodeError:
-                # TODO: add logging
+                logger.exception("Error on task data update by request. "
+                                 f"User:{str(user)} TUUID:{task_uuid}")
                 raise WebSocketException(code = status.WS_1003_UNSUPPORTED_DATA)
     except WebSocketDisconnect:
         pass
@@ -97,7 +105,8 @@ async def task_delete(
     except IndexError:
         raise HTTPException(status_code = status.HTTP_204_NO_CONTENT)
     except Exception as err:
-        # TODO: logging
+        logger.exception("Error on task delete request processing. "
+                         f"User:{str(user)} TUUID:{task_uuid}")
         raise err
 
 @TaskDeskAPIRouter.post("/task/{task_uuid}/", status_code=status.HTTP_200_OK)
@@ -116,5 +125,6 @@ async def task_complete(
     except IndexError:
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND)
     except Exception as err:
-        # TODO: logging
+        logger.exception("Error on task completion request processing. "
+                         f"User:{str(user)} TUUID:{task_uuid}")
         raise err

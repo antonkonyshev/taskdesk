@@ -2,6 +2,7 @@
 HTTP API backend controllers related to the news functionality.
 """
 
+import logging
 from json import JSONDecodeError
 
 from fastapi import (WebSocket, WebSocketDisconnect, Depends,
@@ -18,6 +19,8 @@ from api.schema.news import NewsData, NewsQuery, NewsRequest
 
 
 NEWS_PER_ONE_REQUEST_LIMIT = 10
+
+logger = logging.getLogger('api')
 
 
 @TaskDeskAPIRouter.websocket("/news/")
@@ -59,9 +62,9 @@ async def list_news(
                                          else Mark.Category.BOOKMARK)
                 elif query.request == NewsRequest.fetch:
                     atask(fetch_all_news)
-            except JSONDecodeError as err:
-                # TODO: add logging
-                print(err)
+            except JSONDecodeError:
+                logger.exception(f"Error on news list websocket endpoint "
+                                 f"request processing. UID:{user.id}")
                 raise WebSocketException(code = status.WS_1003_UNSUPPORTED_DATA)
     except WebSocketDisconnect:
         pass

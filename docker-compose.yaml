@@ -14,12 +14,13 @@ services:
     volumes:
       - ${BACKEND_ROOT_DIR:-.}:/opt/taskdesk
       - ${BACKEND_ROOT_DIR:-../Workspace/taskstorage}:/opt/taskdesk/taskstorage
+      - ${BACKEND_ROOT_DIR:-../Workspace/log/taskdesk}:/var/log/taskdesk
     depends_on:
       db:
         condition: service_healthy
       frontend:
         condition: service_healthy
-      redis:
+      cache:
         condition: service_healthy
       mq:
         condition: service_healthy
@@ -53,6 +54,7 @@ services:
     volumes:
       - ${BACKEND_ROOT_DIR:-.}:/opt/taskdesk
       - ${BACKEND_ROOT_DIR:-../Workspace/taskstorage}:/opt/taskdesk/taskstorage
+      - ${BACKEND_ROOT_DIR:-../Workspace/log/worker}:/var/log/taskdesk
     healthcheck:
       test: ["CMD", "celery", "-A", "TaskDesk", "status"]
       interval: 10s
@@ -65,7 +67,7 @@ services:
         condition: service_healthy
       db:
         condition: service_healthy
-      redis:
+      cache:
         condition: service_healthy
 
 
@@ -81,6 +83,7 @@ services:
       - ./docker/environment
     volumes:
       - ${RABBITMQ_VOLUME_DIR:-../Workspace/rabbitmq}:/var/lib/rabbitmq
+      - ${BACKEND_ROOT_DIR:-../Workspace/log/rabbitmq}:/var/log/rabbitmq
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
       interval: 10s
@@ -99,6 +102,7 @@ services:
       - ./docker/environment
     volumes:
       - ${POSTGRES_DATABASE_DIR:-../Workspace/postgres}:/var/lib/postgresql
+      - ${BACKEND_ROOT_DIR:-../Workspace/log/postgresql}:/var/log/postgresql
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "notes"]
       interval: 10s
@@ -107,7 +111,7 @@ services:
       start_period: 10s
     restart: always
 
-  redis:
+  cache:
     image: redis:latest
     networks:
       - taskdesk_network

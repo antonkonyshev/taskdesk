@@ -3,15 +3,20 @@ News app related data models.
 """
 
 from collections.abc import Iterable
+import logging
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.conf import settings
+from django.core.exceptions import SynchronousOnlyOperation
 
 from TaskDesk.models import TaskDeskBaseModel
 from TaskDesk.tasks import atask
 from tdauth.models import User
+
+
+logger = logging.getLogger("task")
 
 
 class Feed(TaskDeskBaseModel):
@@ -31,13 +36,27 @@ class Feed(TaskDeskBaseModel):
     def before_save(self):
         self.url = self.url.lower().strip()
 
+    def after_save(self):
+        try:
+            from news.tasks import fetch_news_from_rss_feed
+            atask(fetch_news_from_rss_feed, self.id)
+        except SynchronousOnlyOperation:
+            pass
+        except Exception:
+            logger.exception("Error in the feed postsave trigger. "
+                             f"Feed:{str(self)}")
+
     def save(self, *args, **kwargs):
         self.before_save()
-        return super(Feed, self).save(*args, **kwargs)
+        result = super(Feed, self).save(*args, **kwargs)
+        self.after_save()
+        return result
 
     async def asave(self, *args, **kwargs):
         self.before_save()
-        return await super(Feed, self).asave(*args, **kwargs)
+        result = await super(Feed, self).asave(*args, **kwargs)
+        self.after_save()
+        return result
 
 
 class UserFeed(TaskDeskBaseModel):
@@ -315,9 +334,11 @@ class Filter(TaskDeskBaseModel):
             else:
                 from news.tasks import filter_news_for_user
                 atask(filter_news_for_user, self.user_id)
-        except Exception as err:
-            # TODO: add logging
+        except SynchronousOnlyOperation:
             pass
+        except Exception:
+            logger.exception("Error in the news filter postsave trigger. "
+                             f"Filter:{str(self)}")
 
     def save(self, *args, **kwargs):
         self.before_save()

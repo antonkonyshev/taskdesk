@@ -8,7 +8,7 @@ from news.models import News, Feed, UserFeed, Filter, Mark
 
 class NewsModelsTestCase(BaseTestCase):
     def setUp(self):
-        self.feed = Feed(url="http://LocalHost:8000/Rss1")
+        self.feed = Feed(url="http://LocalHost:8888/Rss1")
         self.feed.save()
 
         result = super().setUp()
@@ -34,27 +34,27 @@ class NewsModelsTestCase(BaseTestCase):
 
         self.aanews = News(
             feed=self.feed, title="Third news in feed", description="Third description",
-            guid="thirdguid", link="http://localhost:8000/news3",
+            guid="thirdguid", link="http://localhost:8888/news3",
             author="Third Author", published=timezone.now())
         self.aanews.save()
         self.anews = News(
             feed=self.feed, title="Second news in feed",
             description="Second description", guid="secondguid",
-            link="http://localhost:8000/news2", author="Second Author",
-            enclosure_url="http://localhost:8000/img/second.jpg",
+            link="http://localhost:8888/news2", author="Second Author",
+            enclosure_url="http://localhost:8888/img/second.jpg",
             enclosure_type="image/jpeg", published=timezone.now())
         self.anews.save()
         self.news = News(
             feed=self.feed, title="First news in feed", description="First description",
-            guid="firstgui", link="http://localhost:8000/news1",
+            guid="firstgui", link="http://localhost:8888/news1",
             author="First Author",
-            enclosure_url="http://localhost:8000/img/first.png",
+            enclosure_url="http://localhost:8888/img/first.png",
             enclosure_type="image/png", published=timezone.now())
         self.news.save()
         return result
 
     def test_feed_url(self):
-        self.assertEqual(self.feed.url, "http://localhost:8000/rss1")
+        self.assertEqual(self.feed.url, "http://localhost:8888/rss1")
 
     def test_filter_entry(self):
         self.assertEqual(self.filter.entry, "first")
@@ -107,7 +107,7 @@ class NewsModelsTestCase(BaseTestCase):
                          ['First Author'])
 
     def test_applicable_fitlers(self):
-        afeed = Feed(url="http://LocalHost:8000/Rss2")
+        afeed = Feed(url="http://LocalHost:8888/Rss2")
         afeed.save()
         auserfeed = UserFeed(user=self.user, feed=afeed)
         auserfeed.save()

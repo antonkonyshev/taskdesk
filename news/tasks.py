@@ -2,12 +2,17 @@
 News processing celery tasks. Loading from rss feeds and filtration.
 """
 
+import logging
+
 from celery import shared_task
 import feedparser
 
 from TaskDesk.tasks import atask
 from news.models import Feed, UserFeed, News, Mark, Filter
 from news.serializers import FeedEntry
+
+
+logger = logging.getLogger("task")
 
 
 @shared_task(rate_limit='1/m', max_retries=3, soft_time_limit=900,
@@ -37,9 +42,8 @@ def fetch_news_from_rss_feed(feed_id: int):
             news = FeedEntry(entry).to_news(feed)
             if news:
                 news.save()
-        except Exception as err:
-            # TODO: add logging
-            print(err)
+        except Exception:
+            logger.exception(f"Error on feed news fetching. FID:{feed_id}")
     for userfeed_id, user_id in UserFeed.objects.values_list(
         'id', 'user_id'
     ).active_for_feed(feed).distinct():
@@ -73,9 +77,9 @@ def filter_news_for_userfeed(userfeed_id: int):
                     )
                     mark.save()
                     break
-        except Exception as err:
-            # TODO: add logging
-            print(err)
+        except Exception:
+            logger.exception("Error on news filtering for a userfeed. "
+                             f"UFID:{userfeed_id}")
 
 @shared_task(rate_limit='1/s', max_retries=3, soft_time_limit=900,
              time_limit=1800, trail=False, ignore_result=True, expires=3600)

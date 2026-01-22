@@ -2,7 +2,12 @@
 Celery tasks related utils shared amoung project applications.
 """
 
+import logging
+
 from celery.app.task import Task
+
+
+logger = logging.getLogger("task")
 
 
 def atask(task, *args, **kwargs):
@@ -14,6 +19,6 @@ def atask(task, *args, **kwargs):
         options = kwargs.pop('options', {})
         assert isinstance(options, dict), "Invalid task options provided"
         task.apply_async(args=args, kwargs=kwargs, **options)
-    except Exception as err:
-        # TODO: Add logging
-        print(err)
+    except Exception:
+        logger.exception(f"Error on celery task request. Task:{task.__name__} "
+                         f"args:{str(args)} kwargs:{str(kwargs)}")

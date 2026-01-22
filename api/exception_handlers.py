@@ -2,6 +2,7 @@
 ASGI application exception handlers for the TaskDesk project.
 """
 
+import logging
 import traceback
 
 from fastapi import Request, Response
@@ -10,10 +11,15 @@ from fastapi.exceptions import HTTPException
 from django.conf import settings
 
 
+logger = logging.getLogger('api')
+
+
 async def http_api_exception_handler(request: Request, err: HTTPException) -> Response:
     tb = traceback.format_exc()
     if not getattr(settings, 'AUTOTESTING', False):
-        print(tb)  # TODO: add logging
+        logger.exception(f"Error on HTTP API endpoint interaction. "
+                         f"ERR:{err.status_code} {err.detail} {str(err)}. "
+                         f"TB: {tb}")
     if getattr(settings, "DEBUG", False):
         content = {
             "message": "Internal Server Error",

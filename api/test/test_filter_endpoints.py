@@ -12,7 +12,7 @@ class FilterEndpointsTestCase(APITestCase):
         self.auser.save()
         result = super().setUp()
 
-        self.feed = Feed(url="http://localhost:8000/rss1")
+        self.feed = Feed(url="http://localhost:8888/rss1")
         self.feed.save()
         self.userfeed = UserFeed(feed=self.feed, user=self.user,
                                  title="Testing feed")
@@ -22,11 +22,11 @@ class FilterEndpointsTestCase(APITestCase):
         self.filter.save()
         self.afilter = Filter(user=self.user, entry="Another", part="part")
         self.afilter.save()
-        self.afeed = Feed(url="http://localhost:8000/rss2")
+        self.afeed = Feed(url="http://localhost:8888/rss2")
         self.afeed.save()
         self.auserfeed = UserFeed(feed=self.afeed, user=self.user)
         self.auserfeed.save()
-        self.aafeed = Feed(url="http://localhost:8000/rss3")
+        self.aafeed = Feed(url="http://localhost:8888/rss3")
         self.aafeed.save()
         self.aauserfeed = UserFeed(feed=self.aafeed, user=self.auser,
                                    title="Another feed")
@@ -58,7 +58,7 @@ class FilterEndpointsTestCase(APITestCase):
 
     def test_filter_creation(self):
         self.login()
-        feed = Feed.objects.get(url='http://localhost:8000/rss1')
+        feed = Feed.objects.get(url='http://localhost:8888/rss1')
         userfeed = self.user.feeds.get(feed_id=feed.id)
         rsp = self.client.post(f"/api/v1/filter/", json={
             'entry': 'NewFilter', 'part': 'full', 'feed_id': userfeed.id,
