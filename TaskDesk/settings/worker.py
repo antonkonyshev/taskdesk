@@ -39,7 +39,7 @@ from celery.schedules import crontab
 CELERYBEAT_SCHEDULE = {
     'fetch-all-news': {
         'task': 'news.tasks.fetch_all_news',
-        'schedule': crontab(hour='3', minute=42),
+        'schedule': crontab(hour='3,8,13,16', minute=53),
         'options': {'expires': 3600},
     },
 }

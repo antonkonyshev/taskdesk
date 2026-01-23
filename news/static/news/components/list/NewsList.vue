@@ -97,7 +97,7 @@ if (!feedStore.feeds.length) {
 <template>
     <div class="flex flex-col items-center xl:max-w-screen-xl">
         <div v-for="(news, index) in store.news" :key="news.id"
-            class="flex w-full relative gap-3 my-3 bg-gray-200 touch-pan-x"
+            class="flex w-full overflow-x-clip xl:[overflow-clip-margin:3px] relative gap-3 my-3 bg-gray-200"
             :class="{'bg-green-700': isSwiping == 'right'}">
 
             <span class="absolute opacity-0 top-0 right-5 w-[50px] h-[100%] duration-500 bg-no-repeat bg-center bg-contain svg-eye-slash"
@@ -115,7 +115,7 @@ if (!feedStore.feeds.length) {
                 @mouseup.prevent="onTouchEnd(news, index, $event)"
                 @click="preventClickOnSwipe($event)"
                 :class="{'transition-all duration-500 ease-linear': !isSwiping}"
-                class="relative p-3 size-full shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white cursor-pointer">
+                class="relative p-3 size-full shadow-black shadow-xs bg-white dark:bg-gray-800 dark:text-white cursor-pointer">
 
                 <span class="flex flex-col gap-3 md:gap-4 lg:gap-5 sm:flex-row">
                     <span class="flex flex-col gap-1 sm:gap-2 flex-1">
@@ -147,7 +147,7 @@ if (!feedStore.feeds.length) {
                         </span>
                     </span>
 
-                    <span class="flex flex-row sm:flex-col justify-end gap-3">
+                    <span class="flex flex-row sm:flex-col justify-center sm:justify-end items-center gap-3">
                         <span @click.stop.prevent="onTouchEnd(news, index, $event, 'right')"
                             class="action-button hover:bg-green-700 hover:!border-green-700 group"
                             ref="bookmark-btn">
