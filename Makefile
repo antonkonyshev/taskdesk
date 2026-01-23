@@ -1,7 +1,7 @@
 VENV = ../env
 PYTHON = $(VENV)/bin/python
 
-.PHONY: dev down_dev test vitest shell clean_static production_up production_run production_down
+.PHONY: dev down_dev test vitest shell clean_static production_up production_run production_down production_logs minimal_run minimal_up minimal_down
 
 dev:
 	sudo docker compose -f docker/compose.dev.yaml run --service-ports --remove-orphans taskdesk
@@ -40,3 +40,20 @@ production_build:
 
 production_logs:
 	sudo docker compose -f docker/compose.production.yaml logs -f
+
+minimal%: export DJANGO_SETTINGS_MODULE = TaskDesk.settings.minimal
+
+minimal_run:
+	$(PYTHON) -m uvicorn TaskDesk.asgi:application --host 127.0.0.1 --port 8000 --workers 2
+
+minimal_up:
+	sudo systemctl start taskdesk.service
+
+minimal_down:
+	sudo systemctl stop taskdesk.service
+
+minimal_deploy:
+	sudo cp -n docker/example_configs/example.systemd.service /etc/systemd/system/taskdesk.service && \
+	python -m venv $(VENV) && \
+	$(VENV)/bin/pip install -r requirements.txt && \
+	$(PYTHON) manage.py migrate

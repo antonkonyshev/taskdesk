@@ -1,0 +1,14 @@
+[Unit]
+Description=TaskDesk Backend
+After=network.target
+
+[Service]
+User=debian
+Group=debian
+WorkingDirectory=/opt/TaskDesk/TaskDesk
+Environment=DJANGO_SETTINGS_MODULE=TaskDesk.settings.minimal
+ExecStart=/opt/TaskDesk/env/bin/python -m uvicorn TaskDesk.asgi:application --host 127.0.0.1 --port 8000 --workers 2
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
