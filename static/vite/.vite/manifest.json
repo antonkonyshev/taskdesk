@@ -1,0 +1,156 @@
+{
+  "_AddButton.vue_vue_type_script_setup_true_lang-BH4MWXwQ.js": {
+    "file": "AddButton.vue_vue_type_script_setup_true_lang-BH4MWXwQ.js",
+    "name": "AddButton.vue_vue_type_script_setup_true_lang",
+    "imports": [
+      "_index-Cms_OnbX.js"
+    ]
+  },
+  "_index-Cms_OnbX.js": {
+    "file": "index-Cms_OnbX.js",
+    "name": "index"
+  },
+  "css/main.sass": {
+    "file": "assets/main-Bo-Njpz5.css",
+    "src": "css/main.sass",
+    "isEntry": true
+  },
+  "css/tailwind.css": {
+    "file": "assets/tailwind-CGEefNmd.css",
+    "src": "css/tailwind.css",
+    "isEntry": true
+  },
+  "js/NewsApp.ts": {
+    "file": "assets/newsApp-DguTIOVU.js",
+    "name": "newsApp",
+    "src": "js/NewsApp.ts",
+    "isEntry": true,
+    "imports": [
+      "_index-Cms_OnbX.js",
+      "_AddButton.vue_vue_type_script_setup_true_lang-BH4MWXwQ.js"
+    ]
+  },
+  "js/TasksApp.ts": {
+    "file": "assets/tasksApp-Dqa044_r.js",
+    "name": "tasksApp",
+    "src": "js/TasksApp.ts",
+    "isEntry": true,
+    "imports": [
+      "_index-Cms_OnbX.js",
+      "_AddButton.vue_vue_type_script_setup_true_lang-BH4MWXwQ.js"
+    ]
+  },
+  "js/navigation/NavigationApp.ts": {
+    "file": "assets/navigationApp-C9rKA3wT.js",
+    "name": "navigationApp",
+    "src": "js/navigation/NavigationApp.ts",
+    "isEntry": true,
+    "imports": [
+      "_index-Cms_OnbX.js"
+    ]
+  },
+  "svg/arrow-left.svg": {
+    "file": "assets/arrow-left-D4Cu4cIa.svg",
+    "src": "svg/arrow-left.svg"
+  },
+  "svg/arrow-right.svg": {
+    "file": "assets/arrow-right-j0xSmkmh.svg",
+    "src": "svg/arrow-right.svg"
+  },
+  "svg/bookmark.svg": {
+    "file": "assets/bookmark-mYjBHp3K.svg",
+    "src": "svg/bookmark.svg"
+  },
+  "svg/case.svg": {
+    "file": "assets/case-D3L-8CCi.svg",
+    "src": "svg/case.svg"
+  },
+  "svg/check.svg": {
+    "file": "assets/check-BipHFnGP.svg",
+    "src": "svg/check.svg"
+  },
+  "svg/cog.svg": {
+    "file": "assets/cog-Cc9svfoD.svg",
+    "src": "svg/cog.svg"
+  },
+  "svg/eye-slash.svg": {
+    "file": "assets/eye-slash-DpiuKyZZ.svg",
+    "src": "svg/eye-slash.svg"
+  },
+  "svg/eye.svg": {
+    "file": "assets/eye-ByNv7Bgs.svg",
+    "src": "svg/eye.svg"
+  },
+  "svg/funnel.svg": {
+    "file": "assets/funnel-Bq7Sizqr.svg",
+    "src": "svg/funnel.svg"
+  },
+  "svg/inbox.svg": {
+    "file": "assets/inbox-DeSomRV9.svg",
+    "src": "svg/inbox.svg"
+  },
+  "svg/menu.svg": {
+    "file": "assets/menu-BG630b2J.svg",
+    "src": "svg/menu.svg"
+  },
+  "svg/moon.svg": {
+    "file": "assets/moon-CCOOqnqT.svg",
+    "src": "svg/moon.svg"
+  },
+  "svg/more.svg": {
+    "file": "assets/more-C3UjW6Aa.svg",
+    "src": "svg/more.svg"
+  },
+  "svg/newspaper.svg": {
+    "file": "assets/newspaper-Dx_4tsmw.svg",
+    "src": "svg/newspaper.svg"
+  },
+  "svg/note.svg": {
+    "file": "assets/note-CupN6yIL.svg",
+    "src": "svg/note.svg"
+  },
+  "svg/pencil.svg": {
+    "file": "assets/pencil-CqOSUtLk.svg",
+    "src": "svg/pencil.svg"
+  },
+  "svg/plus-circle.svg": {
+    "file": "assets/plus-circle-DZrgy4Tq.svg",
+    "src": "svg/plus-circle.svg"
+  },
+  "svg/plus.svg": {
+    "file": "assets/plus-DIvtvf3K.svg",
+    "src": "svg/plus.svg"
+  },
+  "svg/refresh.svg": {
+    "file": "assets/refresh-B7t-eFNK.svg",
+    "src": "svg/refresh.svg"
+  },
+  "svg/rss.svg": {
+    "file": "assets/rss-DoF4qQ5l.svg",
+    "src": "svg/rss.svg"
+  },
+  "svg/signin.svg": {
+    "file": "assets/signin-D1wXdZ0s.svg",
+    "src": "svg/signin.svg"
+  },
+  "svg/signout.svg": {
+    "file": "assets/signout-ggn0g77n.svg",
+    "src": "svg/signout.svg"
+  },
+  "svg/sun.svg": {
+    "file": "assets/sun-CZq5P690.svg",
+    "src": "svg/sun.svg"
+  },
+  "svg/trash.svg": {
+    "file": "assets/trash-D-Bso1uW.svg",
+    "src": "svg/trash.svg"
+  },
+  "svg/wrench.svg": {
+    "file": "assets/wrench-CaRxRYnG.svg",
+    "src": "svg/wrench.svg"
+  },
+  "svg/x-mark.svg": {
+    "file": "assets/x-mark-Bq0fJ5uw.svg",
+    "src": "svg/x-mark.svg"
+  }
+}
