@@ -1,0 +1,73 @@
+name: 'taskdesk-prod'
+
+services:
+  taskdesk:
+    build:
+      context: ..
+      dockerfile: ./docker/backend.production.dockerfile
+    env_file:
+      - ./production.env
+    entrypoint: "uvicorn TaskDesk.asgi:application --host 0.0.0.0 --port 8000 --workers 2"
+    networks:
+      - taskdesk_network
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ${BACKEND_ROOT_DIR:-..}:/opt/taskdesk
+      - ${BACKEND_ROOT_DIR:-../../Workspace/sqlite3}:/opt/taskdesk/database
+      - ${BACKEND_ROOT_DIR:-../../Workspace/taskstorage}:/opt/taskdesk/taskstorage
+      - ${BACKEND_ROOT_DIR:-../../Workspace/media}:/opt/taskdesk/media
+      - ${BACKEND_ROOT_DIR:-../../Workspace/log/taskdesk}:/var/log/taskdesk
+    depends_on:
+      mq:
+        condition: service_healthy
+      worker:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: ..
+      dockerfile: ./docker/worker.production.dockerfile
+    env_file:
+      - ./production.env
+    entrypoint: "celery -A TaskDesk worker --loglevel=info"
+    networks:
+      - taskdesk_network
+    volumes:
+      - ${BACKEND_ROOT_DIR:-..}:/opt/taskdesk
+      - ${BACKEND_ROOT_DIR:-../../Workspace/sqlite3}:/opt/taskdesk/database
+      - ${BACKEND_ROOT_DIR:-../../Workspace/taskstorage}:/opt/taskdesk/taskstorage
+      - ${BACKEND_ROOT_DIR:-../../Workspace/media}:/opt/taskdesk/media
+      - ${BACKEND_ROOT_DIR:-../../Workspace/log/worker}:/var/log/taskdesk
+    healthcheck:
+      test: ["CMD", "celery", "-A", "TaskDesk", "status"]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    restart: always
+    depends_on:
+      mq:
+        condition: service_healthy
+
+  mq:
+    image: rabbitmq:4.2.2-alpine
+    networks:
+      - taskdesk_network
+    expose:
+      - "5672"
+    env_file:
+      - ./production.env
+    volumes:
+      - ${RABBITMQ_VOLUME_DIR:-../../Workspace/rabbitmq}:/var/lib/rabbitmq
+      - ${BACKEND_ROOT_DIR:-../../Workspace/log/rabbitmq}:/var/log/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    restart: always
+
+networks:
+  taskdesk_network:

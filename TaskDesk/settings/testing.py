@@ -2,6 +2,12 @@ from .base import *
 
 DEBUG = True
 
+DJANGO_VITE = {
+    "default": {
+        "dev_mode": DEBUG
+    }
+}
+
 SECRET_KEY = "django-insecure-@i!@il2oj960=m6cspm-t3_ubt6^vbae%^z_k#!r5a-ftu&m=_"
 
 ALLOWED_HOSTS = ["*"]

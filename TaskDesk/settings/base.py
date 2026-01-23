@@ -126,6 +126,7 @@ AUTH_USER_MODEL = "tdauth.User"
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
+USE_I18N = True
 LANGUAGE_CODE = "en-us"
 LANGUAGES = (
     ('en', 'English'),
@@ -138,22 +139,20 @@ LOCALE_PATHS = (
 TIME_ZONE = "UTC"
 USE_TZ = True
 
-USE_I18N = True
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    # "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
-
+DJANGO_VITE_ASSETS_DIR = os.path.join(BASE_DIR, 'static', 'vite')
 STATICFILES_DIRS = [
-    os.path.join(PROJECT_DIR, "static"),
+    DJANGO_VITE_ASSETS_DIR,
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "static", "dist")
 STATIC_URL = "/static/"
+VITE_APP_DIR = BASE_DIR
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
@@ -209,12 +208,6 @@ WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'tx
 
 LOGOUT_REDIRECT_URL = "/"
 LOGIN_REDIRECT_URL = "/"
-
-DJANGO_VITE = {
-    "default": {
-        "dev_mode": True
-    }
-}
 
 from .logging import *
 from .worker import *

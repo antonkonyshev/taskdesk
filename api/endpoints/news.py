@@ -23,7 +23,7 @@ NEWS_PER_ONE_REQUEST_LIMIT = 10
 logger = logging.getLogger('api')
 
 
-@TaskDeskAPIRouter.websocket("/news/")
+@TaskDeskAPIRouter.websocket("/ws/news/")
 async def list_news(
     socket: WebSocket,
     user: User = Depends(Authentication()),

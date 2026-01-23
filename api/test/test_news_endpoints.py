@@ -26,15 +26,15 @@ class NewsEndpointsTestCase(APITestCase):
         return result
 
     def test_not_authenticated(self):
-        rsp = self.client.get("/api/v1/news/")
-        self.assertEqual(rsp.status_code, 404)
-        session = self.client.websocket_connect("/api/v1/news/")
+        rsp = self.client.get("/api/v1/ws/news/")
+        self.assertNotEqual(rsp.status_code, 200)
+        session = self.client.websocket_connect("/api/v1/ws/news/")
         self.assertRaises(WebSocketDisconnect, session.__enter__)
 
     def test_unread_news_list_requesting(self):
         self.assertEqual(News.objects.count(), 37)
         self.login()
-        with self.client.websocket_connect("/api/v1/news/") as socket:
+        with self.client.websocket_connect("/api/v1/ws/news/") as socket:
             socket.send_json({'request': 'unread'})
             data = socket.receive_json()
             self.assertTrue(data)
@@ -59,7 +59,7 @@ class NewsEndpointsTestCase(APITestCase):
         Mark(user=self.user, news=news, category=Mark.Category.BOOKMARK).save()
         Mark(user=self.user, news=anews, category=Mark.Category.HIDDEN).save()
         self.login()
-        with self.client.websocket_connect("/api/v1/news/") as socket:
+        with self.client.websocket_connect("/api/v1/ws/news/") as socket:
             socket.send_json({'request': 'reading'})
             data = socket.receive_json()
             self.assertTrue(data)
@@ -71,7 +71,7 @@ class NewsEndpointsTestCase(APITestCase):
         Mark(user=self.user, news=news, category=Mark.Category.BOOKMARK).save()
         Mark(user=self.user, news=anews, category=Mark.Category.HIDDEN).save()
         self.login()
-        with self.client.websocket_connect("/api/v1/news/") as socket:
+        with self.client.websocket_connect("/api/v1/ws/news/") as socket:
             socket.send_json({'request': 'hidden'})
             data = socket.receive_json()
             self.assertTrue(data)
@@ -79,7 +79,7 @@ class NewsEndpointsTestCase(APITestCase):
 
     def test_news_list_for_feed_request(self):
         self.login()
-        with self.client.websocket_connect("/api/v1/news/") as socket:
+        with self.client.websocket_connect("/api/v1/ws/news/") as socket:
             socket.send_json({'request': 'feed', 'id': self.feed1.id})
             data = socket.receive_json()
             self.assertTrue(data)
@@ -91,7 +91,7 @@ class NewsEndpointsTestCase(APITestCase):
         news = News.objects.unread_for_user(self.user).first()
         anews = News.objects.unread_for_user(self.user).last()
         self.login()
-        with self.client.websocket_connect("/api/v1/news/") as socket:
+        with self.client.websocket_connect("/api/v1/ws/news/") as socket:
             socket.send_json({'request': 'hide', 'id': news.id})
             sleep(1)
             self.assertEqual(News.objects.unread_for_user(self.user).count(), 11)

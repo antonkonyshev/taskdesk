@@ -1,7 +1,7 @@
 {
     "name": "taskdesk",
     "version": "1.0.0",
-    "description": "TaskDesk is a web-application designed for tasks and notes management.",
+    "description": "TaskDesk is a web-application designed for tasks management and rss news reading.",
     "type": "module",
     "scripts": {
         "dev": "vite",

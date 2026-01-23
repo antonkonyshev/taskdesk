@@ -27,8 +27,8 @@
             {% vite_hmr_client %}
         {% endif %}
 
-        {% vite_asset 'css/tailwind.css' %}
-        {% vite_asset 'css/main.sass' %}
+        <link rel="stylesheet" href="{% vite_asset_url 'css/tailwind.css' %}" type="text/css" />
+        <link rel="stylesheet" href="{% vite_asset_url 'css/main.sass' %}" type="text/css" />
 
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}

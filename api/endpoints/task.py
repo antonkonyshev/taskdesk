@@ -39,7 +39,7 @@ class TaskStorageLoader:
                 raise HTTPException(status_code = 500)
 
 
-@TaskDeskAPIRouter.websocket("/task/{task_uuid}/")
+@TaskDeskAPIRouter.websocket("/ws/task/{task_uuid}/")
 async def task_updating(
     socket: WebSocket,
     task_uuid: str,

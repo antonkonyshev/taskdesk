@@ -28,7 +28,7 @@ class TaskEndpointsTestCase(APITestCase):
         self.assertEqual(rsp.status_code, 401)
         rsp = self.client.post(f"/api/v1/task/{self.task['uuid']}/")
         self.assertEqual(rsp.status_code, 401)
-        session = self.client.websocket_connect(f"/api/v1/task/{self.task['uuid']}/")
+        session = self.client.websocket_connect(f"/api/v1/ws/task/{self.task['uuid']}/")
         self.assertRaises(WebSocketDisconnect, session.__enter__)
 
     def test_tasks_list(self):

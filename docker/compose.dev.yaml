@@ -1,9 +1,12 @@
+name: 'taskdesk-dev'
+
 services:
   taskdesk:
     build:
+      context: ..
       dockerfile: ./docker/backend.dev.dockerfile
     env_file:
-      - ./docker/dev.env
+      - ./dev.env
     entrypoint: "uvicorn TaskDesk.asgi:application --host 0.0.0.0 --reload --reload-include *.html"
     stdin_open: true
     tty: true
@@ -12,9 +15,10 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ${BACKEND_ROOT_DIR:-.}:/opt/taskdesk
-      - ${BACKEND_ROOT_DIR:-../Workspace/taskstorage}:/opt/taskdesk/taskstorage
-      - ${BACKEND_ROOT_DIR:-../Workspace/log/taskdesk}:/var/log/taskdesk
+      - ${BACKEND_ROOT_DIR:-..}:/opt/taskdesk
+      - ${BACKEND_ROOT_DIR:-../../Workspace/taskstorage}:/opt/taskdesk/taskstorage
+      - ${BACKEND_ROOT_DIR:-../../Workspace/media}:/opt/taskdesk/media
+      - ${BACKEND_ROOT_DIR:-../../Workspace/log/taskdesk}:/var/log/taskdesk
     depends_on:
       db:
         condition: service_healthy
@@ -29,13 +33,14 @@ services:
 
   frontend:
     build:
+      context: ..
       dockerfile: ./docker/frontend.dev.dockerfile
     networks:
       - taskdesk_network
     ports:
       - "5173:5173"
     volumes:
-      - ${FRONTEND_ROOT_DIR:-.}:/opt/taskdesk
+      - ${FRONTEND_ROOT_DIR:-..}:/opt/taskdesk
     healthcheck:
       test: ["CMD", "curl", "-s", "--fail", "http://localhost:5173"]
       interval: 10s
@@ -45,16 +50,18 @@ services:
 
   worker:
     build:
+      context: ..
       dockerfile: ./docker/worker.dev.dockerfile
     env_file:
-      - ./docker/dev.env
+      - ./dev.env
     entrypoint: "celery -A TaskDesk worker --loglevel=info"
     networks:
       - taskdesk_network
     volumes:
-      - ${BACKEND_ROOT_DIR:-.}:/opt/taskdesk
-      - ${BACKEND_ROOT_DIR:-../Workspace/taskstorage}:/opt/taskdesk/taskstorage
-      - ${BACKEND_ROOT_DIR:-../Workspace/log/worker}:/var/log/taskdesk
+      - ${BACKEND_ROOT_DIR:-..}:/opt/taskdesk
+      - ${BACKEND_ROOT_DIR:-../../Workspace/taskstorage}:/opt/taskdesk/taskstorage
+      - ${BACKEND_ROOT_DIR:-../../Workspace/media}:/opt/taskdesk/media
+      - ${BACKEND_ROOT_DIR:-../../Workspace/log/worker}:/var/log/taskdesk
     healthcheck:
       test: ["CMD", "celery", "-A", "TaskDesk", "status"]
       interval: 10s
@@ -80,10 +87,10 @@ services:
     ports:
       - "15672:15672"
     env_file:
-      - ./docker/dev.env
+      - ./dev.env
     volumes:
-      - ${RABBITMQ_VOLUME_DIR:-../Workspace/rabbitmq}:/var/lib/rabbitmq
-      - ${BACKEND_ROOT_DIR:-../Workspace/log/rabbitmq}:/var/log/rabbitmq
+      - ${RABBITMQ_VOLUME_DIR:-../../Workspace/rabbitmq}:/var/lib/rabbitmq
+      - ${BACKEND_ROOT_DIR:-../../Workspace/log/rabbitmq}:/var/log/rabbitmq
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
       interval: 10s
@@ -99,10 +106,10 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - ./docker/dev.env
+      - ./dev.env
     volumes:
-      - ${POSTGRES_DATABASE_DIR:-../Workspace/postgres}:/var/lib/postgresql
-      - ${BACKEND_ROOT_DIR:-../Workspace/log/postgresql}:/var/log/postgresql
+      - ${POSTGRES_DATABASE_DIR:-../../Workspace/postgres}:/var/lib/postgresql
+      - ${BACKEND_ROOT_DIR:-../../Workspace/log/postgresql}:/var/log/postgresql
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "notes"]
       interval: 10s
@@ -118,7 +125,7 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - ${REDIS_DATABASE_DIR:-../Workspace/redis}/data:/data
+      - ${REDIS_DATABASE_DIR:-../../Workspace/redis}/data:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s

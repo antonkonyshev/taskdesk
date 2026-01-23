@@ -167,9 +167,9 @@ if (!feedStore.feeds.length) {
         </div>
 
         <button type="button" @click="store.fetchMoreNews()"
-            class="action-button mt-2 mb-5 !px-4 gap-2 hover:bg-green-700 hover:!border-green-700 hover:text-white font-semibold duration-200 group flex flex-row items-center shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white cursor-pointer">
+            class="action-button mt-2 mb-5 !px-4 gap-2 hover:bg-green-700 hover:!border-green-700 hover:text-white font-semibold duration-200 group flex flex-row items-center shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:!border-gray-900 dark:text-white cursor-pointer">
 
-            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-refresh group-hover:invert-100"></span>
+            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-refresh group-hover:invert-100 dark:invert-100"></span>
 
             <span v-text="t('message.load_more_news')"></span>
         </button>

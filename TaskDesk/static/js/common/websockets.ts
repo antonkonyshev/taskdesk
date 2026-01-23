@@ -8,7 +8,7 @@ export const prepareWebSocket = async (
         try {
             if (!socket || !socket.status.value) {
                 // @ts-ignore
-                socket = useWebSocket(window.API_BASE_URL + url, {
+                socket = useWebSocket(window.API_BASE_URL + "/ws" + url, {
                     autoReconnect: { retries: 3, delay: 3000, onFailed: reject },
                     onMessage: callback,
                 })
