@@ -146,8 +146,10 @@ STATICFILES_FINDERS = [
     # "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 DJANGO_VITE_ASSETS_DIR = os.path.join(BASE_DIR, 'static', 'vite')
+PWA_STATICSFILES_DIR = os.path.join(BASE_DIR, 'TaskDesk', 'static', 'pwa')
 STATICFILES_DIRS = [
     DJANGO_VITE_ASSETS_DIR,
+    PWA_STATICSFILES_DIR,
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static", "dist")

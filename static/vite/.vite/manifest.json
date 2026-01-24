@@ -16,7 +16,7 @@
     "isEntry": true
   },
   "css/tailwind.css": {
-    "file": "assets/tailwind-BW4lf2qW.css",
+    "file": "assets/tailwind-BK3GchV5.css",
     "src": "css/tailwind.css",
     "isEntry": true
   },
@@ -45,7 +45,7 @@
     ]
   },
   "js/navigation/NavigationApp.ts": {
-    "file": "assets/navigationApp-C9rKA3wT.js",
+    "file": "assets/navigationApp-Djb2xOTm.js",
     "name": "navigationApp",
     "src": "js/navigation/NavigationApp.ts",
     "isEntry": true,

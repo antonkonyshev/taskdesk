@@ -2,6 +2,7 @@ from django.conf import settings
 from django.urls import include, path, re_path
 from django.contrib import admin
 from django.views.generic.base import RedirectView
+from django.views.generic import TemplateView
 
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail import urls as wagtail_urls
@@ -14,6 +15,12 @@ urlpatterns = [
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
+    path("app.webmanifest", TemplateView.as_view(
+        template_name="pwa/app.webmanifest",
+        content_type="application/manifest+json"), name="webmanifest"),
+    path("sw.js", TemplateView.as_view(
+        template_name="pwa/service_worker.js",
+        content_type="text/javascript"), name="service_worker"),
     re_path("$", RedirectView.as_view(url="/news/")),
 ]
 

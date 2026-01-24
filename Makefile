@@ -1,7 +1,7 @@
 VENV = ../env
 PYTHON = $(VENV)/bin/python
 
-.PHONY: dev down_dev test vitest shell clean_static production_up production_run production_down production_logs minimal_run minimal_up minimal_down
+.PHONY: dev down_dev test vitest shell logs clean_static production_up production_run production_down production_logs minimal_run minimal_up minimal_down minimal_deploy
 
 dev:
 	sudo docker compose -f docker/compose.dev.yaml run --service-ports --remove-orphans taskdesk
@@ -14,6 +14,9 @@ test:
 
 vitest:
 	npm run test
+
+logs:
+	sudo docker compose -f docker/compose.dev.yaml logs -f
 
 shell:
 	sudo docker compose -f docker/compose.dev.yaml exec -it taskdesk python manage.py shell
@@ -51,6 +54,9 @@ minimal_up:
 
 minimal_down:
 	sudo systemctl stop taskdesk.service
+
+minimal_debug:
+	$(PYTHON) -m uvicorn TaskDesk.asgi:application --host 127.0.0.1 --port 8000 --workers 1 --reload --reload-include *.html
 
 minimal_deploy:
 	sudo cp -n docker/example_configs/example.systemd.service /etc/systemd/system/taskdesk.service && \

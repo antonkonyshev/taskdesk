@@ -7,7 +7,7 @@
                 <span class="self-center text-xl font-semibold whitespace-nowrap">TaskDesk</span>
             </a>
 
-            <div class="flex items-center gap-6 sm:order-2">
+            <div class="flex flex-row items-center gap-6 sm:order-2">
                 {% if request.user.is_authenticated %}
                 <button type="button" @click="showNavigationMenu = !showNavigationMenu"
                     :class="{'bg-gray-100 dark:bg-gray-800': showNavigationMenu}"
@@ -27,16 +27,26 @@
             <div class="hidden w-full sm:w-auto sm:grow sm:ml-6 sm:order-1 sm:block" :class="{'block!': showNavigationMenu}">
                 <ul class="flex flex-row justify-between items-center gap-3 w-full mt-4 font-medium sm:mt-0" role="menu">
                     <li role="menuitem">
-                        <a href="{% cache 604800 taskswebappurl %}{% url 'tasks_webapp' %}{% endcache %}" class="navigation-button sm:px-4">
+                        <a href="{% cache 604800 taskswebappurl %}{% url 'tasks_webapp' %}{% endcache %}" class="navigation-button">
                             <span class="navigation-icon svg-case"></span>
                             <span>{% trans "Tasks" %}</span>
                         </a>
                     </li>
 
                     <li role="menuitem">
-                        <a href="{% cache 604800 newswebappurl %}{% url 'news_webapp' %}{% endcache %}" class="navigation-button sm:px-4">
+                        <a href="{% cache 604800 newswebappurl %}{% url 'news_webapp' %}{% endcache %}" class="navigation-button">
                             <span class="navigation-icon svg-rss"></span>
                             <span>{% trans "News" %}</span>
+                        </a>
+                    </li>
+
+                    <li role="menuitem">
+                        <a v-if="!appInstalled && appInstallPrompt" class="navigation-button hidden flex-row items-center"
+                            @click.stop.prevent="installPWA()" href=""
+                            :class="{'!flex': appInstallPrompt}">
+
+                            <span class="navigation-icon svg-wrench"></span>
+                            <span>{% trans 'Install App' %}</span>
                         </a>
                     </li>
 
@@ -45,7 +55,7 @@
                     </li>
 
                     <li role="menuitem">
-                        <a href="{% cache 604800 tdauthlogoutpageurl %}{% url 'tdauth_logout' %}{% endcache %}" class="navigation-button sm:px-4">
+                        <a href="{% cache 604800 tdauthlogoutpageurl %}{% url 'tdauth_logout' %}{% endcache %}" class="navigation-button">
                             <span class="navigation-icon svg-signout"></span>
                             <span>{% trans "Sign Out" %}</span>
                         </a>
