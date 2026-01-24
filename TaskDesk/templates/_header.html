@@ -1,10 +1,10 @@
-{% load i18n cache %}
-<header id="navigation-header" class="duration-200 z-5 w-full">
+{% load i18n cache django_vite %}
+<header id="navigation-header" class="">
     <nav class="bg-white shadow-sm border-b border-b-gray-300 px-4 sm:px-6 py-2.5 dark:bg-gray-900 dark:shadow-xl dark:border-b-black" id="navigation-app">
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-            <a href="/" class="flex items-center">
-                <img src="https://upload.wikimedia.org/wikipedia/ru/5/59/Taskwarrior_logo.png" class="mr-3 h-6 sm:h-9" alt="TaskDesk" />
-                <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">TaskDesk</span>
+            <a href="/" class="flex items-center hover:text-td-primary dark:hover:text-td-secondary duration-400">
+                <img src="{% vite_asset_url 'svg/favicon.svg' %}" class="mr-3 h-6 sm:h-9" alt="TaskDesk" />
+                <span class="self-center text-xl font-semibold whitespace-nowrap">TaskDesk</span>
             </a>
 
             <div class="flex items-center gap-6 sm:order-2">

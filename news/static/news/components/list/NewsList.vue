@@ -95,9 +95,9 @@ if (!feedStore.feeds.length) {
 </script>
 
 <template>
-    <div class="flex flex-col items-center xl:max-w-screen-xl">
+    <div class="flex flex-col items-center xl:max-w-screen-xl overflow-x-clip xl:[overflow-clip-margin:3px]">
         <div v-for="(news, index) in store.news" :key="news.id"
-            class="flex w-full overflow-x-clip xl:[overflow-clip-margin:3px] relative gap-3 my-3 bg-gray-200"
+            class="flex w-full overflow-x-clip xl:[overflow-clip-margin:3px] relative gap-3 my-3 bg-gray-200 wrap-break-word"
             :class="{'bg-green-700': isSwiping == 'right'}">
 
             <span class="absolute opacity-0 top-0 right-5 w-[50px] h-[100%] duration-500 bg-no-repeat bg-center bg-contain svg-eye-slash"

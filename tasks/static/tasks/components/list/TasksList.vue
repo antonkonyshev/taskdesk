@@ -14,7 +14,7 @@ const tasksStore = useTasksStore()
     <div class="flex-1 overflow-y-scroll scroll-smooth overflow-x-clip [overflow-clip-margin:10px] max-h-[calc(100vh_+_0.75rem)] md:-ml-6 md:pl-6">
         <div v-for="task in tasksStore.tasks" :key="task.uuid" @click="taskStore.select(task)"
             :class="{ '!shadow-lg !scale-[102%]': (taskStore.task && task.uuid === taskStore.task.uuid) }"
-            class="my-3 p-3 md:mx-4 shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white duration-200 cursor-pointer">
+            class="my-3 p-3 md:mx-4 shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white duration-200 cursor-pointer wrap-break-word">
 
             <h2 class="font-semibold flex flex-row justify-between items-start gap-2">
                 <span v-text="task.description" class="text-lg flex-1"

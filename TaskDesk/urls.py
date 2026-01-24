@@ -14,7 +14,7 @@ urlpatterns = [
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
-    re_path("$", RedirectView.as_view(url="/tasks/")),
+    re_path("$", RedirectView.as_view(url="/news/")),
 ]
 
 

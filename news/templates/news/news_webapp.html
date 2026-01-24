@@ -1,5 +1,8 @@
 {% extends "base.html" %}
-{% load django_vite %}
+{% load django_vite i18n %}
+
+{% block title %}{% trans "News feeds" %}{% endblock %}
+{% block title_suffix %}- {% trans "TaskDesk" %}{% endblock %}
 
 {% block content %}
 <div id="news-app" class="w-full"></div>

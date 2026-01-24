@@ -31,7 +31,7 @@ store.loadFilters()
             <div v-for="filter in store.filters" :key="filter.id"
                 @click="selectedFilter = filter"
                 :class="{ '!shadow-lg !scale-[102%]': (selectedFilter && filter.id === selectedFilter.id) }"
-                class="flex flex-row items-center my-3 p-3 md:mx-4 shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white duration-200 cursor-pointer">
+                class="flex flex-row items-center my-3 p-3 md:mx-4 shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white duration-200 cursor-pointer wrap-break-word">
 
                 <div class="flex-1">
                     <h2 class="font-semibold flex flex-row justify-between items-start gap-2">

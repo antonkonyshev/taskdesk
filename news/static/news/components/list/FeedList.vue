@@ -31,7 +31,7 @@ store.loadFeeds()
             <div v-for="feed in store.feeds" :key="feed.id"
                 @click="selectedFeed = feed"
                 :class="{ '!shadow-lg !scale-[102%]': (selectedFeed && feed.id === selectedFeed.id) }"
-                class="flex flex-row items-center my-3 p-3 shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white duration-200 cursor-pointer">
+                class="flex flex-row items-center my-3 p-3 shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white duration-200 cursor-pointer wrap-break-word">
 
                 <div class="flex-1">
                     <h2 class="font-semibold flex flex-row justify-between items-start gap-2">

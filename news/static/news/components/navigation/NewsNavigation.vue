@@ -1,10 +1,10 @@
 <template>
-    <nav class="bg-white mt-[-1px] shadow-xs z-7 border-b border-b-gray-300 px-4 sm:px-6 pb-2.5 w-full dark:bg-gray-900 dark:shadow-xl dark:border-b-black duration-200">
+    <nav class="bg-td-gray-light inset-shadow-[0_0_5px] inset-shadow-td-gray-dark/30 border-b border-b-gray-300 px-2 pb-0.5 w-full dark:bg-gray-950 dark:border-b-black duration-200">
 
-        <ul class="flex flex-row flex-wrap justify-start items-center gap-3 w-full max-w-screen-xl mx-auto font-medium sm:mt-0" role="menu">
+        <ul class="flex flex-row flex-wrap justify-start items-center gap-3 w-full max-w-screen-xl mx-auto font-medium" role="menu">
             <li role="menuitem">
                 <router-link :to="routes.news" @click="preferencesMenu = false"
-                    class="navigation-button sm:px-4">
+                    class="navigation-button">
 
                     <span class="navigation-icon svg-inbox"></span>
                     <span v-text="t('message.unread')"></span>
@@ -13,7 +13,7 @@
 
             <li role="menuitem">
                 <router-link :to="routes.reading" @click="preferencesMenu = false" 
-                    class="navigation-button sm:px-4">
+                    class="navigation-button">
 
                     <span class="navigation-icon svg-newspaper"></span>
                     <span v-text="t('message.reading')"></span>
@@ -22,7 +22,7 @@
 
             <li role="menuitem" class="relative">
                 <button type="button"
-                    class="navigation-button sm:px-4 cursor-pointer"
+                    class="navigation-button cursor-pointer"
                     @click="preferencesMenu = !preferencesMenu"
                     id="preferences-btn">
 

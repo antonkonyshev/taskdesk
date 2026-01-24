@@ -5,8 +5,20 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+    --color-td-primary: #733fa0;
+    --color-td-secondary: #ff8827;
+    --color-td-secondary-light: #e7e0ca;
+    --color-td-gray-dark: #363636;
+    --color-td-gray-light: #d8d8d8;
+}
+
 .navigation-button {
-    @apply flex flex-row items-center py-2 rounded hover:bg-green-50 dark:text-white dark:hover:bg-green-950 duration-200;
+    @apply flex flex-row items-center px-1 sm:px-4 py-2 rounded hover:bg-td-primary hover:text-white dark:hover:bg-td-secondary duration-200;
+
+    &:hover .navigation-icon {
+        @apply invert-100;
+    }
 }
 
 .navigation-icon {
@@ -14,7 +26,7 @@
 }
 
 .action-button {
-    @apply border-gray-300 border-1 flex justify-center items-center p-2 rounded-xl cursor-pointer duration-200;
+    @apply border-gray-300 border-1 flex justify-center items-center p-4 rounded-xl cursor-pointer duration-200;
 }
 
 .task-label {

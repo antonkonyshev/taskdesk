@@ -1,7 +1,9 @@
 import { createI18n } from "vue-i18n"
 
+
 export default createI18n({
     legacy: false,
+    locale: window.navigator.language ? window.navigator.language.split('-')[0] : 'en',
     messages: {
         en: {
             message: {

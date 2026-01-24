@@ -1,5 +1,8 @@
 {% extends "base.html" %}
-{% load django_vite %}
+{% load django_vite i18n %}
+
+{% block title %}{% trans "Tasks management" %}{% endblock %}
+{% block title_suffix %}- {% trans "TaskDesk" %}{% endblock %}
 
 {% block content %}
 <div id="tasks-app" class="max-w-[calc(var(--breakpoint-xl)_+_1.5rem)] mx-auto"></div>
