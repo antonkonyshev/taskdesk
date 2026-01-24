@@ -1,6 +1,6 @@
 {
-  "_AddButton.vue_vue_type_script_setup_true_lang-BH4MWXwQ.js": {
-    "file": "AddButton.vue_vue_type_script_setup_true_lang-BH4MWXwQ.js",
+  "_AddButton.vue_vue_type_script_setup_true_lang-LdOomsQP.js": {
+    "file": "AddButton.vue_vue_type_script_setup_true_lang-LdOomsQP.js",
     "name": "AddButton.vue_vue_type_script_setup_true_lang",
     "imports": [
       "_index-Cms_OnbX.js"
@@ -11,33 +11,37 @@
     "name": "index"
   },
   "css/main.sass": {
-    "file": "assets/main-Bo-Njpz5.css",
+    "file": "assets/main-C8gcepK5.css",
     "src": "css/main.sass",
     "isEntry": true
   },
   "css/tailwind.css": {
-    "file": "assets/tailwind-CGEefNmd.css",
+    "file": "assets/tailwind-BW4lf2qW.css",
     "src": "css/tailwind.css",
     "isEntry": true
   },
+  "ico/favicon.ico": {
+    "file": "assets/favicon-Dk8faiEb.ico",
+    "src": "ico/favicon.ico"
+  },
   "js/NewsApp.ts": {
-    "file": "assets/newsApp-DguTIOVU.js",
+    "file": "assets/newsApp-BRQ-9lxv.js",
     "name": "newsApp",
     "src": "js/NewsApp.ts",
     "isEntry": true,
     "imports": [
       "_index-Cms_OnbX.js",
-      "_AddButton.vue_vue_type_script_setup_true_lang-BH4MWXwQ.js"
+      "_AddButton.vue_vue_type_script_setup_true_lang-LdOomsQP.js"
     ]
   },
   "js/TasksApp.ts": {
-    "file": "assets/tasksApp-Dqa044_r.js",
+    "file": "assets/tasksApp-CpSLm_UO.js",
     "name": "tasksApp",
     "src": "js/TasksApp.ts",
     "isEntry": true,
     "imports": [
       "_index-Cms_OnbX.js",
-      "_AddButton.vue_vue_type_script_setup_true_lang-BH4MWXwQ.js"
+      "_AddButton.vue_vue_type_script_setup_true_lang-LdOomsQP.js"
     ]
   },
   "js/navigation/NavigationApp.ts": {
@@ -80,6 +84,10 @@
   "svg/eye.svg": {
     "file": "assets/eye-ByNv7Bgs.svg",
     "src": "svg/eye.svg"
+  },
+  "svg/favicon.svg": {
+    "file": "assets/favicon-CX53p5Bv.svg",
+    "src": "svg/favicon.svg"
   },
   "svg/funnel.svg": {
     "file": "assets/funnel-Bq7Sizqr.svg",
