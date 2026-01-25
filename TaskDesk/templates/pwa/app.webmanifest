@@ -35,6 +35,13 @@
         "src": "{% static 'screenshots/viewports.webp' %}",
         "sizes": "1384x741",
         "type": "image/webp",
+        "form_factor": "wide",
+        "label": "{% trans 'Different sections in different viewports' %}"
+    }, {
+        "src": "{% static 'screenshots/viewports.webp' %}",
+        "sizes": "1384x741",
+        "type": "image/webp",
+        "form_factor": "narrow",
         "label": "{% trans 'Different sections in different viewports' %}"
     }, {
         "src": "{% static 'screenshots/sm-news.webp' %}",
