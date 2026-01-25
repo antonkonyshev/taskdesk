@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-18 14:12+0000\n"
+"POT-Creation-Date: 2026-01-25 12:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,16 +33,16 @@ msgstr "Вход"
 msgid "Tasks"
 msgstr "Задачи"
 
-#: TaskDesk/templates/_header.html:39
-msgid "Notes"
-msgstr "Заметки"
-
-#: TaskDesk/templates/_header.html:46 news/models.py:137 news/models.py:138
-#: news/models.py:167
+#: TaskDesk/templates/_header.html:39 news/models.py:170 news/models.py:171
+#: news/models.py:200
 msgid "News"
 msgstr "Новости"
 
-#: TaskDesk/templates/_header.html:57
+#: TaskDesk/templates/_header.html:49
+msgid "Install App"
+msgstr "Установить"
+
+#: TaskDesk/templates/_header.html:60
 msgid "Sign Out"
 msgstr "Выход"
 
@@ -50,131 +50,136 @@ msgstr "Выход"
 msgid "Backend HTTP API related business logic"
 msgstr "Бизнес-логика, относящаяся к HTTP API"
 
-#: home/apps.py:9
-msgid "Wagtail based site pages"
-msgstr "Страницы сайта, основанные на Wagtail CMS"
-
 #: news/apps.py:9
 msgid "News feed"
 msgstr "Лента новостей"
 
-#: news/models.py:17
+#: news/models.py:24
 msgid "URL"
 msgstr "URL"
 
-#: news/models.py:21 news/models.py:49 news/models.py:82 news/models.py:219
+#: news/models.py:28 news/models.py:70 news/models.py:107 news/models.py:286
 msgid "Feed"
 msgstr "Лента новостей"
 
-#: news/models.py:22
+#: news/models.py:29
 msgid "Feeds"
 msgstr "Ленты новостей"
 
-#: news/models.py:45 news/models.py:163 news/models.py:215 tdauth/models.py:61
+#: news/models.py:66 news/models.py:196 news/models.py:282 tdauth/models.py:61
 msgid "User"
 msgstr "Пользователь"
 
-#: news/models.py:51 news/models.py:86
+#: news/models.py:72 news/models.py:111
 msgid "Title"
 msgstr "Заголовок"
 
-#: news/models.py:66
+#: news/models.py:91
 msgid "User feed"
 msgstr "Пользовательская лента новостей"
 
-#: news/models.py:67
+#: news/models.py:92
 msgid "User feeds"
 msgstr "Пользовательские ленты новостей"
 
-#: news/models.py:85
+#: news/models.py:110
 msgid "GUID"
 msgstr "GUID"
 
-#: news/models.py:88
+#: news/models.py:113
 msgid "Description"
 msgstr "Описание"
 
-#: news/models.py:89
+#: news/models.py:114
 msgid "Link"
 msgstr "Ссылка"
 
-#: news/models.py:90
+#: news/models.py:115
 msgid "Author"
 msgstr "Автор"
 
-#: news/models.py:92
+#: news/models.py:117
 msgid "Enclosure URL"
 msgstr "URL вложения"
 
-#: news/models.py:94
+#: news/models.py:119
 msgid "Enclosure type"
 msgstr "Тип вложения"
 
-#: news/models.py:97
+#: news/models.py:122
 msgid "Published"
 msgstr "Опубликована"
 
-#: news/models.py:172
+#: news/models.py:205
 msgid "Filter"
-msgstr ""
+msgstr "Фильтр"
 
-#: news/models.py:176
+#: news/models.py:209
 msgid "Hidden"
 msgstr "Скрыта"
 
-#: news/models.py:177
+#: news/models.py:210
 msgid "Bookmark"
 msgstr "Закладка"
 
-#: news/models.py:180
+#: news/models.py:213
 msgid "Category"
 msgstr "Категория"
 
-#: news/models.py:199
+#: news/models.py:250
 msgid "Mark"
 msgstr "Отметка"
 
-#: news/models.py:200
+#: news/models.py:251
 msgid "Marks"
 msgstr "Отметки"
 
-#: news/models.py:222
+#: news/models.py:289
 msgid "Entry"
 msgstr "Слово"
 
-#: news/models.py:225
+#: news/models.py:292
 msgid "Beginning of a word"
 msgstr "Начало слова"
 
-#: news/models.py:226
+#: news/models.py:293
 msgid "End of a word"
 msgstr "Окончание слова"
 
-#: news/models.py:227
+#: news/models.py:294
 msgid "Whole word"
 msgstr "Слово целиком"
 
-#: news/models.py:228
+#: news/models.py:295
 msgid "Any part of a word"
 msgstr "Любая часть слова"
 
-#: news/models.py:231
+#: news/models.py:298
 msgid "Part of a word"
 msgstr "Часть слова"
 
-#: news/models.py:251
+#: news/models.py:316
 msgid "News filter"
 msgstr "Фильтр новостей"
 
-#: news/models.py:252
+#: news/models.py:317
 msgid "News filters"
 msgstr "Фильтры новостей"
 
-#: notes/apps.py:9
-msgid "Notes management"
-msgstr "Управление заметками"
+#: news/templates/news/news_webapp.html:4
+#, fuzzy
+#| msgid "News feed"
+msgid "News feeds"
+msgstr "Лента новостей"
 
-#: tasks/apps.py:9
+#: news/templates/news/news_webapp.html:5
+#: tasks/templates/tasks/tasks_webapp.html:5
+#, fuzzy
+#| msgid "Tasks"
+msgid "TaskDesk"
+msgstr "Задачи"
+
+#: tasks/apps.py:9 tasks/templates/tasks/tasks_webapp.html:4
 msgid "Tasks management"
 msgstr "Управление задачами"
 
@@ -221,3 +226,16 @@ msgid ""
 msgstr ""
 "Определяет, следует ли считать пользователя активным. Вместо удаления "
 "следует отключить этот флаг."
+
+msgctxt "webmanifest"
+msgid "en"
+msgstr "ru"
+
+#~ msgid "Notes"
+#~ msgstr "Заметки"
+
+#~ msgid "Wagtail based site pages"
+#~ msgstr "Страницы сайта, основанные на Wagtail CMS"
+
+#~ msgid "Notes management"
+#~ msgstr "Управление заметками"

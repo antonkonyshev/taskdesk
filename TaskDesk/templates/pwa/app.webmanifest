@@ -2,12 +2,12 @@
 {
     "name": "TaskDesk",
     "short_name": "TaskDesk",
-    "description": "Task management and news feeds reading",
+    "description": "{% trans 'Task management and news feeds reading' %}",
     "start_url": "/news/",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#733fa0",
-    "lang": "en",
+    "lang": "{% trans 'en' context 'webmanifest' %}",
     "scope": "/",
     "orientation": "any",
     "icons":[{
@@ -30,5 +30,35 @@
         "src": "{% static 'favicon_512x512.png' %}",
         "sizes": "512x512",
         "type": "image/png"
+    }],
+    "screenshots": [{
+        "src": "{% static 'screenshots/viewports.webp' %}",
+        "sizes": "1384x741",
+        "type": "image/webp",
+        "label": "{% trans 'Different sections in different viewports' %}"
+    }, {
+        "src": "{% static 'screenshots/sm-news.webp' %}",
+        "sizes": "1584x2194",
+        "type": "image/webp",
+        "form_factor": "narrow",
+        "label": "{% trans 'News feed with dark theme on tablet screen' %}"
+    }, {
+        "src": "{% static 'screenshots/lg-tasks.webp' %}",
+        "sizes": "1920x1080",
+        "type": "image/webp",
+        "form_factor": "wide",
+        "label": "{% trans 'Task management on desktop screen' %}"
+    }, {
+        "src": "{% static 'screenshots/xs-news.webp' %}",
+        "sizes": "750x1717",
+        "type": "image/webp",
+        "form_factor": "narrow",
+        "label": "{% trans 'News feed with light theme on phone screen' %}"
+    }, {
+        "src": "{% static 'screenshots/xl-news.webp' %}",
+        "sizes": "1920x1080",
+        "type": "image/webp",
+        "form_factor": "wide",
+        "label": "{% trans 'News feed on desktop or laptop screen' %}"
     }]
 }
