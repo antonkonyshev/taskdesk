@@ -34,14 +34,15 @@ export const useNewsStore = defineStore('news', () => {
         }
     }
 
-    let fetchingMoreNews = false
+    const fetchingMoreNews = ref<boolean>(false)
     const fetchMoreNews = async () => {
-        if (fetchingMoreNews) {
+        if (fetchingMoreNews.value) {
             await loadNews()
         } else {
             (await prepareNewsSocket()).send(JSON.stringify({ request: "fetch" }))
-            fetchingMoreNews = true
-            setInterval(() => fetchingMoreNews = false, FETCHING_MORE_NEWS_PERIOD)
+            fetchingMoreNews.value = true
+            setInterval(() => fetchingMoreNews.value = false,
+                        FETCHING_MORE_NEWS_PERIOD)
         }
     }
 
@@ -53,5 +54,8 @@ export const useNewsStore = defineStore('news', () => {
         news.value = []
     }
 
-    return { news, loadNews, refreshNews, markNews, fetchMoreNews, setQuery, dropNews }
+    return {
+        news, loadNews, refreshNews, markNews, fetchMoreNews, setQuery,
+        dropNews, fetchingMoreNews,
+    }
 })

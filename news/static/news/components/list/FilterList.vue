@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useWindowSize } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 import AddButton from 'TaskDesk/js/common/components/AddButton.vue'
 import { useFilterStore } from 'news/store/filter'
 import { Filter } from 'news/types/filter'
@@ -10,6 +11,7 @@ const mdWidth = 768;
 const { width } = useWindowSize()
 const store = useFilterStore()
 const selectedFilter = ref<Filter>(null)
+const { t } = useI18n()
 
 async function createFilter() {
     selectedFilter.value = { entry: "", part: "start" } as Filter
@@ -31,14 +33,14 @@ store.loadFilters()
             <div v-for="filter in store.filters" :key="filter.id"
                 @click="selectedFilter = filter"
                 :class="{ '!shadow-lg !scale-[102%]': (selectedFilter && filter.id === selectedFilter.id) }"
-                class="flex flex-row items-center my-3 p-3 md:mx-4 shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white duration-200 cursor-pointer wrap-break-word">
+                class="flex flex-row items-center my-3 p-3 md:mx-4 shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white duration-200 cursor-pointer break-words">
 
                 <div class="flex-1">
                     <h2 class="font-semibold flex flex-row justify-between items-start gap-2">
                         <span v-text="filter.entry" class="text-lg flex-1"></span>
                     </h2>
 
-                    <p v-if="filter.part" class="flex flex-row gap-1 items-center" v-text="filter.part"></p>
+                    <p v-if="filter.part" class="flex flex-row gap-1 items-center" v-text="t('message.word_' + filter.part)"></p>
 
                     <p v-if="filter.feed_id" class="flex flex-row gap-1 items-center" v-text="filter.feed_id"></p>
                 </div>

@@ -1,7 +1,7 @@
 VENV = ../env
 PYTHON = $(VENV)/bin/python
 
-.PHONY: dev down_dev test vitest shell logs clean_static production_up production_run production_down production_logs minimal_run minimal_up minimal_down minimal_deploy
+.PHONY: dev down test vitest shell logs clean_static production_up production_run production_down production_logs minimal_run minimal_up minimal_down minimal_deploy
 
 dev:
 	sudo docker compose -f docker/compose.dev.yaml run --service-ports --remove-orphans taskdesk
