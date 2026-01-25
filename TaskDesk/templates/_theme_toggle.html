@@ -1,8 +1,8 @@
 <label for="theme-variant-toggle" class="inline-flex items-center gap-3 cursor-pointer">
     <input id="theme-variant-toggle" type="checkbox" class="peer sr-only" role="switch" v-model="darkTheme" />
-    <div class="relative h-6 w-11 rounded-full border border-gray-300 bg-gray-100 inset-shadow-sm duration-500 peer-checked:bg-gray-700 peer-checked:border-black overflow-hidden group"
+    <span class="block relative h-6 w-11 rounded-full border border-gray-300 bg-gray-100 inset-shadow-sm duration-500 peer-checked:bg-gray-700 peer-checked:border-black overflow-hidden group"
          aria-hidden="true">
         <span :class="{'svg-moon': darkTheme, 'svg-sun': !darkTheme}"
               class="bg-no-repeat bg-contain bg-center h-5 w-5 group-peer-checked:translate-x-[1.225rem] absolute bottom-0 left-[0.0625rem] top-0 my-auto rounded-full bg-white border border-gray-300 shadow-sm transition-all group-peer-checked:!border-white group-peer-checked:invert-100 duration-300"></span>
-    </div>
+    </span>
 </label>

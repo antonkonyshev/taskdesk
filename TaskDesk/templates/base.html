@@ -1,7 +1,5 @@
-{% load static cache wagtailcore_tags wagtailuserbar django_vite %}
-
-<!DOCTYPE html>
-<html lang="en">
+{% load static cache i18n wagtailcore_tags wagtailuserbar django_vite %}<!DOCTYPE html>
+<html lang="{% trans 'en' context 'webmanifest' %}">
     <head>
         <meta charset="utf-8" />
         <title>
