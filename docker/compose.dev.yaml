@@ -111,7 +111,7 @@ services:
       - ${POSTGRES_DATABASE_DIR:-../../Workspace/postgres}:/var/lib/postgresql
       - ${BACKEND_ROOT_DIR:-../../Workspace/log/postgresql}:/var/log/postgresql
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "notes"]
+      test: ["CMD", "pg_isready", "-U", "taskdesk"]
       interval: 10s
       timeout: 30s
       retries: 5

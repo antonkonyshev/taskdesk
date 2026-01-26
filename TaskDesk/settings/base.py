@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     "tdauth",
     "django_utils",
     "widget_tweaks",
-    "wagtail_modeladmin",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.embeds",
@@ -50,6 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
     "django_vite",
 ]
 
