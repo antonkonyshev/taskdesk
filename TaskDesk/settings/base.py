@@ -143,7 +143,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
-    # "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 DJANGO_VITE_ASSETS_DIR = os.path.join(BASE_DIR, 'static', 'vite')
 PWA_STATICSFILES_DIR = os.path.join(BASE_DIR, 'TaskDesk', 'static', 'pwa')

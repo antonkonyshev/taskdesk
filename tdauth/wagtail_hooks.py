@@ -1,5 +1,5 @@
-from wagtail_modeladmin.options import modeladmin_register
+from wagtail.snippets.models import register_snippet
 
 from tdauth.admin import UserAdmin
 
-modeladmin_register(UserAdmin)
+register_snippet(UserAdmin)

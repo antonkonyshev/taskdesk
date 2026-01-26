@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
-    root: resolve('TaskDesk/static/'),
+    root: resolve('TaskDesk/vite/'),
     base: '/static/',
     plugins: [tailwindcss(), vue()],
     server: {
@@ -20,13 +20,12 @@ export default defineConfig({
     resolve: {
         extensions: ['.js', '.ts', '.vue', '.json', '.css', '.sass', '.scss'],
         alias: {
-            TaskDesk: resolve("./TaskDesk/static"),
-            tasks: resolve("./tasks/static/tasks"),
-            notes: resolve("./notes/static/notes"),
-            news: resolve("./news/static/news"),
+            TaskDesk: resolve("./TaskDesk/vite"),
+            tasks: resolve("./tasks/vite"),
+            news: resolve("./news/vite"),
         },
     },
-    assetsInclude: ['**/static/**/*.svg'],
+    assetsInclude: ['**/vite/**/*.svg'],
     build: {
         manifest: true,
         emptyOutDir: true,
@@ -34,11 +33,11 @@ export default defineConfig({
         target: 'es2015',
         rollupOptions: {
             input: {
-                tailwind: resolve('TaskDesk/static/css/tailwind.css'),
-                main: resolve('TaskDesk/static/css/main.sass'),
-                navigationApp: resolve('TaskDesk/static/js/navigation/NavigationApp.ts'),
-                tasksApp: resolve('TaskDesk/static/js/TasksApp.ts'),
-                newsApp: resolve('TaskDesk/static/js/NewsApp.ts'),
+                tailwind: resolve('TaskDesk/vite/css/tailwind.css'),
+                main: resolve('TaskDesk/vite/css/main.sass'),
+                navigationApp: resolve('TaskDesk/vite/js/navigation/NavigationApp.ts'),
+                tasksApp: resolve('TaskDesk/vite/js/TasksApp.ts'),
+                newsApp: resolve('TaskDesk/vite/js/NewsApp.ts'),
             },
             output: {
                 chunkFileNames: undefined

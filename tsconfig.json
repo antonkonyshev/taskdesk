@@ -1,11 +1,10 @@
 {
     "compilerOptions": {
+        "baseUrl": "./",
         "paths": {
-            // "static/*": ["./TaskDesk/static/*"],
-            "TaskDesk/*": ["./TaskDesk/static/*"],
-            "tasks/*": ["./tasks/static/tasks/*"],
-            "notes/*": ["./notes/static/notes/*"],
-            "news/*": ["./news/static/news/*"]
+            "TaskDesk/*": ["TaskDesk/vite/*"],
+            "tasks/*": ["tasks/vite/*"],
+            "news/*": ["news/vite/*"]
         },
         "lib": ["dom", "es2015"],
         "esModuleInterop": true

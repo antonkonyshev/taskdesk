@@ -1,0 +1,28 @@
+<script setup lang="ts">
+import { useTaskStore } from '../store/task'
+
+const store = useTaskStore()
+</script>
+
+<template>
+    <aside class="flex flex-row flex-nowrap gap-3">
+        <button v-if="store.history.canUndo" type="button" @click="store.history.undo()"
+            class="action-button hover:bg-gray-300">
+            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-arrow-left dark:invert-100 dark:hover:invert-0"></span>
+        </button>
+
+        <button v-if="store.history.canRedo" type="button" @click="store.history.redo()"
+            class="action-button hover:bg-gray-300">
+            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-arrow-right dark:invert-100 dark:hover:invert-0"></span>
+        </button>
+
+        <button v-if="store.task.uuid != 'new'" type="button" @click="store.update('delete')" class="action-button hover:bg-red-700 hover:!border-red-700 group ml-auto">
+            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-trash dark:invert-100 group-hover:invert-100"></span>
+        </button>
+
+        <button v-if="store.task.uuid != 'new'" type="button" @click="store.update('post')"
+            class="action-button hover:bg-green-700 hover:!border-green-700 group">
+            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-check dark:invert-100 group-hover:invert-100"></span>
+        </button>
+    </aside>
+</template>
