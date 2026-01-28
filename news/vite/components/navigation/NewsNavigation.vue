@@ -4,19 +4,21 @@
         <ul class="flex flex-row flex-wrap justify-start items-center gap-3 w-full max-w-screen-xl mx-auto font-medium" role="menu">
             <li role="menuitem">
                 <router-link :to="routes.news" @click="preferencesMenu = false"
-                    class="navigation-button">
+                    class="navigation-button relative">
 
                     <span class="navigation-icon svg-inbox"></span>
                     <span v-text="t('message.unread')"></span>
+                    <span class="absolute -right-2 -top-[1px] text-xs text-white bg-td-primary dark:text-black dark:bg-td-secondary rounded-xl py-0 px-1" v-text="store.newsMeta.unread"></span>
                 </router-link>
             </li>
 
             <li role="menuitem">
                 <router-link :to="routes.reading" @click="preferencesMenu = false" 
-                    class="navigation-button">
+                    class="navigation-button relative">
 
                     <span class="navigation-icon svg-newspaper"></span>
                     <span v-text="t('message.reading')"></span>
+                    <span class="absolute -right-2 -top-[1px] text-xs text-white bg-td-primary dark:text-black dark:bg-td-secondary rounded-xl py-0 px-1" v-text="store.newsMeta.reading"></span>
                 </router-link>
             </li>
 
@@ -66,7 +68,9 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import { routes } from 'news/navigation/routing'
+import { useNewsStore } from 'news/store/news'
 
 const { t } = useI18n()
 const preferencesMenu = ref<boolean>(false)
+const store = useNewsStore()
 </script>

@@ -15,7 +15,7 @@ from news.tasks import fetch_all_news
 
 from api.authentication import Authentication
 from api.router import TaskDeskAPIRouter
-from api.schema.news import NewsData, NewsQuery, NewsRequest
+from api.schema.news import NewsData, NewsQuery, NewsRequest, NewsMeta
 
 
 NEWS_PER_ONE_REQUEST_LIMIT = 10
@@ -53,6 +53,11 @@ async def list_news(
                             in news_queryset[:NEWS_PER_ONE_REQUEST_LIMIT]:
                         await socket.send_text(data=NewsData.model_validate(
                             news_values).model_dump_json())
+
+                    await socket.send_text(data=NewsMeta.model_validate({
+                        "unread": await News.objects.unread_for_user(user).acount(),
+                        "reading": await Mark.objects.bookmarked_by_user(user).acount(),
+                    }).model_dump_json())
                 elif (
                     query.request in (NewsRequest.hide, NewsRequest.bookmark)
                     and query.id

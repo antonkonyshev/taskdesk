@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import { useWindowSize } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
@@ -14,7 +14,7 @@ const { t } = useI18n()
 const store = useNewsStore()
 store.setQuery(newsQuery as NewsQuery)
 const feedStore = useFeedStore()
-const newsElements = ref<Array<HTMLAnchorElement>>([])
+const newsElements = shallowRef<Array<HTMLAnchorElement>>([])
 const isSwiping = ref<string>('')
 const unfoldedNews = ref<Array<number>>([])
 const { width } = useWindowSize()

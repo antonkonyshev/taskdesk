@@ -15,3 +15,9 @@ export interface NewsQuery {
     request: 'unread'|'reading'|'hidden'|'feed'
     id?: number
 }
+
+export interface NewsMeta {
+    id: string
+    unread: number
+    reading: number
+}

@@ -36,3 +36,9 @@ class NewsRequest(str, Enum):
 class NewsQuery(BaseModel):
     request: NewsRequest
     id: Optional[int] = None
+
+
+class NewsMeta(BaseModel):
+    id: str = "meta"
+    unread: int = 0
+    reading: int = 0

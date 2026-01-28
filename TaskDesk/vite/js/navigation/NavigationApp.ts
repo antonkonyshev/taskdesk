@@ -4,7 +4,7 @@ import { darkThemeInit, applyThemeVariant } from "./theme"
 
 export const navigationApp = createApp({
     setup: () => {
-        const showNavigationMenu = ref()
+        const showNavigationMenu = ref<boolean>(false)
         const darkTheme = useLocalStorage('dark-theme', darkThemeInit())
         const appInstalled = ref<any>(window.matchMedia('(display-mode: standalone)').matches || false)
         const appInstallPrompt = ref<any>(false)

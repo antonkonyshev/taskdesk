@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { useWindowSize } from '@vueuse/core'
 import AddButton from 'TaskDesk/js/common/components/AddButton.vue'
 import { useFeedStore } from '../../store/feed'
@@ -9,7 +9,7 @@ import FeedForm from 'news/components/form/FeedForm.vue'
 const mdWidth = 640;
 const { width } = useWindowSize()
 const store = useFeedStore()
-const selectedFeed = ref<Feed>(null)
+const selectedFeed = shallowRef<Feed>(null)
 
 async function createFeed() {
     selectedFeed.value = { title: "", url: "" } as Feed
@@ -48,7 +48,7 @@ store.loadFeeds()
 
         </div>
 
-        <FeedForm v-if="selectedFeed" v-model="selectedFeed" @cancel="selectedFeed = null" @submit="saveFeed()" />
+        <FeedForm v-if="selectedFeed" :key="selectedFeed.id || 'new'" v-model="selectedFeed" @cancel="selectedFeed = null" @submit="saveFeed()" />
 
         <AddButton v-if="!selectedFeed" :add-item="createFeed" />
     </div>

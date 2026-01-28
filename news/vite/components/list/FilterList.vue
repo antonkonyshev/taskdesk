@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { useWindowSize } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import AddButton from 'TaskDesk/js/common/components/AddButton.vue'
@@ -10,7 +10,7 @@ import FilterForm from 'news/components/form/FilterForm.vue'
 const mdWidth = 768;
 const { width } = useWindowSize()
 const store = useFilterStore()
-const selectedFilter = ref<Filter>(null)
+const selectedFilter = shallowRef<Filter>(null)
 const { t } = useI18n()
 
 async function createFilter() {
@@ -51,7 +51,7 @@ store.loadFilters()
             </div>
         </div>
 
-        <FilterForm v-if="selectedFilter" v-model="selectedFilter" @cancel="selectedFilter = null" @submit="saveFilter()" />
+        <FilterForm v-if="selectedFilter" :key="selectedFilter.id || 'new'" v-model="selectedFilter" @cancel="selectedFilter = null" @submit="saveFilter()" />
 
         <AddButton v-if="!selectedFilter" :add-item="createFilter" />
     </div>

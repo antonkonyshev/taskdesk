@@ -1,14 +1,19 @@
 import { useNewsStore } from "news/store/news"
 import { UseWebSocketReturn } from "@vueuse/core"
 import { prepareWebSocket, closeWebSocket } from "TaskDesk/js/common/websockets"
-import { News } from "news/types/news"
+import { News, NewsMeta } from "news/types/news"
 
 let socket: UseWebSocketReturn<any> | null = null
 let closeSocketTimeoutId = null
 const newsSocketTimeout = 600000
 
 export const receiveNews = (ws: WebSocket, event: MessageEvent) => {
-    useNewsStore().refreshNews(JSON.parse(event.data) as News)
+    const data = JSON.parse(event.data)
+    if (data.id == "meta") {
+        useNewsStore().refreshNewsMeta(data as NewsMeta)
+    } else {
+        useNewsStore().refreshNews(data as News)
+    }
 }
 
 export const renewNewsSocketTimeout = (): void => {
