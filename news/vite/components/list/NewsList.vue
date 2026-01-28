@@ -113,7 +113,7 @@ if (!feedStore.feeds.length) {
 <template>
     <div class="flex flex-col items-center xl:max-w-screen-xl overflow-x-clip xl:[overflow-clip-margin:3px]">
         <div v-for="(news, index) in store.news" :key="news.id"
-            class="flex w-full overflow-x-clip xl:[overflow-clip-margin:3px] relative gap-3 my-3 bg-gray-200 break-words"
+            class="flex w-full overflow-x-clip xl:[overflow-clip-margin:3px] relative gap-3 my-3 bg-gray-200"
             :class="{'bg-green-700': isSwiping == 'right'}">
 
             <span class="absolute opacity-0 top-0 right-5 w-[50px] h-[100%] duration-500 bg-no-repeat bg-center bg-contain svg-eye-slash"
@@ -134,7 +134,7 @@ if (!feedStore.feeds.length) {
                 class="relative p-3 size-full shadow-black shadow-xs bg-white dark:bg-gray-800 dark:text-white cursor-pointer">
 
                 <span class="flex flex-col gap-3 md:gap-4 lg:gap-5 sm:flex-row">
-                    <span class="flex flex-col gap-1 sm:gap-2 flex-1">
+                    <span class="flex flex-col gap-1 sm:gap-2 flex-1 wrap-break-word">
                         <span class="font-semibold flex flex-row justify-between items-start gap-2">
                             <span v-text="news.title" class="text-lg"></span>
                         </span>
@@ -144,15 +144,14 @@ if (!feedStore.feeds.length) {
                             :class="{'max-h-[60vh]': news.description && news.description.length <= 128 || unfoldedNews.indexOf(news.id) >= 0}"
                             ></span>
 
-                        <span v-if="news.description && news.description.length > 128 && unfoldedNews.indexOf(news.id) < 0" class="mx-auto action-button sm:!hidden bg-white !py-0 -mt-5 group">
+                        <span v-if="news.description && news.description.length > 128 && unfoldedNews.indexOf(news.id) < 0" class="mx-auto action-button sm:!hidden bg-white dark:bg-gray-800 !py-0 -mt-5 group">
                             <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-chevron-down group-hover:invert-100 dark:invert-100"></span>
                         </span>
 
                         <span class="hidden sm:flex sm:flex-row">
                             <span v-text="newsFeedTitle(news.feed)" class="flex-1"></span>
 
-                            <span
-                                v-text="news.published ? (t('message.published') + ' ' + moment(news.published).fromNow()) : ''"></span>
+                            <span v-text="news.published ? (t('message.published') + ' ' + moment(news.published).fromNow()) : ''"></span>
                         </span>
                     </span>
 

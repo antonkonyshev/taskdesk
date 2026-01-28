@@ -31,14 +31,14 @@ store.loadFeeds()
             <div v-for="feed in store.feeds" :key="feed.id"
                 @click="selectedFeed = feed"
                 :class="{ '!shadow-lg !scale-[102%]': (selectedFeed && feed.id === selectedFeed.id) }"
-                class="flex flex-row items-center my-3 p-3 shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white duration-200 cursor-pointer break-words">
+                class="flex flex-row items-center my-3 p-3 shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:text-white duration-200 cursor-pointer">
 
-                <div class="flex-1">
+                <div class="flex-1 break-all">
                     <h2 class="font-semibold flex flex-row justify-between items-start gap-2">
                         <span v-text="feed.title" class="text-lg flex-1"></span>
                     </h2>
 
-                    <p class="flex flex-row gap-1 items-center break-words" v-text="feed.url"></p>
+                    <p class="flex flex-row gap-1 items-center" v-text="feed.url"></p>
                 </div>
 
                 <button type="button" @click.stop="store.removeFeed(feed)" class="action-button hover:bg-red-700 hover:!border-red-700 group ml-auto" ref="delete-btn">
