@@ -12,8 +12,13 @@ export const useNewsStore = defineStore('news', () => {
     const news = ref<Array<News>>([])
     let newsQuery: Readonly<any>
 
-    const refreshNews = (data: News) => refreshItem(
-        data, news, (elem) => elem.id == data.id, true)
+    const refreshNews = (data: News) => {
+        if (data.description && data.description.trim()) {
+            data.description = new DOMParser().parseFromString(data.description, 'text/html').body.textContent || ""
+        }
+        refreshItem(data, news, (elem) => elem.id == data.id, true)
+    }
+
     const loadNews = async () => (await prepareNewsSocket()).send(JSON.stringify(
         (newsQuery && newsQuery.request) ? newsQuery: { request: 'unread' }))
 

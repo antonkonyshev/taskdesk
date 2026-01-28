@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
+import { useWindowSize } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import moment from 'moment/min/moment-with-locales'
 import { useNewsStore } from '../../store/news'
@@ -15,15 +16,13 @@ store.setQuery(newsQuery as NewsQuery)
 const feedStore = useFeedStore()
 const newsElements = ref<Array<HTMLAnchorElement>>([])
 const isSwiping = ref<string>('')
+const unfoldedNews = ref<Array<number>>([])
+const { width } = useWindowSize()
+const smWidth = 640;
 
 onBeforeRouteLeave((nextPath, prevPath) => {
     store.dropNews()
 })
-
-const stripHtmlTags = (text: string) => {
-    const html = new DOMParser().parseFromString(text, 'text/html')
-    return html.body.textContent || ""
-}
 
 const newsFeedTitle = (id: number) => {
     const feed = feedStore.feeds.find((elem) => elem.id == id)
@@ -56,6 +55,16 @@ const onTouchMove = (news: News, index: number, event) => {
     }
 }
 
+const markNewsDelayed = (news: News, bookmark: boolean = false) => {
+    setTimeout(() => {
+        const idx = unfoldedNews.value.indexOf(news.id);
+        if (idx >= 0) {
+            unfoldedNews.value.splice(idx, 1)
+        }
+        store.markNews(news, bookmark)
+    }, 400)
+}
+
 const onTouchEnd = (news: News, index: number, event, direction = null) => {
     const elem = newsElements.value[index]
     let distance = elem.clientWidth || 100
@@ -70,10 +79,10 @@ const onTouchEnd = (news: News, index: number, event, direction = null) => {
     }
     if (Math.abs(distance) / elem.clientWidth > 0.25) {
         if (direction == 'left') {
-            setTimeout(() => store.markNews(news), 400)
+            markNewsDelayed(news)
             elem.style.left = '-' + (elem.clientWidth * 2).toString() + 'px'
         } else if (direction == 'right') {
-            setTimeout(() => store.markNews(news, true), 400)
+            markNewsDelayed(news, true)
             elem.style.left = (elem.clientWidth * 2).toString() + 'px'
         }
     } else {
@@ -81,10 +90,17 @@ const onTouchEnd = (news: News, index: number, event, direction = null) => {
     }
 }
 
-const preventClickOnSwipe = (event: Event) => {
+const handleNewsClick = (news: News, index: number, event: Event) => {
     if (preventClicks) {
         event.preventDefault()
         event.stopPropagation()
+        return
+    }
+    if (width.value < smWidth && news.description && news.description.length > 128 && unfoldedNews.value.indexOf(news.id) < 0) {
+        unfoldedNews.value.push(news.id)
+        event.preventDefault()
+        event.stopPropagation()
+        return
     }
 }
 
@@ -113,7 +129,7 @@ if (!feedStore.feeds.length) {
                 @mousedown.prevent="onTouchStart(news, index, $event)"
                 @mousemove.prevent="onTouchMove(news, index, $event)"
                 @mouseup.prevent="onTouchEnd(news, index, $event)"
-                @click="preventClickOnSwipe($event)"
+                @click="handleNewsClick(news, index, $event)"
                 :class="{'transition-all duration-500 ease-linear': !isSwiping}"
                 class="relative p-3 size-full shadow-black shadow-xs bg-white dark:bg-gray-800 dark:text-white cursor-pointer">
 
@@ -123,7 +139,14 @@ if (!feedStore.feeds.length) {
                             <span v-text="news.title" class="text-lg"></span>
                         </span>
                         
-                        <span v-html="stripHtmlTags(news.description)" class="text-md flex-1"></span>
+                        <span v-html="news.description"
+                            class="text-md flex-1 max-h-6 sm:!max-h-[60vh] overflow-y-hidden duration-300"
+                            :class="{'max-h-[60vh]': news.description && news.description.length <= 128 || unfoldedNews.indexOf(news.id) >= 0}"
+                            ></span>
+
+                        <span v-if="news.description && news.description.length > 128 && unfoldedNews.indexOf(news.id) < 0" class="mx-auto action-button sm:!hidden bg-white !py-0 -mt-5 group">
+                            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-chevron-down group-hover:invert-100 dark:invert-100"></span>
+                        </span>
 
                         <span class="hidden sm:flex sm:flex-row">
                             <span v-text="newsFeedTitle(news.feed)" class="flex-1"></span>

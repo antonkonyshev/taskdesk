@@ -27,7 +27,7 @@ store.loadFeeds()
 <template>
     <div class="flex flex-row w-full max-w-screen-xl">
         <div v-if="(!selectedFeed || width >= mdWidth) && store.feeds.length"
-            class="flex-1 overflow-y-scroll scroll-smooth max-h-[calc(100vh_+_0.75rem)] md:-ml-6 md:pl-6">
+            class="flex-1 md:-ml-6 md:pl-6">
             <div v-for="feed in store.feeds" :key="feed.id"
                 @click="selectedFeed = feed"
                 :class="{ '!shadow-lg !scale-[102%]': (selectedFeed && feed.id === selectedFeed.id) }"

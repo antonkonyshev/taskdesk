@@ -29,7 +29,7 @@ store.loadFilters()
 <template>
     <div class="flex flex-row w-full max-w-screen-xl">
         <div v-if="(!selectedFilter || width >= mdWidth) && store.filters.length"
-            class="flex-1 overflow-y-scroll scroll-smooth overflow-x-hidden max-h-[calc(100vh_+_0.75rem)] md:-ml-6 md:pl-6">
+            class="flex-1 md:-ml-6 md:pl-6">
             <div v-for="filter in store.filters" :key="filter.id"
                 @click="selectedFilter = filter"
                 :class="{ '!shadow-lg !scale-[102%]': (selectedFilter && filter.id === selectedFilter.id) }"
