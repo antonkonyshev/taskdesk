@@ -1,6 +1,6 @@
 {
-  "_AddButton.vue_vue_type_script_setup_true_lang-CsW7Y6wF.js": {
-    "file": "AddButton.vue_vue_type_script_setup_true_lang-CsW7Y6wF.js",
+  "_AddButton.vue_vue_type_script_setup_true_lang-Jn-eejVs.js": {
+    "file": "AddButton.vue_vue_type_script_setup_true_lang-Jn-eejVs.js",
     "name": "AddButton.vue_vue_type_script_setup_true_lang",
     "imports": [
       "_index-Cms_OnbX.js"
@@ -11,12 +11,12 @@
     "name": "index"
   },
   "css/main.sass": {
-    "file": "assets/main-C8gcepK5.css",
+    "file": "assets/main-fIcZUppE.css",
     "src": "css/main.sass",
     "isEntry": true
   },
   "css/tailwind.css": {
-    "file": "assets/tailwind-Czq8TXXu.css",
+    "file": "assets/tailwind-CNzvA8Al.css",
     "src": "css/tailwind.css",
     "isEntry": true
   },
@@ -25,27 +25,27 @@
     "src": "ico/favicon.ico"
   },
   "js/NewsApp.ts": {
-    "file": "assets/newsApp-C3KoJrLr.js",
+    "file": "assets/newsApp-Co5FCqqH.js",
     "name": "newsApp",
     "src": "js/NewsApp.ts",
     "isEntry": true,
     "imports": [
       "_index-Cms_OnbX.js",
-      "_AddButton.vue_vue_type_script_setup_true_lang-CsW7Y6wF.js"
+      "_AddButton.vue_vue_type_script_setup_true_lang-Jn-eejVs.js"
     ]
   },
   "js/TasksApp.ts": {
-    "file": "assets/tasksApp-G0CiyJpS.js",
+    "file": "assets/tasksApp-DOKru9c9.js",
     "name": "tasksApp",
     "src": "js/TasksApp.ts",
     "isEntry": true,
     "imports": [
       "_index-Cms_OnbX.js",
-      "_AddButton.vue_vue_type_script_setup_true_lang-CsW7Y6wF.js"
+      "_AddButton.vue_vue_type_script_setup_true_lang-Jn-eejVs.js"
     ]
   },
   "js/navigation/NavigationApp.ts": {
-    "file": "assets/navigationApp-Djb2xOTm.js",
+    "file": "assets/navigationApp-CQrAtujA.js",
     "name": "navigationApp",
     "src": "js/navigation/NavigationApp.ts",
     "isEntry": true,
@@ -72,6 +72,10 @@
   "svg/check.svg": {
     "file": "assets/check-BipHFnGP.svg",
     "src": "svg/check.svg"
+  },
+  "svg/chevron-down.svg": {
+    "file": "assets/chevron-down-DiygEmnM.svg",
+    "src": "svg/chevron-down.svg"
   },
   "svg/cog.svg": {
     "file": "assets/cog-Cc9svfoD.svg",
