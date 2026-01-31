@@ -1,13 +1,13 @@
 {
-  "_AddButton.vue_vue_type_script_setup_true_lang-Jn-eejVs.js": {
-    "file": "AddButton.vue_vue_type_script_setup_true_lang-Jn-eejVs.js",
+  "_AddButton.vue_vue_type_script_setup_true_lang-DlHgA6NV.js": {
+    "file": "AddButton.vue_vue_type_script_setup_true_lang-DlHgA6NV.js",
     "name": "AddButton.vue_vue_type_script_setup_true_lang",
     "imports": [
-      "_index-Cms_OnbX.js"
+      "_index-DsV9d6SF.js"
     ]
   },
-  "_index-Cms_OnbX.js": {
-    "file": "index-Cms_OnbX.js",
+  "_index-DsV9d6SF.js": {
+    "file": "index-DsV9d6SF.js",
     "name": "index"
   },
   "css/main.sass": {
@@ -16,7 +16,7 @@
     "isEntry": true
   },
   "css/tailwind.css": {
-    "file": "assets/tailwind-CNzvA8Al.css",
+    "file": "assets/tailwind-EIRyJ1VO.css",
     "src": "css/tailwind.css",
     "isEntry": true
   },
@@ -25,32 +25,32 @@
     "src": "ico/favicon.ico"
   },
   "js/NewsApp.ts": {
-    "file": "assets/newsApp-Co5FCqqH.js",
+    "file": "assets/newsApp-eIgyx2lr.js",
     "name": "newsApp",
     "src": "js/NewsApp.ts",
     "isEntry": true,
     "imports": [
-      "_index-Cms_OnbX.js",
-      "_AddButton.vue_vue_type_script_setup_true_lang-Jn-eejVs.js"
+      "_index-DsV9d6SF.js",
+      "_AddButton.vue_vue_type_script_setup_true_lang-DlHgA6NV.js"
     ]
   },
   "js/TasksApp.ts": {
-    "file": "assets/tasksApp-DOKru9c9.js",
+    "file": "assets/tasksApp-Dur8HKpa.js",
     "name": "tasksApp",
     "src": "js/TasksApp.ts",
     "isEntry": true,
     "imports": [
-      "_index-Cms_OnbX.js",
-      "_AddButton.vue_vue_type_script_setup_true_lang-Jn-eejVs.js"
+      "_index-DsV9d6SF.js",
+      "_AddButton.vue_vue_type_script_setup_true_lang-DlHgA6NV.js"
     ]
   },
   "js/navigation/NavigationApp.ts": {
-    "file": "assets/navigationApp-CQrAtujA.js",
+    "file": "assets/navigationApp-Cs_Ev6MA.js",
     "name": "navigationApp",
     "src": "js/navigation/NavigationApp.ts",
     "isEntry": true,
     "imports": [
-      "_index-Cms_OnbX.js"
+      "_index-DsV9d6SF.js"
     ]
   },
   "svg/arrow-left.svg": {
