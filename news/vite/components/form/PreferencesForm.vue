@@ -2,11 +2,13 @@
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import { useNewsStore } from 'news/store/news'
 
 const { t } = useI18n()
 const router = useRouter()
 const newsListLength = ref<number>(10)
 const newsListLengthForAutoLoad = ref<number>(4)
+const store = useNewsStore()
 
 onMounted(() => {
     const savedPreferences = localStorage.getItem('newsPreferences')
@@ -24,6 +26,7 @@ const savePreferences = () => {
         newsListLength: newsListLength.value,
         newsListLengthForAutoLoad: newsListLengthForAutoLoad.value
     }))
+    store.loadPreferences()
     router.back()
 }
 </script>

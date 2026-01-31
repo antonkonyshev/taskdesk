@@ -5,13 +5,13 @@ import { News, NewsQuery, NewsMeta } from 'news/types/news'
 import { prepareNewsSocket } from 'news/services/news.service'
 
 
-const MIN_NEWS_TO_LOAD_FURTHER = 4
 const FETCHING_MORE_NEWS_PERIOD = 300000
 
 export const useNewsStore = defineStore('news', () => {
     const news = ref<Array<News>>([])
     const newsMeta = ref<NewsMeta>({id: "meta", unread: 0, reading: 0} as NewsMeta)
     let newsQuery: Readonly<any>
+    let newsListLengthForAutoLoad = 4
 
     const refreshNews = (data: News) => {
         if (data.description && data.description.trim()) {
@@ -37,7 +37,7 @@ export const useNewsStore = defineStore('news', () => {
                     newsMeta.value[newsQuery.request] -= newsMeta.value[newsQuery.request] > 0 ? 1 : 0
                 }
             }
-            if (news.value.length <= MIN_NEWS_TO_LOAD_FURTHER) {
+            if (news.value.length <= newsListLengthForAutoLoad) {
                 await loadNews()
             }
         } catch(err) {
@@ -64,9 +64,21 @@ export const useNewsStore = defineStore('news', () => {
     const dropNews = () => {
         news.value = []
     }
+    
+    const loadPreferences = () => {
+        try {
+            const savedPreferences = localStorage.getItem('newsPreferences')
+            if (savedPreferences) {
+                const prefs = JSON.parse(savedPreferences)
+                newsListLengthForAutoLoad = prefs.newsListLengthForAutoLoad || 4
+            }
+        } catch (e) {}
+    }
+
+    loadPreferences()
 
     return {
         news, loadNews, refreshNews, markNews, fetchMoreNews, setQuery,
-        dropNews, fetchingMoreNews, refreshNewsMeta, newsMeta,
+        dropNews, fetchingMoreNews, refreshNewsMeta, newsMeta, loadPreferences,
     }
 })
