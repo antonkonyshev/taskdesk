@@ -9,6 +9,7 @@ import { prepareNewsSocket, closeNewsSocket } from 'news/services/news.service'
 import { router } from 'news/navigation/routing'
 import NewsNavigation from 'news/components/navigation/NewsNavigation.vue'
 import NewsList from 'news/components/list/NewsList.vue'
+import PreferencesForm from 'news/components/form/PreferencesForm.vue'
 
 describe('news related components rendering', () => {
     let news = null
@@ -103,5 +104,23 @@ describe('news related components rendering', () => {
         expect(wrapper.text()).not.toContain("Second testing news")
         expect(wrapper.text()).not.toContain("First testing news")
         expect(wrapper.text()).toContain("Third testing news")
+    })
+
+    test('preferences form component renders correctly with default values', () => {
+        localStorage.removeItem('newsPreferences')
+        const wrapper = mount(PreferencesForm)
+        expect(wrapper.exists()).toBeTruthy()
+        expect(wrapper.text()).toContain('Preferences')
+        expect(wrapper.findAll('input').length).toEqual(2)
+    })
+
+    test('preferences form component updates preferences and saves to localStorage', () => {
+        const wrapper = mount(PreferencesForm)
+        wrapper.find('input[name="newsListLength"]').setValue(11)
+        wrapper.find('input[name="newsListLengthForAutoLoad"]').setValue(5)
+        wrapper.find('form').trigger('submit')
+        const loaded = JSON.parse(localStorage.getItem('newsPreferences'))
+        expect(loaded.newsListLength).toEqual(11)
+        expect(loaded.newsListLengthForAutoLoad).toEqual(5)
     })
 })

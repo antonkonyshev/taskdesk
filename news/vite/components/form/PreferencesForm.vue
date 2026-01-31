@@ -25,7 +25,6 @@ const savePreferences = () => {
         newsListLengthForAutoLoad: newsListLengthForAutoLoad.value
     }))
     router.back()
-    // useRouter().replace('/news')
 }
 </script>
 
