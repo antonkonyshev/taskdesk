@@ -26,16 +26,16 @@
                 <button type="button"
                     class="navigation-button cursor-pointer"
                     @click="preferencesMenu = !preferencesMenu"
-                    id="preferences-btn">
+                    id="settings-btn">
 
                     <span class="navigation-icon svg-cog"></span>
-                    <span v-text="t('message.preferences')"></span>
+                    <span v-text="t('message.settings')"></span>
                 </button>
 
                 <div class="absolute hidden z-10 right-0 mt-2 w-48 bg-white shadow-black shadow-sm py-1 border-b-gray-900 dark:bg-gray-900"
                     :class="{'!block': preferencesMenu}" role="menu"
                     aria-orientation="vertical"
-                    aria-labelledby="preferences-btn">
+                    aria-labelledby="settings-btn">
 
                     <router-link :to="routes.viewed" @click="preferencesMenu = false"
                         class="navigation-button px-4">
@@ -56,6 +56,13 @@
 
                         <span class="navigation-icon svg-funnel"></span>
                         <span v-text="t('message.filters')"></span>
+                    </router-link>
+
+                    <router-link :to="routes.preferences" @click="preferencesMenu = false"
+                        class="navigation-button px-4">
+
+                        <span class="navigation-icon svg-cog"></span>
+                        <span v-text="t('message.preferences')"></span>
                     </router-link>
                 </div>
             </li>

@@ -47,7 +47,10 @@ export default createI18n({
                 load_more_news: "Load more news",
                 check_latest_news: "Check latest news",
                 viewed: "Viewed",
+                settings: "Settings",
                 preferences: "Preferences",
+                news_list_length: "News list length",
+                news_list_length_for_auto_load: "Quantity of news in a list for further loading",
             }
         },
 
@@ -93,7 +96,10 @@ export default createI18n({
                 load_more_news: "Загрузить больше новостей",
                 check_latest_news: "Проверить свежие новости",
                 viewed: "Просмотренные",
-                preferences: "Настройки",
+                settings: "Настройки",
+                preferences: "Предпочтения",
+                news_list_length: "Количество новостей в списке",
+                news_list_length_for_auto_load: "Количество новостей в списке для загрузки следующих",
             }
         }
     }
