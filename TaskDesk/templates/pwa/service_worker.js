@@ -1,4 +1,4 @@
-{% load django_vite %}const TD_CACHE_NAME = 'taskdesk-cache-{% vite_asset_url 'main.sass' %}';
+{% load django_vite %}const TD_CACHE_NAME = 'taskdesk-cache-{% vite_asset_url 'css/main.sass' %}';
 const cachableUrlPrefixes = ['/static'];
 
 self.addEventListener('fetch', function(event) {
