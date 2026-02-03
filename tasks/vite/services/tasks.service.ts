@@ -10,7 +10,12 @@ const receiveMessage = async (
 ) => await useTasksStore().refreshTask(JSON.parse(event.data) as Task)
 
 export const prepareTaskSocket = async (uuid: string) => {
-    socket = await prepareWebSocket(socket, "/task/" + uuid + "/", receiveMessage)
+    const wsurl = "/task/" + uuid + "/"
+    if (socket && !(socket.ws.value && socket.ws.value.url == wsurl)) {
+        await closeTaskSocket()
+        socket = null
+    }
+    socket = await prepareWebSocket(socket, wsurl, receiveMessage)
     return socket
 }
 
