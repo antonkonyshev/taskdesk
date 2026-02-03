@@ -4,7 +4,7 @@
 
         <TaskDetails v-if="taskStore.task" />
 
-        <AddButton v-if="!taskStore.task || taskStore.task.uuid != 'new'" :add-item="tasksStore.createTask" />
+        <AddButton v-if="(!taskStore.task || taskStore.task.uuid != 'new') && !taskStore.notification" :add-item="tasksStore.createTask" />
     </div>
 </template>
 

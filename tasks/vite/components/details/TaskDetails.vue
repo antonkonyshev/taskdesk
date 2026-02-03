@@ -13,7 +13,7 @@ const store = useTaskStore()
 </script>
 
 <template>
-    <div class="flex-1 lg:flex-2 my-3 mx-3 md:!ml-0 px-4 py-3.5 bg-white min-h-screen shadow-[0px_0px_5px_-2px_#000] dark:bg-gray-800 dark:text-white">
+    <div class="flex-1 relative lg:flex-2 my-3 mx-3 md:!ml-0 px-4 py-3.5 bg-white min-h-screen shadow-[0px_0px_5px_-2px_#000] dark:bg-gray-800 dark:text-white">
         <Actions />
 
         <h2 class="font-semibold text-2xl flex flex-col xl:flex-row gap-2 items-start xl:items-center pt-4 pb-3">
@@ -41,5 +41,9 @@ const store = useTaskStore()
         <Dependencies class="pt-4" />
         <BlockedTasks class="pt-4" />
         <Annotations class="pt-4" v-if="store.task.uuid != 'new'" />
+
+        <p v-if="store.notification"
+            class="fixed bottom-4 right-4 py-4 px-8 rounded-md text-xl font-semibold border-b border-gray-800 shadow-sm shadow-td-gray-dark bg-td-secondary-light dark:bg-td-primary"
+            v-text="store.notification"></p>
     </div>
 </template>

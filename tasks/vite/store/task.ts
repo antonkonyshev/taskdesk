@@ -1,6 +1,7 @@
 import { ref, watch, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useRefHistory } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 import { Task, Annotation } from 'tasks/types/task'
 import { useTasksStore } from './tasks'
 import {
@@ -9,13 +10,15 @@ import {
 
 export const useTaskStore = defineStore('task', () => {
     const task = ref(null)
+    const notification = ref("")
     const tasksStore = useTasksStore()
+    const { t } = useI18n()
 
     const history = useRefHistory(task, {
         capacity: 64
     })
 
-    function select(target: Task) {
+    function select(target: Task | null) {
         task.value = target
     }
 
@@ -78,6 +81,7 @@ export const useTaskStore = defineStore('task', () => {
         if (task.value && task.value.uuid) {
             await markTask(task.value.uuid, method)
             await tasksStore.removeTask(task.value)
+            select(null)
         }
     }
 
@@ -123,8 +127,20 @@ export const useTaskStore = defineStore('task', () => {
         }
     })
 
+    watch(() => task.value && task.value.uuid, (newUuid, oldUuid) => {
+        if (oldUuid != 'new') {
+            console.log('wrong')
+            return
+        }
+        if (newUuid && newUuid != 'new') {
+            notification.value = t('message.task_created')
+            console.log('notified')
+            setTimeout(() => notification.value = '', 2000)
+        }
+    })
+
     return {
-         task, history, depends, blocks, select, editing, update,
-         annotate, denotate, excludeFromHistory,
+        task, history, depends, blocks, select, editing, update,
+        annotate, denotate, excludeFromHistory, notification,
     }
 })
