@@ -44,6 +44,6 @@ const store = useTaskStore()
 
         <p v-if="store.notification"
             class="fixed bottom-4 right-4 py-4 px-8 rounded-md text-xl font-semibold border-b border-gray-800 shadow-sm shadow-td-gray-dark bg-td-secondary-light dark:bg-td-primary"
-            v-text="store.notification"></p>
+            v-text="t(store.notification)"></p>
     </div>
 </template>

@@ -3,7 +3,7 @@ Tasks management related views.
 """
 
 from django.views.generic.base import TemplateView, View
-from django.http import HttpResponse
+from django.http import FileResponse
 
 from tasks.storage import TaskStorage
 
@@ -17,11 +17,13 @@ class TasksExportView(View):
     
     async def get(self, request, *args, **kwargs):
         storage = await TaskStorage((await request.auser()).task_db_path).load()
-        content = '\n'.join([
-            task._data.get('description', '') for task in \
-                storage.active() if task._data.get('description', '')]) \
+        return FileResponse('\n'.join([
+            task._data.get('description', '') for task in storage.active() \
+                if task._data.get('description', '')
+            ]), as_attachment=True, filename='taskdesk_tasks.txt',
+            content_type='text/plain') \
         if request.GET.get('plain', '') else \
-            ''.join(['[', 
-                ','.join([task.export_data() for task in storage.active()]),
-            ']'])
-        return HttpResponse(content=content, content_type="application/json")
+        FileResponse(''.join([
+            '[', ','.join([task.export_data() for task in storage.active()]), ']'
+        ]), as_attachment=True, filename='taskdeks_tasks.json',
+        content_type="application/json")

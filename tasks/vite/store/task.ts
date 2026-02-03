@@ -1,7 +1,6 @@
 import { ref, watch, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useRefHistory } from '@vueuse/core'
-import { useI18n } from 'vue-i18n'
 import { Task, Annotation } from 'tasks/types/task'
 import { useTasksStore } from './tasks'
 import {
@@ -12,7 +11,6 @@ export const useTaskStore = defineStore('task', () => {
     const task = ref(null)
     const notification = ref("")
     const tasksStore = useTasksStore()
-    const { t } = useI18n()
 
     const history = useRefHistory(task, {
         capacity: 64
@@ -129,12 +127,10 @@ export const useTaskStore = defineStore('task', () => {
 
     watch(() => task.value && task.value.uuid, (newUuid, oldUuid) => {
         if (oldUuid != 'new') {
-            console.log('wrong')
             return
         }
         if (newUuid && newUuid != 'new') {
-            notification.value = t('message.task_created')
-            console.log('notified')
+            notification.value = 'message.task_created'
             setTimeout(() => notification.value = '', 2000)
         }
     })
