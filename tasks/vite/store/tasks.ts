@@ -1,7 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useWindowSize } from '@vueuse/core'
-import { closeTaskSocket } from 'tasks/services/tasks.service'
 import { fetchItems } from 'TaskDesk/js/common/service'
 import { refreshItem } from 'TaskDesk/js/common/store'
 import { Task } from 'tasks/types/task'
@@ -37,9 +36,6 @@ export const useTasksStore = defineStore('tasks', () => {
             for (const field in target) {
                 const key = field as keyof Task
                 (tasks.value[idx][key] as any) = target[key]
-            }
-            if (taskStore.task && taskStore.task.uuid == tasks.value[idx].uuid) {
-                await closeTaskSocket()
             }
         }
     }
