@@ -51,9 +51,10 @@
         {% include "_footer.html" %}
 
         <script type="module" src="{% vite_asset_url 'js/navigation/NavigationApp.ts' %}" defer></script>
-        {% comment %} <script type="text/javascript">
-        if ('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register("/sw.js", { scope: '/' });});}
-        </script> {% endcomment %}
+        
+        <script type="text/javascript">
+        if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register("/sw.js",{scope:'/'});});}
+        </script>
 
         {% block extra_js %}
         {# Override this in templates to add extra javascript #}
