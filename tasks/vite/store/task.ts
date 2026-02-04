@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { useRefHistory } from '@vueuse/core'
 import { Task, Annotation } from 'tasks/types/task'
 import { useTasksStore } from './tasks'
+import { router } from 'tasks/navigation/routing'
 import {
     closeTaskSocket, markTask, updateTask, annotateTask, denotateTask
 } from 'tasks/services/tasks.service'
@@ -17,6 +18,7 @@ export const useTaskStore = defineStore('task', () => {
     })
 
     function select(target: Task | null) {
+        router.push(target ? { name: 'edit', params: { uuid: target.uuid } } : { name: 'list' })
         task.value = target
     }
 

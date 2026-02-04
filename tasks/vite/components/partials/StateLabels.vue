@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useWindowSize } from '@vueuse/core'
-import { Task } from '../types/task'
-import { useTasksStore } from '../store/tasks';
+import { Task } from 'tasks/types/task'
+import { useTasksStore } from 'tasks/store/tasks';
 
 const {
     task, labelClass, criticalLabelClass, commonLabelClass, shortenLabels,
