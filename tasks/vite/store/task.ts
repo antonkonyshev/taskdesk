@@ -126,7 +126,7 @@ export const useTaskStore = defineStore('task', () => {
     })
 
     watch(() => task.value && task.value.uuid, (newUuid, oldUuid) => {
-        if (oldUuid != 'new') {
+        if (oldUuid != 'new' || !newUuid) {
             return
         }
         if (newUuid && newUuid != 'new') {

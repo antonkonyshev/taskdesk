@@ -10,8 +10,8 @@
 
 <script setup lang="ts">
 import { watch } from 'vue'
-import { useTaskStore } from './store/task'
-import { useTasksStore } from './store/tasks'
+import { useTaskStore } from 'tasks/store/task'
+import { useTasksStore } from 'tasks/store/tasks'
 import { useWindowSize } from '@vueuse/core'
 import TasksList from 'tasks/components/list/TasksList.vue'
 import TaskDetails from 'tasks/components/details/TaskDetails.vue'

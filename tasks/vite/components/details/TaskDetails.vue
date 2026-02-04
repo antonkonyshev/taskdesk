@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useTaskStore } from '../../store/task'
+import { useTaskStore } from 'tasks/store/task'
 import Actions from 'tasks/components/Actions.vue'
 import StateLabels from 'tasks/components/StateLabels.vue'
 import Dependencies from 'tasks/components/details/Dependencies.vue'
@@ -10,6 +11,18 @@ import DatesDetails from 'tasks/components/details/DatesDetails.vue'
 
 const { t } = useI18n()
 const store = useTaskStore()
+const descriptionInput = ref(null)
+
+onMounted(() => {
+    if (descriptionInput.value && !descriptionInput.value.value) {
+        descriptionInput.value.focus()
+    }
+})
+
+const onProjectInput = (event) => {
+    event.target.value = event.target.value.toLowerCase()
+    store.editing(event)
+}
 </script>
 
 <template>
@@ -17,10 +30,11 @@ const store = useTaskStore()
         <Actions />
 
         <h2 class="font-semibold text-2xl flex flex-col xl:flex-row gap-2 items-start xl:items-center pt-4 pb-3">
-            <input type="text" class="flex-1 w-full outline-none focus-visible:!outline-none" name="description"
+            <textarea class="flex-1 w-full outline-none focus-visible:!outline-none"
+                type="text" name="description" ref="descriptionInput"
                 id="id_description" @focusout="store.editing" @focusin="store.editing" @input="store.editing"
                 :placeholder="t('message.enter_task_description')"
-                :value="store.task.description" />
+                :value="store.task.description"></textarea>
 
             <StateLabels :task="store.task" class="gap-2" label-class="text-lg" common-label-class="bg-gray-200 dark:bg-gray-700"
                 critical-label-class="bg-red-200 dark:text-black" allow-row-arrangement="true" />
@@ -31,7 +45,7 @@ const store = useTaskStore()
 
             <input type="text" class="flex-1 outline-none focus-visible:!outline-none" name="project"
                 :placeholder="t('message.not_specified').toLowerCase()" @focusout="store.editing"
-                @focusin="store.editing" @input="store.editing" :value="store.task.project" />
+                @focusin="store.editing" @input="onProjectInput" :value="store.task.project" />
 
             <span v-if="store.task.tags" v-for="tag in store.task.tags" v-text="tag"
                 class="bg-gray-200 task-label !pt-0 dark:bg-gray-700"></span>
