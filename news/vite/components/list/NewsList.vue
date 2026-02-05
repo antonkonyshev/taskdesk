@@ -3,17 +3,14 @@ import { ref, shallowRef } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import { useWindowSize } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
-import moment from 'moment/min/moment-with-locales'
 import { useNewsStore } from '../../store/news'
-import { useFeedStore } from '../../store/feed'
 import { News, NewsQuery } from '../../types/news'
-
+import NewsItem from '../partials/NewsItem.vue'
 
 const newsQuery = withDefaults(defineProps<NewsQuery>(), { request: 'unread' } as NewsQuery)
 const { t } = useI18n()
 const store = useNewsStore()
 store.setQuery(newsQuery as NewsQuery)
-const feedStore = useFeedStore()
 const newsElements = shallowRef<Array<HTMLAnchorElement>>([])
 const isSwiping = ref<string>('')
 const unfoldedNews = ref<Array<number>>([])
@@ -23,11 +20,6 @@ const smWidth = 640;
 onBeforeRouteLeave((nextPath, prevPath) => {
     store.dropNews()
 })
-
-const newsFeedTitle = (id: number) => {
-    const feed = feedStore.feeds.find((elem) => elem.id == id)
-    return feed ? (feed.title || feed.url) : ''
-}
 
 const swipeStartX = ref<number>(0)
 let preventClicks = false
@@ -90,13 +82,17 @@ const onTouchEnd = (news: News, index: number, event, direction = null) => {
     }
 }
 
+const isFolded = (news: News): boolean => {
+    return Boolean(news.description && news.description.length > 128 && unfoldedNews.value.indexOf(news.id) < 0)
+}
+
 const handleNewsClick = (news: News, index: number, event: Event) => {
     if (preventClicks) {
         event.preventDefault()
         event.stopPropagation()
         return
     }
-    if (width.value < smWidth && news.description && news.description.length > 128 && unfoldedNews.value.indexOf(news.id) < 0) {
+    if (width.value < smWidth && isFolded(news)) {
         unfoldedNews.value.push(news.id)
         event.preventDefault()
         event.stopPropagation()
@@ -105,9 +101,6 @@ const handleNewsClick = (news: News, index: number, event: Event) => {
 }
 
 store.loadNews()
-if (!feedStore.feeds.length) {
-    feedStore.loadFeeds()
-}
 </script>
 
 <template>
@@ -133,62 +126,15 @@ if (!feedStore.feeds.length) {
                 :class="{'transition-all duration-500 ease-linear': !isSwiping}"
                 class="relative p-3 size-full shadow-black shadow-xs bg-white dark:bg-gray-800 dark:text-white cursor-pointer">
 
-                <span class="flex flex-col gap-3 md:gap-4 lg:gap-5 sm:flex-row">
-                    <span class="flex flex-col gap-1 sm:gap-2 flex-1 wrap-break-word">
-                        <span class="font-semibold flex flex-row justify-between items-start gap-2">
-                            <span v-text="news.title" class="text-lg"></span>
-                        </span>
-                        
-                        <span v-html="news.description"
-                            class="text-md flex-1 max-h-6 sm:!max-h-[60vh] overflow-y-hidden duration-300"
-                            :class="{'max-h-[60vh]': news.description && news.description.length <= 128 || unfoldedNews.indexOf(news.id) >= 0}"
-                            ></span>
-
-                        <span v-if="news.description && news.description.length > 128 && unfoldedNews.indexOf(news.id) < 0" class="mx-auto action-button sm:!hidden bg-white dark:bg-gray-800 !py-0 -mt-5 group">
-                            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-chevron-down group-hover:invert-100 dark:invert-100"></span>
-                        </span>
-
-                        <span class="hidden sm:flex sm:flex-row">
-                            <span v-text="newsFeedTitle(news.feed)" class="flex-1"></span>
-
-                            <span v-text="news.published ? (t('message.published') + ' ' + moment(news.published).fromNow()) : ''"></span>
-                        </span>
-                    </span>
-
-                    <span class="flex flex-col gap-2 sm:order-first min-w-[30%] lg:min-w-[310px] min-h-[200px] sm:min-h-auto md:min-h-[150px] lg:min-h-[150px]"
-                        :class="{'min-h-auto sm:hidden': !news.enclosure_url}">
-                        <span v-if="news.enclosure_url"
-                            class="flex flex-1 w-full bg-cover bg-center bg-no-repeat"
-                            :style="{'background-image': 'url(\'' + news.enclosure_url + '\')'}"></span>
-
-                        <span class="flex flex-row sm:flex-col sm:hidden">
-                            <span v-text="newsFeedTitle(news.feed)" class="flex-1"></span>
-
-                            <span
-                                v-text="news.published ? (t('message.published') + ' ' + moment(news.published).fromNow()) : ''"></span>
-                        </span>
-                    </span>
-
-                    <span class="flex flex-row sm:flex-col justify-center sm:justify-end items-center gap-3">
-                        <span @click.stop.prevent="onTouchEnd(news, index, $event, 'right')"
-                            class="action-button hover:bg-green-700 hover:!border-green-700 group"
-                            ref="bookmark-btn">
-
-                            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-bookmark group-hover:invert-100 dark:invert-100"></span>
-                        </span>
-
-                        <span @click.stop.prevent="onTouchEnd(news, index, $event, 'left')"
-                            class="action-button hover:bg-gray-300"
-                            ref="hide-btn">
-
-                            <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-eye-slash dark:invert-100"></span>
-                        </span>
-                    </span>
-                </span>
+                <NewsItem :news="news"
+                    @hide="onTouchEnd(news, index, $event, 'left')" 
+                    @bookmark="onTouchEnd(news, index, $event, 'right')"
+                    :is-folded="isFolded(news)" />
             </a>
         </div>
 
-        <button type="button" @click="store.fetchMoreNews()"
+        <button v-if="newsQuery.request == 'unread'" type="button"
+            @click="store.fetchMoreNews()"
             class="action-button mt-2 mb-5 !px-4 gap-2 hover:bg-green-700 hover:!border-green-700 hover:text-white font-semibold duration-200 group flex flex-row items-center shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:!border-gray-900 dark:text-white cursor-pointer">
 
             <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-refresh group-hover:invert-100 dark:invert-100"></span>

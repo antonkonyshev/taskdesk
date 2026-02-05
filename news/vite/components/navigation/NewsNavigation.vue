@@ -8,7 +8,7 @@
 
                     <span class="navigation-icon svg-inbox"></span>
                     <span v-text="t('message.unread')"></span>
-                    <span class="absolute -right-2 -top-[1px] text-xs text-white bg-td-primary dark:text-black dark:bg-td-secondary rounded-xl py-0 px-1" v-text="store.newsMeta.unread"></span>
+                    <Counter :value="store.newsMeta.unread" />
                 </router-link>
             </li>
 
@@ -18,7 +18,7 @@
 
                     <span class="navigation-icon svg-newspaper"></span>
                     <span v-text="t('message.reading')"></span>
-                    <span class="absolute -right-2 -top-[1px] text-xs text-white bg-td-primary dark:text-black dark:bg-td-secondary rounded-xl py-0 px-1" v-text="store.newsMeta.reading"></span>
+                    <Counter :value="store.newsMeta.reading" />
                 </router-link>
             </li>
 
@@ -76,6 +76,7 @@ import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import { routes } from 'news/navigation/routing'
 import { useNewsStore } from 'news/store/news'
+import Counter from '../partials/Counter.vue'
 
 const { t } = useI18n()
 const preferencesMenu = ref<boolean>(false)
