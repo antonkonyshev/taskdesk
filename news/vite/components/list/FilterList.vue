@@ -26,8 +26,6 @@ async function saveFilter() {
     selectedFilter.value = null
     await store.saveFilter(currentFilter)
 }
-
-store.loadFilters()
 </script>
 
 <template>

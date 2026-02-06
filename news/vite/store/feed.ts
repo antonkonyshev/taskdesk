@@ -15,6 +15,8 @@ export const useFeedStore = defineStore('feed', () => {
         (elem: Feed) => (feed.id && elem.id) ? elem.id == feed.id : feed.url == elem.url)
     const saveFeed = (feed: Feed) => saveItem(feed, feeds, endpoint(feed), 
         (elem: Feed) => (feed.id && elem.id) ? elem.id == feed.id : feed.url == elem.url)
+    
+    loadFeeds()
 
     return { feeds, loadFeeds, removeFeed, saveFeed }
 })

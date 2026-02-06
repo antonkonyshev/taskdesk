@@ -25,8 +25,6 @@ async function saveFeed() {
     selectedFeed.value = null
     await store.saveFeed(currentFeed)
 }
-
-store.loadFeeds()
 </script>
 
 <template>

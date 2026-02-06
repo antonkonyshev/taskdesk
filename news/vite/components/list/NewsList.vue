@@ -1,26 +1,35 @@
 <script setup lang="ts">
-import { ref, shallowRef } from 'vue'
-import { onBeforeRouteLeave } from 'vue-router'
+import { onMounted, onUnmounted, ref, shallowRef } from 'vue'
 import { useWindowSize } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { useNewsStore } from 'news/store/news'
 import { News, NewsQuery } from 'news/types/news'
+import { onBeforeRouteLeave } from 'vue-router'
 import NewsItem from 'news/components/partials/NewsItem.vue'
 import Toolbar from 'TaskDesk/js/common/components/Toolbar.vue'
 import NewsToolbarActions from 'news/components/partials/NewsToolbarActions.vue'
+import { closeNewsSocket } from 'news/services/news.service'
 
 const newsQuery = withDefaults(defineProps<NewsQuery>(), { request: 'unread' } as NewsQuery)
 const { t } = useI18n()
 const store = useNewsStore()
-store.setQuery(newsQuery as NewsQuery)
 const newsElements = shallowRef<Array<HTMLAnchorElement>>([])
 const isSwiping = ref<string>('')
 const unfoldedNews = ref<Array<number>>([])
 const { width } = useWindowSize()
 const smWidth = 640;
 
-onBeforeRouteLeave((nextPath, prevPath) => {
+onBeforeRouteLeave((newRoute) => {
+    try {
+        store.setQuery(newRoute.matched[0].props.default as NewsQuery)
+    } catch(err) {}
     store.dropNews()
+    store.loadNews()
+})
+
+onMounted(() => {
+    store.setQuery(newsQuery as NewsQuery)
+    store.loadNews()
 })
 
 const swipeStartX = ref<number>(0)
@@ -101,8 +110,6 @@ const handleNewsClick = (news: News, index: number, event: Event) => {
         return
     }
 }
-
-store.loadNews()
 </script>
 
 <template>

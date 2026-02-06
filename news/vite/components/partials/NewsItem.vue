@@ -19,10 +19,6 @@ const newsFeedTitle = (id: number) => {
     const feed = feedStore.feeds.find((elem) => elem.id == id)
     return feed ? (feed.title || feed.url) : ''
 }
-
-if (!feedStore.feeds.length) {
-    feedStore.loadFeeds()
-}
 </script>
 
 <template>

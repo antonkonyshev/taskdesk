@@ -34,6 +34,8 @@ export const useFilterStore = defineStore('filter', () => {
             }
         }
     }
+    
+    loadFilters()
 
     return { filters, loadFilters, removeFilter, saveFilter }
 })
