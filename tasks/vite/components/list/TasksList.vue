@@ -29,11 +29,13 @@ const tasksStore = useTasksStore()
                 <li v-if="!task.due && task.project" v-text="task.project" class="bg-gray-200 text-xs task-label ml-auto"></li>
             </ul>
 
-            <p class="flex flex-row gap-1 items-center" v-if="task.due">
-                <span v-text="task.due ? (t('message.due_date') + ' ' + moment(task.due).fromNow()) : ''"
+            <p class="flex flex-row gap-1 items-center justify-end" v-if="task.due || task.project">
+                <span v-if="task.due"
+                    v-text="task.due ? (t('message.due_date') + ' ' + moment(task.due).fromNow()) : ''"
                     class="flex-1"></span>
 
-                <span v-if="task.project" v-text="task.project" class="bg-gray-200 dark:bg-gray-700 text-xs task-label !pb-1"></span>
+                <span v-if="task.project" v-text="task.project"
+                    class="bg-gray-200 dark:bg-gray-700 text-xs task-label !pb-1"></span>
             </p>
         </div>
     </div>
