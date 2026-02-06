@@ -16,9 +16,11 @@
 
 .navigation-button {
     @apply flex flex-row items-center px-1 sm:px-4 py-2 rounded hover:bg-td-primary hover:text-white dark:hover:bg-td-secondary duration-200;
+}
 
-    &:hover .navigation-icon,
-    &:hover .bg-no-repeat {
+@media (hover: hover) {
+    .navigation-button:hover .navigation-icon,
+    .navitaion-button:hover .bg-no-repeat {
         @apply invert-100;
     }
 }
