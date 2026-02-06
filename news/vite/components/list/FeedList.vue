@@ -1,21 +1,26 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
 import { useWindowSize } from '@vueuse/core'
-import AddButton from 'TaskDesk/js/common/components/AddButton.vue'
+import { useI18n } from 'vue-i18n'
 import { useFeedStore } from '../../store/feed'
 import { Feed } from '../../types/feed'
 import FeedForm from 'news/components/form/FeedForm.vue'
+import Toolbar from 'TaskDesk/js/common/components/Toolbar.vue'
 
 const mdWidth = 640;
+const { t } = useI18n()
 const { width } = useWindowSize()
 const store = useFeedStore()
-const selectedFeed = shallowRef<Feed>(null)
+const selectedFeed = shallowRef<Feed | null>(null)
 
 async function createFeed() {
     selectedFeed.value = { title: "", url: "" } as Feed
 }
 
 async function saveFeed() {
+    if (!selectedFeed.value) {
+        return
+    }
     const currentFeed = selectedFeed.value
     selectedFeed.value = null
     await store.saveFeed(currentFeed)
@@ -51,5 +56,17 @@ store.loadFeeds()
         <FeedForm v-if="selectedFeed" :key="selectedFeed.id || 'new'" v-model="selectedFeed" @cancel="selectedFeed = null" @submit="saveFeed()" />
 
         <AddButton v-if="!selectedFeed" :add-item="createFeed" />
+        <Toolbar>
+            <ul v-if="!selectedFeed" class="flex flex-row justify-end items-center text-center xs:gap-3 xs:px-3 sm:gap-5 sm:px-5 md:gap-6 md:px-6 border-l-gray-300 border-l" role="menu">
+                <li role="menuitem">
+                    <a href="" @click.stop.prevent="createFeed"
+                        class="navigation-button flex !flex-col !px-4">
+
+                        <span class="navigation-icon !mx-0 svg-plus-circle"></span>
+                        <span v-text="t('message.add_feed')"></span>
+                    </a>
+                </li>
+            </ul>
+        </Toolbar>
     </div>
 </template>

@@ -57,7 +57,7 @@ const onProjectInput = (event) => {
         <Annotations class="pt-4" v-if="store.task.uuid != 'new'" />
 
         <p v-if="store.notification"
-            class="fixed bottom-4 right-4 py-4 px-8 rounded-md text-xl font-semibold border-b border-gray-800 shadow-sm shadow-td-gray-dark bg-td-secondary-light dark:bg-td-primary"
+            class="fixed z-30 bottom-4 right-4 py-4 px-8 rounded-md text-xl font-semibold border-b border-gray-800 shadow-sm shadow-td-gray-dark bg-td-secondary-light dark:bg-td-primary"
             v-text="t(store.notification)"></p>
     </div>
 </template>

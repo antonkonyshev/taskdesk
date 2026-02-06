@@ -6,11 +6,12 @@ import AddButton from 'TaskDesk/js/common/components/AddButton.vue'
 import { useFilterStore } from '../../store/filter'
 import { Filter } from '../../types/filter'
 import FilterForm from 'news/components/form/FilterForm.vue'
+import Toolbar from 'TaskDesk/js/common/components/Toolbar.vue'
 
 const mdWidth = 768;
 const { width } = useWindowSize()
 const store = useFilterStore()
-const selectedFilter = shallowRef<Filter>(null)
+const selectedFilter = shallowRef<Filter | null>(null)
 const { t } = useI18n()
 
 async function createFilter() {
@@ -18,6 +19,9 @@ async function createFilter() {
 }
 
 async function saveFilter() {
+    if (!selectedFilter.value) {
+        return 
+    }
     const currentFilter = selectedFilter.value
     selectedFilter.value = null
     await store.saveFilter(currentFilter)
@@ -53,6 +57,17 @@ store.loadFilters()
 
         <FilterForm v-if="selectedFilter" :key="selectedFilter.id || 'new'" v-model="selectedFilter" @cancel="selectedFilter = null" @submit="saveFilter()" />
 
-        <AddButton v-if="!selectedFilter" :add-item="createFilter" />
+        <Toolbar>
+            <ul v-if="!selectedFilter" class="flex flex-row justify-end items-center text-center xs:gap-3 xs:px-3 sm:gap-5 sm:px-5 md:gap-6 md:px-6 border-l-gray-300 border-l" role="menu">
+                <li role="menuitem">
+                    <a href="" @click.stop.prevent="createFilter"
+                        class="navigation-button flex !flex-col !px-4">
+
+                        <span class="navigation-icon !mx-0 svg-plus-circle"></span>
+                        <span v-text="t('message.add_filter')"></span>
+                    </a>
+                </li>
+            </ul>
+        </Toolbar>
     </div>
 </template>

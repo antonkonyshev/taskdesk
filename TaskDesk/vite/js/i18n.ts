@@ -52,6 +52,13 @@ export default createI18n({
                 news_list_length: "News list length",
                 news_list_length_for_auto_load: "Quantity of news in a list for further loading",
                 task_created: "Task created",
+                add_task: "Add Task",
+                to_top: "To top",
+                bookmark: "Bookmark",
+                hide: "Hide",
+                install_app: "Install App",
+                add_feed: "Add Feed",
+                add_filter: "Add Filter",
             }
         },
 
@@ -102,6 +109,13 @@ export default createI18n({
                 news_list_length: "Количество новостей в списке",
                 news_list_length_for_auto_load: "Количество новостей в списке для загрузки следующих",
                 task_created: "Задача создана",
+                add_task: "Добавить задачу",
+                to_top: "К началу",
+                bookmark: "Закладка",
+                hide: "Скрыть",
+                install_app: "Приложение",
+                add_feed: "Добавить Ленту",
+                add_filter: "Добавить Фильтр",
             }
         }
     }

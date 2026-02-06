@@ -1,17 +1,17 @@
 {% load i18n cache django_vite %}
-<header id="navigation-header" class="">
-    <nav class="bg-white shadow-sm border-b border-b-gray-300 px-4 sm:px-6 py-2.5 dark:bg-gray-900 dark:shadow-xl dark:border-b-black" id="navigation-app">
+<header id="navigation-app" class="">
+    <nav class="bg-white shadow-sm border-b border-b-gray-300 px-4 sm:px-6 py-2.5 dark:bg-gray-900 dark:shadow-xl dark:border-b-black" aria-label="Main">
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-            <a href="/" class="flex items-center hover:text-td-primary dark:hover:text-td-secondary duration-400">
-                <img src="{% vite_asset_url 'svg/favicon.svg' %}" class="mr-3 h-6 sm:h-9" alt="TaskDesk" />
-                <span class="self-center text-xl font-semibold whitespace-nowrap">TaskDesk</span>
+            <a href="/" class="flex xs:flex-col sm:flex-row items-center hover:text-td-primary dark:hover:text-td-secondary duration-400">
+                <img src="{% vite_asset_url 'svg/favicon.svg' %}" class="mr-3 xs:mr-0 sm:mr-3 h-6 sm:h-9" alt="TaskDesk" />
+                <span class="self-center text-lg xs:text-sm sm:text-xl font-semibold whitespace-nowrap">TaskDesk</span>
             </a>
 
-            <div class="flex flex-row items-center gap-6 sm:order-2">
+            <div class="flex flex-row items-center gap-6 xs:order-2">
                 {% if request.user.is_authenticated %}
                 <button type="button" @click="showNavigationMenu = !showNavigationMenu"
                     :class="{'bg-gray-100 dark:bg-gray-800': showNavigationMenu}"
-                    class="inline-flex items-center p-2 ml-1 text-sm sm:hidden! cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+                    class="inline-flex items-center p-2 ml-1 text-sm xs:!hidden cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
                     <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-menu dark:invert-100"></span>
                 </button>
                 {% else %}
@@ -24,8 +24,8 @@
             </div>
 
             {% if request.user.is_authenticated %}
-            <div class="sm:ml-6">
-                <ul class="sm:mr-3" role="menu">
+            <div class="ml-6 hidden lg:flex">
+                <ul role="menu">
                     <li role="menuitem">
                         <a href="{% cache 604800 taskswebappurl %}{% url 'tasks_webapp' %}{% endcache %}new/" class="navigation-button">
                             <span class="navigation-icon svg-plus-circle !mr-1.5"></span>
@@ -35,8 +35,8 @@
                 </ul>
             </div>
 
-            <div class="hidden w-full sm:w-auto sm:grow sm:order-1 sm:block" :class="{'block!': showNavigationMenu}">
-                <ul class="flex flex-row justify-between items-center gap-3 w-full mt-4 font-medium sm:mt-0" role="menu">
+            <div class="hidden w-full xs:ml-3 lg:ml-3 xs:w-auto xs:grow xs:order-1 xs:block" :class="{'block!': showNavigationMenu}">
+                <ul class="flex flex-row flex-wrap justify-between items-center gap-3 w-full mt-4 font-medium xs:mt-0" role="menu">
                     <li role="menuitem">
                         <a href="{% cache 604800 taskswebappurl %}{% url 'tasks_webapp' %}{% endcache %}" class="navigation-button">
                             <span class="navigation-icon svg-case"></span>
@@ -51,14 +51,8 @@
                         </a>
                     </li>
 
-                    <li role="menuitem">
-                        <a v-if="!appInstalled && appInstallPrompt" class="navigation-button hidden flex-row items-center"
-                            @click.stop.prevent="installPWA()" href=""
-                            :class="{'!flex': appInstallPrompt}">
-
-                            <span class="navigation-icon svg-wrench"></span>
-                            <span>{% trans 'Install App' %}</span>
-                        </a>
+                    <li role="menuitem" class="flex xs:hidden lg:flex">
+                        <install-app-button />
                     </li>
 
                     <li class="ml-auto flex items-center" role="menuitem">

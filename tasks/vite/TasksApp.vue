@@ -4,7 +4,9 @@
 
         <TaskDetails v-if="taskStore.task" />
 
-        <AddButton v-if="(!taskStore.task || taskStore.task.uuid != 'new') && !taskStore.notification" :add-item="tasksStore.createTask" />
+        <Toolbar :show-add-task="false">
+            <TasksToolbarActions v-if="(!taskStore.task || taskStore.task.uuid != 'new') && !taskStore.notification" />
+        </Toolbar>
     </div>
 </template>
 
@@ -13,9 +15,10 @@ import { useTaskStore } from 'tasks/store/task'
 import { useTasksStore } from 'tasks/store/tasks'
 import { useWindowSize } from '@vueuse/core'
 import { useRoute } from 'vue-router'
+import Toolbar from 'TaskDesk/js/common/components/Toolbar.vue'
 import TasksList from 'tasks/components/list/TasksList.vue'
 import TaskDetails from 'tasks/components/details/TaskDetails.vue'
-import AddButton from 'TaskDesk/js/common/components/AddButton.vue'
+import TasksToolbarActions from './components/partials/TasksToolbarActions.vue'
 
 const route = useRoute()
 const taskStore = useTaskStore()

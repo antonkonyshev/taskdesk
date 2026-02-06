@@ -3,9 +3,11 @@ import { ref, shallowRef } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import { useWindowSize } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
-import { useNewsStore } from '../../store/news'
-import { News, NewsQuery } from '../../types/news'
-import NewsItem from '../partials/NewsItem.vue'
+import { useNewsStore } from 'news/store/news'
+import { News, NewsQuery } from 'news/types/news'
+import NewsItem from 'news/components/partials/NewsItem.vue'
+import Toolbar from 'TaskDesk/js/common/components/Toolbar.vue'
+import NewsToolbarActions from 'news/components/partials/NewsToolbarActions.vue'
 
 const newsQuery = withDefaults(defineProps<NewsQuery>(), { request: 'unread' } as NewsQuery)
 const { t } = useI18n()
@@ -57,23 +59,23 @@ const markNewsDelayed = (news: News, bookmark: boolean = false) => {
     }, 400)
 }
 
-const onTouchEnd = (news: News, index: number, event, direction = null) => {
+const onTouchEnd = (news: News, index: number, event, curDirection: 'left'|'right'|null = null) => {
     const elem = newsElements.value[index]
     let distance = elem.clientWidth || 100
-    if (!direction) {
+    if (!curDirection) {
         isSwiping.value = ''
         distance = Math.abs('changedTouches' in
             event ? event.changedTouches[0].clientX : event.screenX
         ) - Math.abs(swipeStartX.value)
         swipeStartX.value = 0
         setTimeout(() => preventClicks = false, 100)
-        direction = distance > 0 ? 'right' : 'left'
+        curDirection = distance > 0 ? 'right' : 'left'
     }
     if (Math.abs(distance) / elem.clientWidth > 0.25) {
-        if (direction == 'left') {
+        if (curDirection == 'left') {
             markNewsDelayed(news)
             elem.style.left = '-' + (elem.clientWidth * 2).toString() + 'px'
-        } else if (direction == 'right') {
+        } else if (curDirection == 'right') {
             markNewsDelayed(news, true)
             elem.style.left = (elem.clientWidth * 2).toString() + 'px'
         }
@@ -141,5 +143,11 @@ store.loadNews()
 
             <span v-text="store.fetchingMoreNews ? t('message.check_latest_news') : t('message.load_more_news')"></span>
         </button>
+        
+        <Toolbar>
+            <NewsToolbarActions v-if="store.news.length"
+                @hide="onTouchEnd(store.news[0], 0, $event, 'left')"
+                @bookmark="onTouchEnd(store.news[0], 0, $event, 'right')" />
+        </Toolbar>
     </div>
 </template>
