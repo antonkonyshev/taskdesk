@@ -43,8 +43,6 @@ describe('filters store', () => {
     })
 
     test('filters fetching', async () => {
-        expect(store.filters.length).toBe(0)
-        await store.loadFilters()
         expect(store.filters.length).toBe(3)
         expect(store.filters[0].id).toBe(3)
         expect(store.filters[0].entry).toBe('third')

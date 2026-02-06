@@ -8,7 +8,6 @@ import { onBeforeRouteLeave } from 'vue-router'
 import NewsItem from 'news/components/partials/NewsItem.vue'
 import Toolbar from 'TaskDesk/js/common/components/Toolbar.vue'
 import NewsToolbarActions from 'news/components/partials/NewsToolbarActions.vue'
-import { closeNewsSocket } from 'news/services/news.service'
 
 const newsQuery = withDefaults(defineProps<NewsQuery>(), { request: 'unread' } as NewsQuery)
 const { t } = useI18n()

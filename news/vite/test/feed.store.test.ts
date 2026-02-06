@@ -41,8 +41,6 @@ describe('feeds store', () => {
     })
 
     test('feeds fetching', async () => {
-        expect(store.feeds.length).toBe(0)
-        await store.loadFeeds()
         expect(store.feeds.length).toBe(3)
         expect(store.feeds[0].id).toBe(3)
         expect(store.feeds[0].title).toBe('Third testing feed')

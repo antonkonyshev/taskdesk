@@ -53,7 +53,6 @@ async function saveFeed() {
 
         <FeedForm v-if="selectedFeed" :key="selectedFeed.id || 'new'" v-model="selectedFeed" @cancel="selectedFeed = null" @submit="saveFeed()" />
 
-        <AddButton v-if="!selectedFeed" :add-item="createFeed" />
         <Toolbar>
             <ul v-if="!selectedFeed" class="flex flex-row justify-end items-center text-center xs:gap-3 xs:px-3 sm:gap-5 sm:px-5 md:gap-6 md:px-6 border-l-gray-300 border-l" role="menu">
                 <li role="menuitem">

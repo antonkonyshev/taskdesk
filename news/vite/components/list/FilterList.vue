@@ -2,7 +2,6 @@
 import { shallowRef } from 'vue'
 import { useWindowSize } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
-import AddButton from 'TaskDesk/js/common/components/AddButton.vue'
 import { useFilterStore } from '../../store/filter'
 import { Filter } from '../../types/filter'
 import FilterForm from 'news/components/form/FilterForm.vue'
