@@ -10,6 +10,7 @@ from tasks.storage import TaskStorage
 
 class TasksWebApp(TemplateView):
     template_name = "tasks/tasks_webapp.html"
+    extra_context = { 'navigation_section': 'tasks' }
 
 
 class TasksExportView(View):

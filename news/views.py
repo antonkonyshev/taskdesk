@@ -7,3 +7,5 @@ from django.views.generic.base import TemplateView
 
 class NewsWebApp(TemplateView):
     template_name = "news/news_webapp.html"
+    
+    extra_context = { 'navigation_section': 'news', }

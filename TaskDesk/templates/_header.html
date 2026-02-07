@@ -38,14 +38,14 @@
             <div class="hidden w-full xs:ml-3 lg:ml-3 xs:w-auto xs:grow xs:order-1 xs:block" :class="{'block!': showNavigationMenu}">
                 <ul class="flex flex-row flex-wrap justify-between items-center gap-3 w-full mt-4 font-medium xs:mt-0" role="menu">
                     <li role="menuitem">
-                        <a href="{% cache 604800 taskswebappurl %}{% url 'tasks_webapp' %}{% endcache %}" class="navigation-button">
+                        <a href="{% cache 604800 taskswebappurl %}{% url 'tasks_webapp' %}{% endcache %}" class="navigation-button{% if navigation_section == 'tasks' %} active-section{% endif %}">
                             <span class="navigation-icon svg-case"></span>
                             <span>{% trans "Tasks" %}</span>
                         </a>
                     </li>
 
                     <li role="menuitem">
-                        <a href="{% cache 604800 newswebappurl %}{% url 'news_webapp' %}{% endcache %}" class="navigation-button">
+                        <a href="{% cache 604800 newswebappurl %}{% url 'news_webapp' %}{% endcache %}" class="navigation-button{% if navigation_section == 'news' %} active-section{% endif %}">
                             <span class="navigation-icon svg-rss"></span>
                             <span>{% trans "News" %}</span>
                         </a>

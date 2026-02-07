@@ -143,7 +143,8 @@ const handleNewsClick = (news: News, index: number, event: Event) => {
 
         <button v-if="newsQuery.request == 'unread'" type="button"
             @click="store.fetchMoreNews()"
-            class="action-button mt-2 mb-5 !px-4 gap-2 hover:bg-green-700 hover:!border-green-700 hover:text-white font-semibold duration-200 group flex flex-row items-center shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:!border-gray-900 dark:text-white cursor-pointer">
+            :class="{'mt-[25vh]': !store.news.length}"
+            class="action-button flex mt-2 mb-5 !px-4 gap-2 hover:bg-green-700 hover:!border-green-700 hover:text-white font-semibold duration-200 group flex-row items-center shadow-black shadow-xs bg-white hover:shadow-md hover:scale-[101%] dark:bg-gray-800 dark:!border-gray-900 dark:text-white cursor-pointer">
 
             <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-refresh group-hover:invert-100 dark:invert-100"></span>
 
