@@ -60,7 +60,7 @@ async function saveFeed() {
                         class="navigation-button flex !flex-col !px-4">
 
                         <span class="navigation-icon !mx-0 svg-plus-circle"></span>
-                        <span v-text="t('message.add_feed')"></span>
+                        <span class="text-sm" v-text="t('message.add_feed')"></span>
                     </a>
                 </li>
             </ul>

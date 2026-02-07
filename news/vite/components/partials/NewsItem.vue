@@ -34,7 +34,7 @@ const newsFeedTitle = (id: number) => {
                 ></span>
 
             <span v-if="isFolded" class="mx-auto unfold-button sm:!hidden bg-white dark:bg-gray-800 !py-0 -mt-5 group">
-                <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-chevron-down group-hover:invert-100 dark:invert-100"></span>
+                <span class="inline-block size-6 bg-no-repeat bg-center bg-contain svg-chevron-down group-hover:invert-100 dark:invert-100 duration-500"></span>
             </span>
 
             <span class="hidden sm:flex sm:flex-row">

@@ -12,7 +12,7 @@ const emit = defineEmits(['hide', 'bookmark'])
                 class="navigation-button flex !flex-col !px-4">
 
                 <span class="navigation-icon !mx-0 svg-bookmark"></span>
-                <span v-text="t('message.bookmark')"></span>
+                <span class="text-sm" v-text="t('message.mark')"></span>
             </a>
         </li>
 
@@ -21,7 +21,7 @@ const emit = defineEmits(['hide', 'bookmark'])
                 class="navigation-button flex !flex-col !px-4">
 
                 <span class="navigation-icon !mx-0 svg-eye-slash"></span>
-                <span v-text="t('message.hide')"></span>
+                <span class="text-sm" v-text="t('message.hide')"></span>
             </a>
         </li>
     </ul>
